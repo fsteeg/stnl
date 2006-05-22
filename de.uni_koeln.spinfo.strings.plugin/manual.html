@@ -1,0 +1,84 @@
+<html>
+<body>
+<h1>Suffixb&auml;ume und &Auml;hnlichkeitsma&szlig;e</h1>
+<hr size="1" />
+<h2>API und Code</h2>
+
+<p><b>Vorraussetzungen:</b> Java 1.5.0 oder neuer</p>
+
+<p>&Uuml;ber die API k&ouml;nnen mit linear wachsender Laufzeit
+(basierend auf dem Algorithmus von Anderssen et al. und
+UkkoneneSuffixTree der BioJava API) wortbasierte Suffixb&auml;ume
+konstruiert und als Dot exportiert werden werden. F&uuml;r diese ist ein
+LCA-Retrieval in konstanter Zeit implementiert (basierend auf einer
+Implementation von A.G. McDowell). Es bestehen Implementationen von <i>k-mismatch</i>
+(siehe Gusfield 1997:200) und <i>wildcards</i> (siehe Gusfield
+1997:199) Matching sowie eine experimentelle Implementation der
+Ermittlung der LCE &uuml;ber den LCA (siehe Gusfield 1997:196f.).
+Dar&uuml;berhinaus k&ouml;nnen kleine Suffixb&auml;ume naiv in
+quadratischer Laufzeit sowohl buchstaben- sowie wortbasiert konstruiert
+und als Dot-Format exportiert werden.</p>
+<h3>Nutzung</h3>
+
+<ul>
+	<li>Die Quelltexte liegen im Ordner "src" (in das Eclipse-Projekt
+	kopieren, Rechtsklick -> build path -> use as source folder). Javadoc
+	liegt bei, im Ordner "javadoc".</li>
+</ul>
+
+<h2>Oberfl&auml;che</h2>
+<p><b>Vorraussetzungen:</b> Eclipse 3.1.x oder neuer, Java 1.5.0 oder
+neuer, <a href="http://www.graphviz.org">GraphViz</a> (Dot) f&uuml;r
+graphische Darstellung (sonst nur Text)</p>
+<p><b>Installation:</b> Ordner "de.uni_koeln.spinfo.strings.plugin" in
+eclipse/plugins kopieren, Eclipse neu starten, Window -> Show View ->
+Other -> Stringverarbeitung -> Suffixb&auml;ume und
+&Auml;hnlichkeitsma&szlig;e. Beim ersten &Ouml;ffnen muss der Pfad zu
+Dot gesetzt werden (zum neu setzen Knopf "Reset", s.u.) Unter Windows
+ist der Default-Pfad "C:\Programme\ATT\GraphViz\bin", am Mac innerhalb
+des Programms GraphViz "Content/MacOS". Der View kann mit Control-m
+maximiert werden.</p>
+<p>Die Oberfl&auml;che erm&ouml;glicht eine flexible Erstellung und
+Darstellung von Suffixb&auml;umen aus unmittelbar eingegebenem oder in
+einer Datei gespeicherten Text. Dar&uuml;ber hinaus kann mit zwei
+Matching-Algorithmen auf dem eingegebenen Text experimentiert werden.</p>
+<h3>Nutzung</h3>
+
+<ul>
+	<li>Eingabefeld (gross): Eingabetext, bestehend aus einem oder mehreren
+	W&ouml;rtern oder S&auml;tzen (z.B. "Er hat gestern sehr gefroren. Sie
+	hat heute sehr gelacht. Es hat letztens sehr geregnet.").</li>
+	<li>Checkbox "wortbasiert": Baum soll W&ouml;rter statt Buchstaben
+	enthalten, f&uuml;r Darstellung syntaktischer Strukturen.</li>
+	<li>Checkbox "umkehren": Eingabetext soll umgedreht werden, F&uuml;r
+	Paradigmen am Anfang.</li>
+	<li>Knopf "Suffixbaum": Konstruiert den Suffixbaum f&uuml;r den
+	eingegebenen Text und stellt ihn dar. Per Rechtsklick auf das Bild kann
+	es abgespeichert werden.</li>
+	<li>Anzeige "L&auml;nge": Zeigt die L&auml;nge des Baumes an (siehe
+	Gusfield 1997:286).</li>
+	<li>Knopf "Dot": Dargestellten Baum oder Matching-Ergebnis als
+	Dot-Datei abspeichern.</li>
+	<li>Eingabefeld (mittel): Zu suchender Text (Suchmuster, Pattern)
+	F&uuml;r wortbasiertes Matching mit wildcards etwa: "Es hat letztens
+	sehr *" oder beim k-mismatch "Es hat letztens sehr geregnet.".</li>
+	<li>Eingabefeld (klein): Wert f&uuml;r <i>k</i> beim k-mismatch.</li>
+	<li>Knopf "k-mismatch": Matching mit <i>k-mismatch</i> (siehe Gusfield
+	1997:200).</li>
+	<li>Knopf "wildcards": Matching mit <i>wildcards</i> (siehe Gusfield
+	1997:199).</li>
+	<li>Knopf "Reset": Verzeichnis f&uuml;r Dot neu ausw&auml;hlen,
+	Default-Werte f&uuml;r Textfelder wiederherstellen.</li>
+	<li>Knopf "Datei": Auswahl einer Textdatei zum Aufbau eines
+	gro&szlig;en Suffixbaumes (verwendet den linearen Algorithmus), ist
+	immer wortbasiert und wird als Dot-Text-Datei gespeichert und
+	angezeigt.</li>
+	<li>Knopf "Hilfe": &Ouml;ffnet diese Seite.</li>
+</ul>
+
+<hr size="1" />
+<p align="left"><i>Suffixb&auml;ume und &Auml;hnlichkeitsma&szlig;e,
+Fabian Steeg, <a href="http://www.spinfo.uni-koeln.de">Sprachliche
+Informationsverarbeitung</a>, 8. M&auml;rz 2006</i></p>
+</body>
+</html>

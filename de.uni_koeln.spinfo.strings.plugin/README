@@ -1,0 +1,7 @@
+Suffix Trees for Natural Language GUI
+
+- Requires Java 5, Eclipse 3.2 and for graphical output GraphViz (Text only without).
+- Installing: Copy the folder to your eclipse/plugins folder and restart Eclipse. Then, under "Window -> Show View -> Other" opene the new View.
+- Set the path to the folder that contains your installed "dot" application.
+- The GUI allows for construction and visualization of suffix trees for entered or specified text. It also offers visualization of the implemented matching algorithms.
+- From the text entered or specified, a suffix tree is constructed and then exported to dot. When visualizing a small text, now "dot" is called to render the suffix tree as an image file, which can be saved to disk (right-click the image).

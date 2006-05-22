@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            name="Stringverarbeitung"
+            id="de.uni_koeln.spinfo.strings.plugin">
+      </category>
+      <view
+            name="Suffixbäume und Ähnlichkeitsmaße"
+            icon="icons/sample.gif"
+            category="de.uni_koeln.spinfo.strings.plugin"
+            class="de.uni_koeln.spinfo.strings.plugin.views.View"
+            id="de.uni_koeln.spinfo.strings.plugin.views.View">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.ui.resourcePerspective">
+         <view
+               ratio="0.5"
+               relative="org.eclipse.ui.views.TaskList"
+               relationship="right"
+               id="de.uni_koeln.spinfo.strings.plugin.views.View">
+         </view>
+      </perspectiveExtension>
+   </extension>
+
+</plugin>
