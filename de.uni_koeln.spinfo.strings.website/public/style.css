@@ -1,0 +1,48 @@
+@CHARSET "UTF-8";
+
+.top {
+	background-color: #F0F0F0;
+}
+
+.caption {
+	text-align: center;
+}
+
+a {
+	color: darkred;
+	text-decoration: none;
+}
+
+.smallprint {
+	font-size: 12px;
+	text-align: center;
+}
+
+hr {
+	color: black;
+	background-color: black;
+	height: 0.5px;
+}
+
+.image1 {
+	border-width: 2;
+	border-color: black;
+	float: left;
+	margin-right: 20px;
+	margin-bottom: 10px;
+	float: left;
+}
+
+.image2 {
+	border: 0;
+}
+
+.navigation {
+	margin-left: 1.5em;
+	margin-bottom: 1.5em;
+	margin-top: 1.5em;
+	padding: 1em;
+	float: right;
+	background-color: #C8C8C8;
+	border: 2px outset;
+}
