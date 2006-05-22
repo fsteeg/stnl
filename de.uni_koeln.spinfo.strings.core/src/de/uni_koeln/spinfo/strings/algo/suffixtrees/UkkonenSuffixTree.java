@@ -1,3 +1,12 @@
+/** 
+ Project Suffix Trees for Natural Language (STNL) (C) 2006 Fabian Steeg
+
+ This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
+
+ This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+
+ You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ */
 package de.uni_koeln.spinfo.strings.algo.suffixtrees;
 
 import java.util.ArrayList;
@@ -12,11 +21,11 @@ import java.util.Iterator;
  * </p>
  * 
  * <pre>
- *               root(4)
- *               |
- *               A(2)--------G(1)-----T(1)
- *               |           |
- *               A(1)--G(1)  T(1)
+ *                 root(4)
+ *                 |
+ *                 A(2)--------G(1)-----T(1)
+ *                 |           |
+ *                 A(1)--G(1)  T(1)
  * </pre>
  * 
  * <p>
@@ -24,16 +33,13 @@ import java.util.Iterator;
  * not be mixed together. The strings are also terminated internally, so it is
  * possible to go and add more than one string to the suffix tree.
  * </p>
- * <p/>
- * Some more work need to be done on how data should be generated from this
+ * <p/> Some more work need to be done on how data should be generated from this
  * class. If you need something that's not in there, please e-mail the list at
- * biojava-dev@biojava.org and I'll add it in there. 
- * <p/>
- * <b>Note:</b> (Fabian Steeg) BioJava API-Code has been removed from the Implementation. The
- * stuff from BioJava might be interesting for modding this to allow larger
- * alphabets than 65535 through IntegerAlphabet. But also modding the String sto
- * int[] might work here (while it didn't for the ottawa-impl, that went
- * quadratic)
+ * biojava-dev@biojava.org and I'll add it in there. <p/> <b>Note:</b> (Fabian
+ * Steeg) BioJava API-Code has been removed from the Implementation. The stuff
+ * from BioJava might be interesting for modding this to allow larger alphabets
+ * than 65535 through IntegerAlphabet. But also modding the String sto int[]
+ * might work here (while it didn't for the ottawa-impl, that went quadratic)
  * 
  * @author Francois Pepin (original version from BioJava API)
  */
@@ -76,7 +82,8 @@ public class UkkonenSuffixTree {
     /**
      * Initializes a new <code>UkkonenSuffixTree</code> instance with a text.
      * 
-     * @param seqs The text to add
+     * @param seqs
+     *            The text to add
      */
     public UkkonenSuffixTree(String seqs) {
         this();
@@ -90,7 +97,8 @@ public class UkkonenSuffixTree {
      * 
      * @param seq
      *            the sequence/sequences to be added into the tree.
-     * @param number The text number, for generalized trees
+     * @param number
+     *            The text number, for generalized trees
      * @param doNotTerminate
      *            whether we should terminate the sequence if it's
      *            non-terminated.
@@ -98,7 +106,7 @@ public class UkkonenSuffixTree {
     public void addSequence(String seq, int number, boolean doNotTerminate) {
         int i;
         int start, end;
-        ArrayList toBeAdded = new ArrayList();
+        ArrayList<String> toBeAdded = new ArrayList<String>();
         Iterator iterator;
         String subseq;
 
@@ -121,7 +129,7 @@ public class UkkonenSuffixTree {
         i = 0;
         while (iterator.hasNext()) {
             subseq = (String) iterator.next();
-            addPreppedSequence(subseq,number);
+            addPreppedSequence(subseq, number);
             i++;
         }
     }
@@ -131,7 +139,7 @@ public class UkkonenSuffixTree {
      * 
      * @param seq
      *            a <code>String</code> value
-     * @param number 
+     * @param number
      */
     private void addPreppedSequence(CharSequence seq, int number) {
         int i, gammaStart;
@@ -148,7 +156,7 @@ public class UkkonenSuffixTree {
         sequences = sequences.toString() + seq.toString();
 
         currentNode = root;
-        
+
         // phase i
         for (; i < sequences.length(); i++) {
             // System.out.println("Phase "+i);
@@ -177,15 +185,15 @@ public class UkkonenSuffixTree {
                     currentNode = jumpTo(currentNode, sequences, gammaStart,
                             i + 1);
                 }
-               
+
                 if (rule == 1)
                     addPositionToLeaf(j, currentNode);
                 if (rule == 2)
-                    doRule2(currentNode, i, j, number, i-k);
+                    doRule2(currentNode, i, j, number, i - k);
                 if (rule == 3) {
-                    newNode = doRule3(currentNode, i, j, number, i-k);
+                    newNode = doRule3(currentNode, i, j, number, i - k);
                     currentNode = newNode;
-                    
+
                 }
 
                 if (rule == 1 || rule == 4 || rule == 5)
@@ -247,8 +255,8 @@ public class UkkonenSuffixTree {
         currentNode = starting;
         arrivedAt = starting;
         while (from < to) {
-            arrivedAt = (SuffixNode) currentNode.getChildren().get(new Character(
-                    source.charAt(from)));
+            arrivedAt = (SuffixNode) currentNode.getChildren().get(
+                    new Character(source.charAt(from)));
             if (arrivedAt == null) {
                 from = to;
                 arrivedAt = currentNode;
@@ -315,7 +323,7 @@ public class UkkonenSuffixTree {
         int edgeLength;
         int original = from;
         SuffixNode originalNode = starting;
-        int i = 0;
+        // int i = 0;
 
         currentNode = starting;
         arrivedAt = starting;
@@ -343,8 +351,8 @@ public class UkkonenSuffixTree {
                 // of times already.
             }
 
-            arrivedAt = (SuffixNode) currentNode.getChildren().get(new Character(
-                    source.charAt(from)));
+            arrivedAt = (SuffixNode) currentNode.getChildren().get(
+                    new Character(source.charAt(from)));
             if (arrivedAt == null) {
                 canGoDown = false;
                 arrivedAt = currentNode;
@@ -354,7 +362,7 @@ public class UkkonenSuffixTree {
 
             edgeLength = getEdgeLength(arrivedAt);
             if (edgeLength >= to - from) {
-                int before = currentNode.labelEnd + to - from + 1;
+                // int before = currentNode.labelEnd + to - from + 1;
                 int after = getPathEnd(arrivedAt) - getEdgeLength(arrivedAt)
                         + to - from - 1;
                 if (sequences.charAt(after) == source.charAt(to - 1)) {
@@ -424,11 +432,11 @@ public class UkkonenSuffixTree {
                     .toString();
     }
 
-    public ArrayList getAllNodes(SuffixNode root, ArrayList list,
-            boolean leavesOnly) {
+    public ArrayList<SuffixNode> getAllNodes(SuffixNode root,
+            ArrayList<SuffixNode> list, boolean leavesOnly) {
         Iterator iterator;
         if (list == null)
-            list = new ArrayList();
+            list = new ArrayList<SuffixNode>();
         if (!leavesOnly || (leavesOnly && root.isTerminal()))
             list.add(root);
         if (!root.isTerminal()) {
@@ -483,12 +491,14 @@ public class UkkonenSuffixTree {
 
     }
 
-    private void doRule2(SuffixNode parent, int splittingPos, int suffixStart, int number, int suffixIndex) {
+    private void doRule2(SuffixNode parent, int splittingPos, int suffixStart,
+            int number, int suffixIndex) {
         // int number = getAllNodes(root, null, false).size();
-        SuffixNode leaf = new SimpleNode(parent, suffixStart, number, suffixIndex);
+        SuffixNode leaf = new SimpleNode(parent, suffixStart, number,
+                suffixIndex);
 
-        parent.getChildren()
-                .put(new Character(sequences.charAt(splittingPos)), leaf);
+        parent.getChildren().put(new Character(sequences.charAt(splittingPos)),
+                leaf);
         // System.out.println("rule 2: "+sequences.charAt(splittingPos)+" from
         // "+getLabel(parent)+ " to "+getLabel(leaf));
 
@@ -502,7 +512,8 @@ public class UkkonenSuffixTree {
         // suffixStart);
         // int number = getAllNodes(root, null, false).size();
         SuffixNode parent = child.parent;
-        SuffixNode middle = new SimpleNode(parent, suffixStart, splittingPos, number, suffixIndex);
+        SuffixNode middle = new SimpleNode(parent, suffixStart, splittingPos,
+                number, suffixIndex);
         Character x = new Character(sequences.charAt(child.labelStart
                 + getPathLength(child) - getEdgeLength(child)));
 
@@ -547,25 +558,25 @@ public class UkkonenSuffixTree {
      * @param child
      *            a <code>SuffixNode</code> value
      */
-    private void checkParent(SuffixNode child) {
-        SuffixNode parent = child.parent;
-        CharSequence parentLabel = getLabel(parent);
-        CharSequence label = getLabel(child);
-
-        if (parentLabel.equals("root"))
-            parentLabel = "";
-
-        if (parentLabel.length() >= label.length()
-                || !parentLabel.equals(label.subSequence(0, parentLabel
-                        .length()))) {
-            System.err.println("bad addition on rule " + rule);
-            System.err.println(parentLabel + " against " + label);
-            System.err.println("child (" + child.labelStart + ","
-                    + ((child.labelEnd == -1) ? e : child.labelEnd) + ")");
-            System.err.println("parent (" + parent.labelStart + ","
-                    + parent.labelEnd + ")");
-        }
-    }
+//    private void checkParent(SuffixNode child) {
+//        SuffixNode parent = child.parent;
+//        CharSequence parentLabel = getLabel(parent);
+//        CharSequence label = getLabel(child);
+//
+//        if (parentLabel.equals("root"))
+//            parentLabel = "";
+//
+//        if (parentLabel.length() >= label.length()
+//                || !parentLabel.equals(label.subSequence(0, parentLabel
+//                        .length()))) {
+//            System.err.println("bad addition on rule " + rule);
+//            System.err.println(parentLabel + " against " + label);
+//            System.err.println("child (" + child.labelStart + ","
+//                    + ((child.labelEnd == -1) ? e : child.labelEnd) + ")");
+//            System.err.println("parent (" + parent.labelStart + ","
+//                    + parent.labelEnd + ")");
+//        }
+//    }
 
     public boolean subStringExists(String str) {
         walkTo(root, str, 0, str.length());

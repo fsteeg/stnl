@@ -1,11 +1,13 @@
-/**
- * @author Fabian Steeg
- * Created on 21.02.2006
- *
+/** 
+ Project Suffix Trees for Natural Language (STNL) (C) 2006 Fabian Steeg
+
+ This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
+
+ This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+
+ You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 package de.uni_koeln.spinfo.strings.algo;
-
-import java.util.ArrayList;
 
 import de.uni_koeln.spinfo.strings.algo.lca.LCA;
 import de.uni_koeln.spinfo.strings.algo.lca.TreeNode;
@@ -29,9 +31,9 @@ import de.uni_koeln.spinfo.strings.algo.suffixtrees.WordSuffixTree;
  */
 public class LCE {
 
-    private String s2;
+//    private String s2;
 
-    private String s1;
+    //    private String s1;
 
     private WordSuffixTree tree;
 
@@ -50,8 +52,8 @@ public class LCE {
      *            Text 2
      */
     public LCE(String s1, String s2) {
-        this.s1 = s1;
-        this.s2 = s2;
+//        this.s1 = s1;
+//        this.s2 = s2;
         // build a generalized suffix tree for the two texts
         tree = new WordSuffixTree(s1 + "." + s2, false, true, null);
         tree.exportDot("export.dot");
@@ -74,25 +76,25 @@ public class LCE {
         // representing the suffixes
         TreeNode treeNode = (TreeNode) tree.getNodeForSuffix(1, i);
         TreeNode treeNode2 = (TreeNode) tree.getNodeForSuffix(2, j);
-        return tree.getPathLength(((SuffixNode) lca.LCA(treeNode.getDFSNum(),
+        return tree.getPathLength(((SuffixNode) lca.lca(treeNode.getDFSNum(),
                 treeNode2.getDFSNum())));
 
     }
 
-    private int getNodeIdForSuffix(String s, int j) {
-        ArrayList<SuffixNode> leafs = tree.getAllNodes(tree.getRoot(), null,
-                true);
-        for (int i = 0; i < leafs.size(); i++) {
-            CharSequence edgeLabel = tree.getEdgeLabel(leafs.get(i));
-            if (edgeLabel.toString().replaceAll("\\$", "").trim().equals(
-                    s.substring(j))) {
-                System.out.println(edgeLabel);
-                return ((TreeNode) leafs.get(i)).getDFSNum();
-
-            }
-        }
-        return 0;
-    }
+//    private int getNodeIdForSuffix(String s, int j) {
+//        ArrayList<SuffixNode> leafs = tree.getAllNodes(tree.getRoot(), null,
+//                true);
+//        for (int i = 0; i < leafs.size(); i++) {
+//            CharSequence edgeLabel = tree.getEdgeLabel(leafs.get(i));
+//            if (edgeLabel.toString().replaceAll("\\$", "").trim().equals(
+//                    s.substring(j))) {
+//                System.out.println(edgeLabel);
+//                return ((TreeNode) leafs.get(i)).getDFSNum();
+//
+//            }
+//        }
+//        return 0;
+//    }
 
     /**
      * Naive computation of the longest common extension

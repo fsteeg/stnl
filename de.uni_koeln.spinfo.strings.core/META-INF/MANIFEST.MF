@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Core Plug-in
+Bundle-Name: STNL Core Plug-in
 Bundle-SymbolicName: de.uni_koeln.spinfo.strings.core
-Bundle-Version: 1.0.0
+Bundle-Version: 0.2.4
 Bundle-Activator: de.uni_koeln.spinfo.strings.core.Activator
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,

@@ -167,7 +167,7 @@ public class LCA {
      * @exception IllegalStateException
      *                if fails an internal check
      */
-    public TreeNode LCA(int id1, int id2) {
+    public TreeNode lca(int id1, int id2) {
         if (id1 <= 0 || id2 <= 0 || id1 >= nextNum || id2 >= nextNum)
             throw new IllegalArgumentException("numbers out of range");
         OurNode ida = on[id1];

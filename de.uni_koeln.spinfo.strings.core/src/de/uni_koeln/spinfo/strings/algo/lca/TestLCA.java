@@ -108,8 +108,8 @@ public class TestLCA {
             int maxAllocated = num[0] - 1;
             TestNode[] nodes = new TestNode[maxAllocated + 1];
             setPointers(sample, nodes);
-            int drop1;
-            int drop2;
+            // int drop1;
+            // int drop2;
             for (int i = 0; i < 10; i++) {
                 int drop = r.nextInt(maxAllocated) + 1;
                 TestNode tn = nodes[drop];
@@ -124,7 +124,7 @@ public class TestLCA {
                     parent = parent.getParent();
                 tn.setChild(r.nextInt(childrenHere), parent);
                 try {
-                    LCA lc = new LCA(sample);
+                    new LCA(sample);
                 } catch (IllegalStateException se) {
                     c++;
                     break;
@@ -157,7 +157,7 @@ public class TestLCA {
                 TestNode ta = nodes[1 + r.nextInt(maxAllocated)];
                 TestNode tb = nodes[1 + r.nextInt(maxAllocated)];
                 TestNode simple = simpleLCA(ta, tb);
-                TreeNode fast = lc.LCA(ta.getNum(), tb.getNum());
+                TreeNode fast = lc.lca(ta.getNum(), tb.getNum());
                 if (simple != fast)
                     throw new IllegalStateException("Mismatch in LCAs");
                 tests++;

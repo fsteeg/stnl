@@ -1,9 +1,11 @@
-/**
- * @author Fabian Steeg
- * Created on 21.02.2006
- *
- * @version $Revision: 1.2 $
- * 
+/** 
+ Project Suffix Trees for Natural Language (STNL) (C) 2006 Fabian Steeg
+
+ This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
+
+ This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+
+ You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 package de.uni_koeln.spinfo.strings.algo.suffixtrees;
 
@@ -34,7 +36,7 @@ public class SimpleNode extends SuffixNode implements TreeNode {
         suffixLink = null;
         labelStart = 0;
         labelEnd = 0;
-        children = new HashMap();
+        children = new HashMap<Character, SuffixNode>();
         additionalLabels = null;
         textNumber = 0;
         suffixIndex = 0;
@@ -99,7 +101,7 @@ public class SimpleNode extends SuffixNode implements TreeNode {
      * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.SuffixNode#getChild(java.lang.Character)
      */
     public SuffixNode getChild(Character x) {
-        return (children == null) ? null : (SuffixNode) children.get(x);
+        return (children == null) ? null : children.get(x);
     }
 
     /**
