@@ -11,3 +11,6 @@ Require-Bundle: org.eclipse.ui,
  org.junit,
  de.uni_koeln.spinfo.strings.core
 Eclipse-AutoStart: true
+Export-Package: de.uni_koeln.spinfo.strings.plugin,
+ de.uni_koeln.spinfo.strings.plugin.views
+Bundle-ClassPath: .

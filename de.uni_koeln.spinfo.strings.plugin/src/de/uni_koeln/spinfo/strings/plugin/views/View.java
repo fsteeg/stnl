@@ -579,7 +579,7 @@ public class View extends ViewPart {
                                                                             .getText(new File(
                                                                                     source)),
                                                                     false,
-                                                                    false, pm);
+                                                                    false);
                                                             pm.worked(75);
                                                             pm
                                                                     .subTask(Messages
