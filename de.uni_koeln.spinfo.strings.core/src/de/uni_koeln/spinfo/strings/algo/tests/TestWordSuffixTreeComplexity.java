@@ -79,7 +79,7 @@ public class TestWordSuffixTreeComplexity extends TestCase {
         long current;
         String[] in = text.split("[^a-zA-Z0-9\\$]");
         start = System.currentTimeMillis();
-        WordSuffixTree tree = new WordSuffixTree(text, reverse, true, null);
+        WordSuffixTree tree = new WordSuffixTree(text, reverse, true);
         current = System.currentTimeMillis();
         System.out.print(in.length + " Tokens, " + text.length() + " Chars, "
                 + (current - start) + " ms. ");

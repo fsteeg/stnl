@@ -22,8 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-
 import de.uni_koeln.spinfo.strings.algo.LCE;
 
 /**
@@ -74,15 +72,11 @@ public class WordSuffixTree extends UkkonenSuffixTree {
      *            inserted separately (<b>Attention</b>: In the current
      *            Implementation, for generalized trees the construction runtime
      *            seems to grow quadratic)
-     * @param pm
-     *            An IProgressMonitor to show progress within eclipse, pass
-     *            "null" if none is used
      */
-    public WordSuffixTree(String text, boolean reverse, boolean generalized,
-            IProgressMonitor pm) {
+    public WordSuffixTree(String text, boolean reverse, boolean generalized) {
         this.reverse = reverse;
         this.generalized = generalized;
-        setText(text, pm);
+        setText(text);
     }
 
     /**
@@ -91,23 +85,18 @@ public class WordSuffixTree extends UkkonenSuffixTree {
      * 
      * @param text
      *            The text to add, termination is handled internally
-     * @param pm
-     *            An IProgressMonitor to show progress within eclipse, pass
-     *            "null" if none is used
+     * 
      */
-    private void setText(String text, IProgressMonitor pm) {
+    private void setText(String text) {
         this.text = text;
-        construct(pm);
+        construct();
     }
 
     /**
-     * @param pm
-     *            An IProgressMonitor to show progress within eclipse, pass
-     *            "null" if none is used
+     * 
      */
-    private void construct(IProgressMonitor pm) {
-        if (pm != null)
-            pm.beginTask("Konstruiere Suffixbaum...", this.text.length());
+    private void construct() {
+       
         /**
          * steps 1: construct a trie for the types in the input (ok, i'm using a
          * map but its nice and fast):
@@ -173,8 +162,6 @@ public class WordSuffixTree extends UkkonenSuffixTree {
 
             for (int i = 0; i < ids.length; i++) {
                 String rec = tokens[i];
-                if (pm != null)
-                    pm.worked(rec.length());
                 Object val = trie.get(rec);
                 ids[i] = (Integer) val;
                 builder.append((char) ids[i]);
@@ -207,7 +194,7 @@ public class WordSuffixTree extends UkkonenSuffixTree {
      */
     public static void main(String[] args) {
         String text = "Hallo Welt Hallo Rest";
-        new WordSuffixTree(text, false, true, null);
+        new WordSuffixTree(text, false, true);
         System.out.println("Done.");
     }
 

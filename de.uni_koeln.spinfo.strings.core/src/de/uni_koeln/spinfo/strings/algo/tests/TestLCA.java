@@ -41,7 +41,7 @@ public class TestLCA extends TestCase {
         long start;
         long current;
         start = System.currentTimeMillis();
-        WordSuffixTree tree = new WordSuffixTree(text, false, false, null);
+        WordSuffixTree tree = new WordSuffixTree(text, false, false);
         current = System.currentTimeMillis();
         System.out.print("Tree took: " + (current - start) + " ms. ");
         start = System.currentTimeMillis();
