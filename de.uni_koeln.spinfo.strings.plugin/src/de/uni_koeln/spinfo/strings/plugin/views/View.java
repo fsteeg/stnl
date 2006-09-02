@@ -58,7 +58,11 @@ public class View extends ViewPart {
 
     // some config values
 
-    private static final String DOT_CALL = "dot -Tpng -o"; //$NON-NLS-1$
+    private static final String DOT_CALL = "dot"; //$NON-NLS-1$
+
+    private static final String OUTPUT_FORMAT = "-Tpng";
+
+    private static final String VAR = "-o";
 
     private static final String RESULT_PNG = "result.png"; //$NON-NLS-1$
 
@@ -119,13 +123,15 @@ public class View extends ViewPart {
 
     private static String TMP_DIR;
 
-    private static String COMMAND;
+    // private static String COMMAND;
 
     private FormToolkit toolkit;
 
     private ScrolledForm form;
 
     private String DIR;
+
+    private static String[] COMMANDS;
 
     // private String DIR;
 
@@ -173,9 +179,15 @@ public class View extends ViewPart {
             TMP_DIR = TMP_DIR.substring(1);
         }
         // set the command to call
-        COMMAND = DOT_APP_PATH + DOT_CALL + " " + TMP_DIR + RESULT_PNG + " " //$NON-NLS-1$ //$NON-NLS-2$
-                + TMP_DIR + OUTPUT_DOT;
-        System.out.println("Will use command: " + COMMAND);
+        COMMANDS = new String[] { DOT_APP_PATH + DOT_CALL, OUTPUT_FORMAT, VAR,
+                TMP_DIR + RESULT_PNG, TMP_DIR + OUTPUT_DOT };
+        // COMMAND = DOT_APP_PATH + DOT_CALL + " " + TMP_DIR + RESULT_PNG + "\""
+        // + " " //$NON-NLS-1$ //$NON-NLS-2$
+        // + TMP_DIR + OUTPUT_DOT + "\"";
+        System.out.println("Will use command:");
+        for (String command : COMMANDS) {
+            System.out.println("command: " + command);
+        }
     }
 
     /**
@@ -298,7 +310,7 @@ public class View extends ViewPart {
                         Runtime runtime = Runtime.getRuntime();
                         Process p = null;
                         try {
-                            p = runtime.exec(COMMAND);
+                            p = runtime.exec(COMMANDS);
                             p.waitFor();
 
                         } catch (Exception x) {
@@ -347,10 +359,9 @@ public class View extends ViewPart {
             Util.saveString(string2, tree.toString());
             System.out.println("Setting browser to: " + string2);
             browser.setUrl(string2);
-            MessageDialog
-                    .openWarning(browser.getShell(),
-                            Messages.getString("View.CAPTION_NO_DOT_PATH_SET"), //$NON-NLS-1$
-                            Messages.getString("View.CAPTION_NO_DOT_PATH_SET")); //$NON-NLS-1$
+            MessageDialog.openWarning(browser.getShell(), Messages
+                    .getString("View.CAPTION_NO_DOT_PATH_SET"), //$NON-NLS-1$
+                    Messages.getString("View.CAPTION_NO_DOT_PATH_SET")); //$NON-NLS-1$
 
         } else {
             View.renderImage();
