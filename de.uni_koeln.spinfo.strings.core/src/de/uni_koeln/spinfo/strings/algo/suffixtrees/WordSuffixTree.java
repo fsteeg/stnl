@@ -50,16 +50,13 @@ public class WordSuffixTree extends UkkonenSuffixTree {
 
     private String text;
 
-    private Map<String, String> map;
-
     private boolean reverse;
 
     private boolean generalized;
 
-    // these are for dot output
-    private int count = 1;
+    public Mapper mapper;
 
-//    private int last = 1;
+    // private int last = 1;
 
     /**
      * @param text
@@ -96,14 +93,14 @@ public class WordSuffixTree extends UkkonenSuffixTree {
      * 
      */
     private void construct() {
-       
+
         /**
          * steps 1: construct a trie for the types in the input (ok, i'm using a
          * map but its nice and fast):
          */
-        int counter = 0;
-        Map<String, Integer> trie = new HashMap<String, Integer>();
-        map = new HashMap<String, String>();
+        long counter = 0;
+        Map<String, Long> trie = new HashMap<String, Long>();
+        mapper = new Mapper(this);
         String[] sentences = text.split("[\\.!?;:]");
         Set<String> sentencesSet = new HashSet<String>();
         // if not generalized, we add the text as one
@@ -133,7 +130,7 @@ public class WordSuffixTree extends UkkonenSuffixTree {
                 }
                 tokens = tokRev;
             }
-            StringBuilder builder = new StringBuilder();
+            List<Long> builder = new ArrayList<Long>();
             for (String word : tokens) {
                 if (!trie.containsKey(word)) {
                     // TODO attention, here we skip a $ in the weird-chars
@@ -145,7 +142,7 @@ public class WordSuffixTree extends UkkonenSuffixTree {
                     trie.put(word, counter);
                     // TODO is there a better way do achieve this:
                     // map the number to the word:
-                    map.put(counter + "", word);
+                    mapper.put(counter, word);
                     counter++;
                     // TODO ideas: modding ukkonensuffixtree to use int[], or
                     // using IntegerAlphabet and BioJava:
@@ -158,20 +155,20 @@ public class WordSuffixTree extends UkkonenSuffixTree {
              * step 3: assign the values from the trie to the words in the input
              * string:
              */
-            int[] ids = new int[tokens.length];
+            long[] ids = new long[tokens.length];
 
             for (int i = 0; i < ids.length; i++) {
                 String rec = tokens[i];
                 Object val = trie.get(rec);
-                ids[i] = (Integer) val;
-                builder.append((char) ids[i]);
+                ids[i] = (Long) val;
+                builder.add(ids[i]);
             }
 
             /**
              * step 4: build a traditional suffix tree for the string of
              * numbers:
              */
-            addSequence(builder.toString(), sentenceCount, false);
+            super.addSequence(builder, sentenceCount, false);
             sentenceCount++;
         }
         System.out.print(counter + " Types, ");
@@ -196,132 +193,6 @@ public class WordSuffixTree extends UkkonenSuffixTree {
         String text = "Hallo Welt Hallo Rest";
         new WordSuffixTree(text, false, true);
         System.out.println("Done.");
-    }
-
-    /**
-     * Translates from the char-based internal representation to the actual word
-     * based text
-     * 
-     * @param map
-     *            The mapping of the symbols to the words
-     * @param label
-     *            The label to translate
-     * @param cut
-     *            If true the result is cut after 10 words
-     * @return Returns the actual label, containing blank-separated words
-     */
-    private String translate(Map<String, String> map, CharSequence label,
-            boolean cut) {
-        String res = "";
-        int orig = label.length();
-        if (!label.equals("root")) {
-            if (cut)
-                label = label.toString().substring(0,
-                        Math.min(10, label.length()));
-            char[] l = label.toString().toCharArray();
-            StringBuilder builder = new StringBuilder();
-            for (int j = 0; j < l.length; j++) {
-                String string = map.get((int) l[j] + "");
-                if (string == null)
-                    string = "$";
-                builder.append(string + " ");
-            }
-            res = builder.toString().trim();
-        }
-        if (cut && orig > 10)
-            res += " [...]";
-        return res;
-
-    }
-
-    /**
-     * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.UkkonenSuffixTree#getEdgeLabel(de.uni_koeln.spinfo.strings.algo.suffixtrees.SuffixNode)
-     */
-    @Override
-    public CharSequence getEdgeLabel(SuffixNode child) {
-        return translate(map, super.getEdgeLabel(child), true);
-    }
-
-    /**
-     * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.UkkonenSuffixTree#getLabel(de.uni_koeln.spinfo.strings.algo.suffixtrees.SuffixNode)
-     */
-    @Override
-    public CharSequence getLabel(SuffixNode node) {
-        return translate(map, super.getLabel(node), true);
-    }
-
-    /**
-     * Writes the tree as a dot text file to disk
-     * 
-     * <p/> TODO get this out of here, and into a class DotUtils, using a thin
-     * interface like SuffixNode
-     * 
-     * @param root
-     *            The root {@link SuffixNode} to export
-     * @param dest
-     *            The location in the file system to write to (eg. "out.dot")
-     */
-    public void exportDot(String dest) {
-        try {
-            String string = dest;
-            if (reverse)
-                string = "reverse-" + dest;
-            BufferedWriter fileWriter = new BufferedWriter(new FileWriter(new File(string)));
-            fileWriter
-                    .write("/* this is a generated dot file: www.graphviz.org */\n"
-                            + "digraph suffixtree {\n" + "\trankdir=LR;\n");
-            printDotBody(root, null, false, fileWriter, 0);
-            fileWriter.write("}");
-            fileWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private ArrayList<SuffixNode> printDotBody(SuffixNode root,
-            ArrayList<SuffixNode> list, boolean leavesOnly, BufferedWriter writer,
-            int depth) throws IOException {
-        tab(writer, depth);
-        root.id = count;
-        if (root.parent != null)
-            writer.write(root.parent.id + "->");
-        writer.write("" + count);
-        writer.write("[label=\"" + getEdgeLabel(root).toString().trim()
-                + ", Text: " + root.textNumber + ", Suffix: "
-                + ((SimpleNode) root).suffixIndex + "\"];\n");
-        Iterator iterator;
-        if (list == null) {
-            list = new ArrayList<SuffixNode>();
-            count = 1;
-        }
-        if (!leavesOnly || (leavesOnly && root.isTerminal()))
-            list.add(root);
-        if (!root.isTerminal()) {
-            iterator = root.getChildren().values().iterator();
-            // writer.write("\n");
-            depth = depth + 1;
-//            last = count;
-            while (iterator.hasNext()) {
-                SuffixNode next = (SuffixNode) iterator.next();
-                count++;
-                list = printDotBody(next, list, leavesOnly, writer, depth);
-            }
-        }
-        return list;
-    }
-
-    /**
-     * @param writer
-     *            The writer to write tabs to
-     * @param depth
-     *            The current depth in the tree
-     * @throws IOException
-     *             If writing goes wrong
-     */
-    private void tab(BufferedWriter writer, int depth) throws IOException {
-        for (int i = 0; i <= depth; i++) {
-            writer.write("\t");
-        }
     }
 
     /**

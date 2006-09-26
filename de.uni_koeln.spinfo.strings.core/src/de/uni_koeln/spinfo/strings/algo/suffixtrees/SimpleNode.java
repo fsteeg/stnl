@@ -36,7 +36,7 @@ public class SimpleNode extends SuffixNode implements TreeNode {
         suffixLink = null;
         labelStart = 0;
         labelEnd = 0;
-        children = new HashMap<Character, SuffixNode>();
+        children = new HashMap<Long, SuffixNode>();
         additionalLabels = null;
         textNumber = 0;
         suffixIndex = 0;

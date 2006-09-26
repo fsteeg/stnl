@@ -24,8 +24,8 @@ public class TestUkkonenSuffixTree extends TestCase {
      */
     public void testPrintTree() {
         UkkonenSuffixTree tree = new UkkonenSuffixTree();
-        tree.addSequence("abcabd", 1, false);
-        tree.addSequence("abcabd", 2, false);
+//        tree.addSequence("abcabd", 1, false);
+//        tree.addSequence("abcabd", 2, false);
     }
 
 }

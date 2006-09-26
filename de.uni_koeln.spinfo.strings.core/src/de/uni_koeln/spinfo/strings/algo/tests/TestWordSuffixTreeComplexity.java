@@ -36,7 +36,7 @@ public class TestWordSuffixTreeComplexity extends TestCase {
      * Test for {@link WordSuffixTree}
      */
     public void testConstructionRuntime() {
-
+        constructTree("Ich esse. Ich trinke", false);
         // constructTree(Util.getText(new File("texts/small-text.txt")), false);
         // constructTree(Util.getText(new File("texts/small-text.txt")), true);
         //
@@ -68,7 +68,7 @@ public class TestWordSuffixTreeComplexity extends TestCase {
         // constructTree(Util.getText(new File("texts/faust-1-de.txt")), false);
         // constructTree(Util.getText(new File("texts/klsgh10.txt")), false);
         // constructTree(Util.getText(new File("texts/klsgh10.txt")), true);
-        constructTree(Util.getText(new File("texts/wrnpc11.txt")), false);
+//        constructTree(Util.getText(new File("texts/wrnpc11.txt")), false);
         // constructTree(Util.getText(new File("texts/wrnpc11.txt")), true);
 
     }
@@ -84,7 +84,7 @@ public class TestWordSuffixTreeComplexity extends TestCase {
         System.out.print(in.length + " Tokens, " + text.length() + " Chars, "
                 + (current - start) + " ms. ");
         start = System.currentTimeMillis();
-        tree.exportDot("output.dot");
+        tree.mapper.exportDot("output.dot");
         current = System.currentTimeMillis();
         System.out.print("Output: ");
         System.out.print((current - start) + " ms.\n");

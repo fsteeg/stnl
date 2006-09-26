@@ -27,7 +27,7 @@ public abstract class SuffixNode {
 
     protected int labelStart, labelEnd;
 
-    protected HashMap<Character, SuffixNode> children;
+    protected HashMap<Long, SuffixNode> children;
 
     protected int[] additionalLabels;
 
@@ -82,7 +82,7 @@ public abstract class SuffixNode {
     /**
      * @return Returns the children
      */
-    public HashMap<Character, SuffixNode> getChildren() {
+    public HashMap<Long, SuffixNode> getChildren() {
         return children;
     }
 

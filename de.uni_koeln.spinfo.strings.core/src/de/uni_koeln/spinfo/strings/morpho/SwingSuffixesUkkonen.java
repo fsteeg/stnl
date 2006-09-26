@@ -210,8 +210,10 @@ public class SwingSuffixesUkkonen extends JFrame{
 		String wort = new String();
 		for (int i = 0; i < woerter.length; i++) {
 			wort = woerter[i].toLowerCase();
-			ukkonenSuffixBaum.addSequence(wort, 0, false);
-			wortListe.add(wort);
+            // FIXME attention, temp!
+            throw new RuntimeException("curretly not implemented!");
+//			ukkonenSuffixBaum.addSequence(wort, 0, false);
+//			wortListe.add(wort);
 		}
 		
 		SuffixNode root = ukkonenSuffixBaum.getRoot();
