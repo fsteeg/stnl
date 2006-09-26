@@ -7,12 +7,13 @@
 
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package de.uni_koeln.spinfo.strings.algo.suffixtrees;
+package de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory;
 
 import java.util.HashMap;
 import java.util.Iterator;
 
 import de.uni_koeln.spinfo.strings.algo.lca.TreeNode;
+import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node;
 
 /**
  * Node Class for the suffix tree, implementing an Interface for {@link LCA}-queries
@@ -22,11 +23,11 @@ import de.uni_koeln.spinfo.strings.algo.lca.TreeNode;
  */
 public class SimpleNode extends SuffixNode implements TreeNode {
 
-    int dfs = 0;
+    private int dfs = 0;
 
-    int id = 0;
+    private int id = 0;
 
-    public int suffixIndex;
+    private int suffixIndex;
 
     /**
      * Creates a root
@@ -36,7 +37,7 @@ public class SimpleNode extends SuffixNode implements TreeNode {
         suffixLink = null;
         labelStart = 0;
         labelEnd = 0;
-        children = new HashMap<Long, SuffixNode>();
+        children = new HashMap<Long, Node>();
         additionalLabels = null;
         textNumber = 0;
         suffixIndex = 0;
@@ -84,28 +85,28 @@ public class SimpleNode extends SuffixNode implements TreeNode {
     }
 
     /**
-     * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.SuffixNode#isTerminal()
+     * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory.SuffixNode#isTerminal()
      */
     public boolean isTerminal() {
         return children == null;
     }
 
     /**
-     * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.SuffixNode#hasChild(java.lang.Character)
+     * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory.SuffixNode#hasChild(java.lang.Character)
      */
     public boolean hasChild(Character x) {
         return getChild(x) != null;
     }
 
     /**
-     * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.SuffixNode#getChild(java.lang.Character)
+     * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory.SuffixNode#getChild(java.lang.Character)
      */
-    public SuffixNode getChild(Character x) {
+    public Node getChild(Character x) {
         return (children == null) ? null : children.get(x);
     }
 
     /**
-     * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.SuffixNode#getParent()
+     * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory.SuffixNode#getParent()
      */
     public SuffixNode getParent() {
         return parent;
@@ -148,5 +149,23 @@ public class SimpleNode extends SuffixNode implements TreeNode {
     public int getDFSNum() {
         return this.dfs;
     }
+
+	public int getDfs() {
+		return dfs;
+	}
+	
+	public int getSuffixIndex() {
+		return suffixIndex;
+	}
+
+	public Node getSuffixLink() {
+		return this.suffixLink;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+		
+	}
+
 
 }

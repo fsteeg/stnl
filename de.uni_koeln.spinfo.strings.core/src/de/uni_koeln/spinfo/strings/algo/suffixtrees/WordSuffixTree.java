@@ -9,20 +9,18 @@
  */
 package de.uni_koeln.spinfo.strings.algo.suffixtrees;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import de.uni_koeln.spinfo.strings.algo.LCE;
+import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node;
+import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor;
+import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory.SimpleNodeAccessor;
 
 /**
  * Implementation based on the linear-time algorithm for constructing word-based
@@ -55,7 +53,7 @@ public class WordSuffixTree extends UkkonenSuffixTree {
     private boolean generalized;
 
     public Mapper mapper;
-
+    
     // private int last = 1;
 
     /**
@@ -70,8 +68,9 @@ public class WordSuffixTree extends UkkonenSuffixTree {
      *            Implementation, for generalized trees the construction runtime
      *            seems to grow quadratic)
      */
-    public WordSuffixTree(String text, boolean reverse, boolean generalized) {
-        this.reverse = reverse;
+    public WordSuffixTree(String text, boolean reverse, boolean generalized, NodeAccessor accessor) {
+        super(accessor);
+    	this.reverse = reverse;
         this.generalized = generalized;
         setText(text);
     }
@@ -100,7 +99,7 @@ public class WordSuffixTree extends UkkonenSuffixTree {
          */
         long counter = 0;
         Map<String, Long> trie = new HashMap<String, Long>();
-        mapper = new Mapper(this);
+        mapper = new Mapper(this, accessor);
         String[] sentences = text.split("[\\.!?;:]");
         Set<String> sentencesSet = new HashSet<String>();
         // if not generalized, we add the text as one
@@ -191,7 +190,7 @@ public class WordSuffixTree extends UkkonenSuffixTree {
      */
     public static void main(String[] args) {
         String text = "Hallo Welt Hallo Rest";
-        new WordSuffixTree(text, false, true);
+        new WordSuffixTree(text, false, true, new SimpleNodeAccessor());
         System.out.println("Done.");
     }
 
@@ -205,11 +204,11 @@ public class WordSuffixTree extends UkkonenSuffixTree {
      * @return The leaf representing the suffix starting at suffixIndex in
      *         textNo
      */
-    public SimpleNode getNodeForSuffix(int textNo, int suffixIndex) {
-        ArrayList<SuffixNode> leafs = this.getAllNodes(getRoot(), null, true);
+    public Node getNodeForSuffix(int textNo, int suffixIndex) {
+        ArrayList<Node> leafs = this.getAllNodes(getRoot(), null, true);
         for (int i = 0; i < leafs.size(); i++) {
-            SimpleNode node = (SimpleNode) leafs.get(i);
-            if (node.textNumber == textNo && node.suffixIndex == suffixIndex)
+            Node node = (Node) leafs.get(i);
+            if (node.getTextNumber() == textNo && node.getSuffixIndex() == suffixIndex)
                 return node;
         }
         return null;
@@ -222,11 +221,11 @@ public class WordSuffixTree extends UkkonenSuffixTree {
      *            The id of the node to get
      * @return The Node with id e
      */
-    public SimpleNode getNodeForId(int id) {
-        ArrayList<SuffixNode> leafs = this.getAllNodes(getRoot(), null, false);
+    public Node getNodeForId(int id) {
+        ArrayList<Node> leafs = this.getAllNodes(getRoot(), null, false);
         for (int i = 0; i < leafs.size(); i++) {
-            SimpleNode node = (SimpleNode) leafs.get(i);
-            if (node.dfs == id)
+            Node node = (Node) leafs.get(i);
+            if (node.getDfs() == id)
                 return node;
         }
         return null;

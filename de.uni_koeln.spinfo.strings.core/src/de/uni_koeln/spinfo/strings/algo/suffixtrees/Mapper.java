@@ -10,6 +10,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node;
+import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor;
+
 /**
  * Mapping of symbols in texts to symbols in the tree. Also provides the dot-output.
  * 
@@ -24,9 +27,12 @@ public class Mapper {
 
     private UkkonenSuffixTree tree;
 
-    public Mapper(UkkonenSuffixTree tree) {
+	private NodeAccessor accessor;
+
+    public Mapper(UkkonenSuffixTree tree, NodeAccessor accessor) {
         this.tree = tree;
         map = new HashMap<Long, String>();
+        this.accessor = accessor;
     }
 
     /**
@@ -64,11 +70,11 @@ public class Mapper {
 
     }
 
-    public CharSequence getTranslatedEdgeLabel(SuffixNode child) {
+    public CharSequence getTranslatedEdgeLabel(Node child) {
         return translate(map, tree.getEdgeLabel(child), true);
     }
 
-    public CharSequence getTranslatedLabel(SuffixNode node) {
+    public CharSequence getTranslatedLabel(Node node) {
         return translate(map, tree.getLabel(node), true);
     }
 
@@ -105,33 +111,34 @@ public class Mapper {
         }
     }
 
-    private ArrayList<SuffixNode> printDotBody(SuffixNode root,
-            ArrayList<SuffixNode> list, boolean leavesOnly,
+    private ArrayList<Node> printDotBody(Node root,
+            ArrayList<Node> list, boolean leavesOnly,
             BufferedWriter writer, int depth) throws IOException {
         tab(writer, depth);
-        root.id = count;
-        if (root.parent != null) {
-            writer.write(root.parent.id + "->");
+        accessor.setId(root,count);
+        //root.id = count;
+        if (accessor.getParent(root) != null) {
+            writer.write(accessor.getParent(root).getId() + "->");
             writer.write("" + count);
             writer.write("[label=\""
                     + getTranslatedEdgeLabel(root).toString().trim()
-                    + ",\\n Text: " + root.textNumber + ", Suffix: "
-                    + ((SimpleNode) root).suffixIndex + "\"];\n");
+                    + ",\\n Text: " + root.getTextNumber() + ", Suffix: "
+                    + ((Node) root).getSuffixIndex() + "\"];\n");
         }
         Iterator iterator;
         if (list == null) {
-            list = new ArrayList<SuffixNode>();
+            list = new ArrayList<Node>();
             count = 1;
         }
-        if (!leavesOnly || (leavesOnly && root.isTerminal()))
+        if (!leavesOnly || (leavesOnly && accessor.isTerminal(root)))
             list.add(root);
-        if (!root.isTerminal()) {
+        if (!accessor.isTerminal(root)) {
             iterator = root.getChildren().values().iterator();
             // writer.write("\n");
             depth = depth + 1;
             // last = count;
             while (iterator.hasNext()) {
-                SuffixNode next = (SuffixNode) iterator.next();
+                Node next = (Node) iterator.next();
                 count++;
                 list = printDotBody(next, list, leavesOnly, writer, depth);
             }

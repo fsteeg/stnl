@@ -11,8 +11,9 @@ package de.uni_koeln.spinfo.strings.algo;
 
 import de.uni_koeln.spinfo.strings.algo.lca.LCA;
 import de.uni_koeln.spinfo.strings.algo.lca.TreeNode;
-import de.uni_koeln.spinfo.strings.algo.suffixtrees.SuffixNode;
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.WordSuffixTree;
+import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory.SimpleNodeAccessor;
+import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory.SuffixNode;
 
 /**
  * This class contains a sketch of what to do to get the LCE through the
@@ -55,7 +56,7 @@ public class LCE {
 //        this.s1 = s1;
 //        this.s2 = s2;
         // build a generalized suffix tree for the two texts
-        tree = new WordSuffixTree(s1 + "." + s2, false, true);
+        tree = new WordSuffixTree(s1 + "." + s2, false, true, new SimpleNodeAccessor());
         tree.mapper.exportDot("export.dot");
         lca = new LCA((TreeNode) tree.getRoot());
     }

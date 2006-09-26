@@ -16,6 +16,7 @@ import de.uni_koeln.spinfo.strings.algo.Util;
 import de.uni_koeln.spinfo.strings.algo.lca.LCA;
 import de.uni_koeln.spinfo.strings.algo.lca.TreeNode;
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.WordSuffixTree;
+import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory.SimpleNodeAccessor;
 
 /**
  * Tests for {@link LCA}
@@ -41,7 +42,7 @@ public class TestLCA extends TestCase {
         long start;
         long current;
         start = System.currentTimeMillis();
-        WordSuffixTree tree = new WordSuffixTree(text, false, false);
+        WordSuffixTree tree = new WordSuffixTree(text, false, false, new SimpleNodeAccessor());
         current = System.currentTimeMillis();
         System.out.print("Tree took: " + (current - start) + " ms. ");
         start = System.currentTimeMillis();

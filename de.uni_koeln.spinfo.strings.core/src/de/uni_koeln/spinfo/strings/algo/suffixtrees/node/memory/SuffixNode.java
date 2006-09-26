@@ -7,9 +7,11 @@
 
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package de.uni_koeln.spinfo.strings.algo.suffixtrees;
+package de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory;
 
 import java.util.HashMap;
+
+import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node;
 
 /**
  * Abstract superclass for tree nodes
@@ -17,9 +19,7 @@ import java.util.HashMap;
  * @author Francois Pepin (original version from BioJava API)
  * @author Fabian Steeg (fsteeg)
  */
-public abstract class SuffixNode {
-
-    public static final int A_LEAF = -1;
+public abstract class SuffixNode implements Node{
 
     protected SuffixNode parent;
 
@@ -27,7 +27,7 @@ public abstract class SuffixNode {
 
     protected int labelStart, labelEnd;
 
-    protected HashMap<Long, SuffixNode> children;
+    protected HashMap<Long, Node> children;
 
     protected int[] additionalLabels;
 
@@ -68,7 +68,7 @@ public abstract class SuffixNode {
      * @return the appropriate child <code>SuffixNode</code>, or null if it
      *         doesn't exists.
      */
-    public abstract SuffixNode getChild(Character i);
+    public abstract Node getChild(Character i);
 
     // abstract void addChild(SuffixTree tree, int i, SuffixNode n);
 
@@ -82,8 +82,31 @@ public abstract class SuffixNode {
     /**
      * @return Returns the children
      */
-    public HashMap<Long, SuffixNode> getChildren() {
+    public HashMap<Long, Node> getChildren() {
         return children;
     }
+
+	public int getLabelStart() {
+		return labelStart;
+	}
+
+	public int getLabelEnd() {
+		return labelEnd;
+	}
+
+	public int[] getAdditionalLabels() {
+		return additionalLabels;
+	}
+
+
+	public int getId() {
+		return id;
+	}
+
+
+	public int getTextNumber() {
+		return textNumber;
+	}
+	
 
 }

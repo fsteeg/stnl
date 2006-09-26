@@ -9,8 +9,11 @@
  */
 package de.uni_koeln.spinfo.strings.algo.tests;
 
+import java.util.ArrayList;
+
 import junit.framework.TestCase;
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.UkkonenSuffixTree;
+import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory.SimpleNodeAccessor;
 
 /**
  * Test for {@link UkkonenSuffixTree}
@@ -23,9 +26,24 @@ public class TestUkkonenSuffixTree extends TestCase {
      * Test method for 'de.uni_koeln.spinfo.strings.plugin.algo.suffixtrees.UkkonenSuffixTree.printTree(int)'
      */
     public void testPrintTree() {
-        UkkonenSuffixTree tree = new UkkonenSuffixTree();
-//        tree.addSequence("abcabd", 1, false);
-//        tree.addSequence("abcabd", 2, false);
+        UkkonenSuffixTree tree = new UkkonenSuffixTree(new SimpleNodeAccessor());
+        ArrayList<Long> l1 = new ArrayList<Long>();
+        l1.add(1l);
+        l1.add(2l);
+        l1.add(3l);
+        l1.add(1l);
+        l1.add(2l);
+        l1.add(4l);
+        ArrayList<Long> l2 = new ArrayList<Long>();
+        l2.add(1l);
+        l2.add(2l);
+        l2.add(3l);
+        l2.add(1l);
+        l2.add(2l);
+        l2.add(4l);
+        tree.addSequence(l1, 1, false);
+        tree.addSequence(l2, 2, false);
+        tree.printTree();
     }
 
 }

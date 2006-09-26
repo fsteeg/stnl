@@ -57,15 +57,16 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 
-import de.uni_koeln.spinfo.strings.algo.suffixtrees.SuffixNode;
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.UkkonenSuffixTree;
+import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory.SimpleNodeAccessor;
+import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory.SuffixNode;
 //TODO translate comments, variable names, gui
 public class SwingSuffixesUkkonen extends JFrame{
 	
 	// aktuelles Fenster
 	public static SwingSuffixesUkkonen meinFenster;
 	
-	public UkkonenSuffixTree ukkonenSuffixBaum = new UkkonenSuffixTree();
+	public UkkonenSuffixTree ukkonenSuffixBaum = new UkkonenSuffixTree(new SimpleNodeAccessor());
 	StringBuffer baumString = new StringBuffer();
 	String dateiEin = new String();
 	String pfadDateiEin = new String();
