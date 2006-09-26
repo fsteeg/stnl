@@ -37,8 +37,8 @@ public class TestWordSuffixTreeComplexity extends TestCase {
      */
     public void testConstructionRuntime() {
         constructTree("Ich esse. Ich trinke", false);
-        // constructTree(Util.getText(new File("texts/small-text.txt")), false);
-        // constructTree(Util.getText(new File("texts/small-text.txt")), true);
+         constructTree(Util.getText(new File("texts/small-text.txt")), false);
+         constructTree(Util.getText(new File("texts/small-text.txt")), true);
         //
         // constructTree(Util.getText(new File("texts/text1.txt")), false);
         // constructTree(Util.getText(new File("texts/text1.txt")), true);
