@@ -10,7 +10,7 @@ package de.uni_koeln.spinfo.strings.morpho;
 import java.io.Serializable;
 import java.util.HashMap;
 //TODO translate comments, variable names, gui
-public class Node implements Serializable{
+public class MorphoNode implements Serializable{
 	/**
      * 
      */
@@ -22,12 +22,12 @@ public class Node implements Serializable{
 	public int posInListe;
 	
 //	 Konstruktor für root-Knoten
-	public Node(){
+	public MorphoNode(){
 		mutter = -1;
 		posInListe = 0;
 	}
 	
-	public Node(String knotenInhalt, Node mutterKnoten, int indexMutter, int pos){
+	public MorphoNode(String knotenInhalt, MorphoNode mutterKnoten, int indexMutter, int pos){
 		inhalt = knotenInhalt;
 		mutter = indexMutter;
 		tiefeImBaum = mutterKnoten.tiefeImBaum + 1;

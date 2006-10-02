@@ -58,6 +58,8 @@ import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.UkkonenSuffixTree;
+import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node;
+import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory.SimpleNode;
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory.SimpleNodeAccessor;
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory.SuffixNode;
 //TODO translate comments, variable names, gui
@@ -204,7 +206,7 @@ public class SwingSuffixesUkkonen extends JFrame{
 	public void erzeugeTree(){
 		baumString = new StringBuffer();
 		// Speicherobejekte erneuern
-		ukkonenSuffixBaum = new UkkonenSuffixTree();
+		ukkonenSuffixBaum = new UkkonenSuffixTree(new SimpleNodeAccessor());
 		dateinamenAnzeigen = dateiEin;
 		
 		String[] woerter = text.split("[^a-zA-Z_áÁéÉíÍóÓúÚñÄaÖöÜüß]+");
@@ -217,12 +219,12 @@ public class SwingSuffixesUkkonen extends JFrame{
 //			wortListe.add(wort);
 		}
 		
-		SuffixNode root = ukkonenSuffixBaum.getRoot();
+		Node root = ukkonenSuffixBaum.getRoot();
 		Integer tiefe = 0;
 		kinder(root, tiefe);
 	}
 	
-	void kinder(SuffixNode mutter,Integer t){
+	void kinder(Node mutter,Integer t){
 		Integer baumTiefe = t;
 		String tabs =  new String();
 		if(t==0){
@@ -239,7 +241,7 @@ public class SwingSuffixesUkkonen extends JFrame{
 		baumString.append(ukkonenSuffixBaum.getEdgeLabel(mutter));
 		baumString.append("\n");
 		// nur wenn der aktuelle Knoten kein Blatt ist, wird weiter nach Kindern gesucht:
-		if(!mutter.isTerminal()){
+		if(mutter.getChildren().size()!=0){
 			Collection kinder = mutter.getChildren().values();
 			for(Iterator it = kinder.iterator(); it.hasNext(); ){
 				SuffixNode kind = (SuffixNode)it.next();
@@ -420,16 +422,16 @@ public class SwingSuffixesUkkonen extends JFrame{
 					/*********************************************************************/
 					// Alle Suffixe, die zu einem kompletten Wort gehoeren, werden in
 					// suffixListe gespeichert, um danach gezaehlt zu werden:
-					ArrayList<SuffixNode> liste = new ArrayList<SuffixNode>();
+					ArrayList<Node> liste = new ArrayList<Node>();
 					ukkonenSuffixBaum.getAllNodes(ukkonenSuffixBaum.getRoot(), liste, false);
-					for (SuffixNode node : liste) {
-						if(node.isTerminal()){
+					for (Node node : liste) {
+						if(node.getChildren().size()==0){
 							String string2 = ukkonenSuffixBaum.getEdgeLabel(node).toString();
 							String suffix = string2;
 							suffix = suffix.replaceAll("\\$","");
-							while(!ukkonenSuffixBaum.getRoot().equals(node.getParent())){
-								string2 = ukkonenSuffixBaum.getEdgeLabel(node.getParent()).toString() + string2;
-								node = node.getParent();
+							while(!ukkonenSuffixBaum.getRoot().equals(((SimpleNode)node).getParent())){
+								string2 = ukkonenSuffixBaum.getEdgeLabel(((SimpleNode)node).getParent()).toString() + string2;
+								node = ((SimpleNode)node).getParent();
 							}
 							string2 = string2.replaceAll("\\$","");
 							// Testen, ob der erzeugte String ein Wort des Textes ist:
@@ -544,17 +546,17 @@ public class SwingSuffixesUkkonen extends JFrame{
 					meinFenster.setCursor(cur);
 					// Erzeugung der Praefixmengen: Baum durchsuchen
 					// Alle Blaetter pruefen und von da aus die Praefixe suchen:
-					ArrayList<SuffixNode> liste = new ArrayList<SuffixNode>();
+					ArrayList<Node> liste = new ArrayList<Node>();
 					ukkonenSuffixBaum.getAllNodes(ukkonenSuffixBaum.getRoot(), liste, true);
-					for (SuffixNode node : liste) {
+					for (Node node : liste) {
 						// label ist zunaechst der Inhalt des Blatts
 						String label = ukkonenSuffixBaum.getEdgeLabel(node).toString();
 						String suffix = label;
 						String praefix = "";
 						suffix = suffix.replaceAll("\\$","");
-						while(!ukkonenSuffixBaum.getRoot().equals(node.getParent())){
-							praefix = ukkonenSuffixBaum.getEdgeLabel(node.getParent()).toString() + praefix;
-							node = node.getParent();
+						while(!ukkonenSuffixBaum.getRoot().equals(((SimpleNode)node).getParent())){
+							praefix = ukkonenSuffixBaum.getEdgeLabel(((SimpleNode)node).getParent()).toString() + praefix;
+							node = ((SimpleNode)node).getParent();
 						}
 						// Testen, ob der erzeugte String ein Wort des Textes ist. Wenn ja, den Praefix
 						// zu den Praefixmengen hinzufuegen.
@@ -724,7 +726,7 @@ public class SwingSuffixesUkkonen extends JFrame{
 	// Diese Methode speichert die Menge der moeglichen Suffixe eines Strings in 'temp'
 	// und wird mit Index 0 aufgerufen
 	// (diese Suffixe muessen aber gleichzeitig auch in der Menge der haeufigsten Suffixe sein)	
-	void sucheEndungenImBaum(String praefix, SuffixNode mutter, String Prae){
+	void sucheEndungenImBaum(String praefix, Node mutter, String Prae){
 		Collection kinder = mutter.getChildren().values();
 		for(Iterator it = kinder.iterator(); it.hasNext(); ){
 			SuffixNode kind = (SuffixNode)it.next();

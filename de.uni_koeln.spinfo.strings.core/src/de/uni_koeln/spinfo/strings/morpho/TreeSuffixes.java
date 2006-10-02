@@ -26,7 +26,7 @@ public class TreeSuffixes implements Serializable{
     private static final long serialVersionUID = -735338108402850021L;
     public String suffixBaumString = new String();
 	public String[] wortliste;
-	public LinkedList<Node> knotenListe;
+	public LinkedList<MorphoNode> knotenListe;
 	public int pos;
 	
 	// alle Suffixe, die im Baum vorkommen
@@ -44,11 +44,11 @@ public class TreeSuffixes implements Serializable{
 	
 	//Konstruktor	
 	public TreeSuffixes(){
-		knotenListe = new LinkedList<Node>();
+		knotenListe = new LinkedList<MorphoNode>();
 		suffixListe = new LinkedList<String>();
 		// Liste mit root-Knoten initialisieren
 		pos = 1;
-		Node root = new Node();
+		MorphoNode root = new MorphoNode();
 		knotenListe.add(root);
 	}
 		
@@ -66,9 +66,9 @@ public class TreeSuffixes implements Serializable{
 	}
 		
 	private void suffixEinfuegen(String suffix, int indexMutter){
-		Node mutterKnoten = this.knotenListe.get(indexMutter);
+		MorphoNode mutterKnoten = this.knotenListe.get(indexMutter);
 		if(mutterKnoten.kinder.containsKey(suffix.charAt(0))){
-        	Node aktuellerKnoten = knotenListe.get( mutterKnoten.kinder.get( suffix.charAt(0) ) );
+        	MorphoNode aktuellerKnoten = knotenListe.get( mutterKnoten.kinder.get( suffix.charAt(0) ) );
     		String inhalt = aktuellerKnoten.inhalt;
 			// FALL 1: der Knoteninhalt ist ein Praefix des Suffix
     		if( suffix.startsWith(inhalt) ){
@@ -91,15 +91,15 @@ public class TreeSuffixes implements Serializable{
 					// Sobald prae nicht mehr Praefix von suffix ist, wird der vorherige Praefix verwendet.
 					if(!suffix.startsWith(prae)){
 						prae = prae.substring(0,prae.length()-1);
-						Node praefixKnoten = new Node(prae, mutterKnoten, knotenListe.indexOf(mutterKnoten), indexInKnotenListe);
+						MorphoNode praefixKnoten = new MorphoNode(prae, mutterKnoten, knotenListe.indexOf(mutterKnoten), indexInKnotenListe);
 						String altesSuffix = aktuellerKnoten.inhalt.substring(k-1);
-						Node altesSfx = new Node(altesSuffix, praefixKnoten, indexInKnotenListe, pos);
+						MorphoNode altesSfx = new MorphoNode(altesSuffix, praefixKnoten, indexInKnotenListe, pos);
 						// Wenn der alte Knoten ein Blatt war, koennen einige Schritte uebersprungen werden:
 						if(inhalt.endsWith("$")){
 							knotenListe.add(altesSfx);
 							pos++;
 							String neuesSuffix = suffix.substring( prae.length() );
-							Node neuesSfx = new Node(neuesSuffix, praefixKnoten, indexInKnotenListe, pos);
+							MorphoNode neuesSfx = new MorphoNode(neuesSuffix, praefixKnoten, indexInKnotenListe, pos);
 							knotenListe.add(neuesSfx);
 							pos++;
 							knotenListe.set(indexInKnotenListe, praefixKnoten);
@@ -118,7 +118,7 @@ public class TreeSuffixes implements Serializable{
 							knotenListe.get(altesSfx.posInListe).kinder = aktuellerKnoten.kinder;
 																					
 							String neuesSuffix = suffix.substring( prae.length() );
-							Node neuesSfx = new Node(neuesSuffix, praefixKnoten, indexInKnotenListe, pos);
+							MorphoNode neuesSfx = new MorphoNode(neuesSuffix, praefixKnoten, indexInKnotenListe, pos);
 							knotenListe.add(neuesSfx);
 							pos++;
 							knotenListe.set(indexInKnotenListe, praefixKnoten);
@@ -129,7 +129,7 @@ public class TreeSuffixes implements Serializable{
 			}
 		}
 		else{
-			Node neu = new Node(suffix, mutterKnoten, knotenListe.indexOf(mutterKnoten), pos);			
+			MorphoNode neu = new MorphoNode(suffix, mutterKnoten, knotenListe.indexOf(mutterKnoten), pos);			
 			this.knotenListe.add(neu);
 			this.pos++;
 		}
@@ -179,7 +179,7 @@ public class TreeSuffixes implements Serializable{
 		tiefe++;
 		Set keys = knotenListe.get(wurzelIndex).kinder.keySet();
 		for ( Iterator i = keys.iterator(); i.hasNext(); ){
-			Node kind = knotenListe.get( knotenListe.get(wurzelIndex).kinder.get( (Character)i.next() ));
+			MorphoNode kind = knotenListe.get( knotenListe.get(wurzelIndex).kinder.get( (Character)i.next() ));
 			textSpeicher.append( gibTabs(tiefe) + kind.inhalt.toString() + "\n");
 			// im Array 'suffixListe' werden alle Blaetter des Baums eingetragen
 			// In der Variable 'praefixMengen' wird zu jedem Suffix die Menge der Praefixe gespeichert
@@ -187,7 +187,7 @@ public class TreeSuffixes implements Serializable{
 			if(kind.inhalt.endsWith("$")){
 				// '$' am Ende des Strings entfernen und  Strings, die nur aus '$' bestehen, aussortieren
 				if(kind.inhalt.length() > 1){				
-					Node mutter = new Node();
+					MorphoNode mutter = new MorphoNode();
 					mutter = knotenListe.get(kind.mutter);
 					String suffix = kind.inhalt.substring(0,kind.inhalt.length()-1);
 					suffixListe.add(suffix);

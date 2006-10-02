@@ -665,18 +665,18 @@ public class SwingPreSuf extends JFrame{
 	// (diese Praefixe muessen aber gleichzeitig auch in der Menge der haeufigsten Praefixe sein)
 	
 	public void sucheAnfaengeImBaum(String suffix,int index){
-		Node aktuellerKnoten = meinSuffixBaum1.knotenListe.get(index);
+		MorphoNode aktuellerKnoten = meinSuffixBaum1.knotenListe.get(index);
 		Set keys = aktuellerKnoten.kinder.keySet();
 		for(Iterator it = keys.iterator(); it.hasNext(); ){
 			Integer kindIndex = aktuellerKnoten.kinder.get( (Character)it.next() );
-			Node kind = meinSuffixBaum1.knotenListe.get( kindIndex );
+			MorphoNode kind = meinSuffixBaum1.knotenListe.get( kindIndex );
 			if(suffix.startsWith(kind.inhalt)){
 				String restSuffix = suffix.substring( kind.inhalt.length() );
 				if( restSuffix.equals("")){
 					Set keys2 = kind.kinder.keySet();
 					for(Iterator iter = keys2.iterator(); iter.hasNext(); ){
 						Integer kindesKindIndex = kind.kinder.get( (Character)iter.next() );
-						Node kindesKind = meinSuffixBaum1.knotenListe.get( kindesKindIndex );
+						MorphoNode kindesKind = meinSuffixBaum1.knotenListe.get( kindesKindIndex );
 						if(kindesKind.inhalt.endsWith("$")){
 							String praefixOhneDollar = kindesKind.inhalt.replaceAll("\\$","");
 							// Inhalt von praefixOhneDollar muss vor dem Speichern in temp umgedreht werden:
@@ -702,11 +702,11 @@ public class SwingPreSuf extends JFrame{
 	
 	public void sucheBlaetterImBaum1(Integer index, String blatt){
 		String leaf = blatt;
-		Node aktuellerKnoten = meinSuffixBaum1.knotenListe.get(index);
+		MorphoNode aktuellerKnoten = meinSuffixBaum1.knotenListe.get(index);
 		Set keys = aktuellerKnoten.kinder.keySet();
 		for(Iterator it = keys.iterator(); it.hasNext(); ){
 			Integer kindIndex = aktuellerKnoten.kinder.get( (Character)it.next() );
-			Node kind = meinSuffixBaum1.knotenListe.get( kindIndex );
+			MorphoNode kind = meinSuffixBaum1.knotenListe.get( kindIndex );
 			if(kind.inhalt.endsWith("$")){
 				leaf += kind.inhalt;
 				leaf = leaf.replaceAll("\\$","");
@@ -731,10 +731,10 @@ public class SwingPreSuf extends JFrame{
 	// (diese Suffixe muessen aber gleichzeitig auch in der Menge der haeufigsten Suffixe sein)
 	
 	void sucheEndungenImBaum(String praefix, Integer m){
-		Node mutter = meinSuffixBaum2.knotenListe.get(m);		
+		MorphoNode mutter = meinSuffixBaum2.knotenListe.get(m);		
 		Set keys = mutter.kinder.keySet();
 		for(Iterator it = keys.iterator(); it.hasNext(); ){
-			Node kind = meinSuffixBaum2.knotenListe.get( mutter.kinder.get( (Character)it.next() ) );
+			MorphoNode kind = meinSuffixBaum2.knotenListe.get( mutter.kinder.get( (Character)it.next() ) );
 			String label = kind.inhalt;
 			if(label.endsWith("$")){
 				label = label.replaceAll("\\$","");
@@ -758,10 +758,10 @@ public class SwingPreSuf extends JFrame{
 	}
 	
 	void kinderSpeichern(Integer m, String e){
-		Node mutter = meinSuffixBaum2.knotenListe.get(m);
+		MorphoNode mutter = meinSuffixBaum2.knotenListe.get(m);
 		Set keys = mutter.kinder.keySet();
 		for(Iterator it = keys.iterator(); it.hasNext(); ){
-			Node kind = meinSuffixBaum2.knotenListe.get( mutter.kinder.get( (Character)it.next() ) );
+			MorphoNode kind = meinSuffixBaum2.knotenListe.get( mutter.kinder.get( (Character)it.next() ) );
 			String label = kind.inhalt;
 			if(label.endsWith("$")){
 				String endung = e;

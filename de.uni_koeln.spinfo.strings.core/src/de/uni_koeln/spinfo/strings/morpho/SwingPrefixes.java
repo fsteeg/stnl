@@ -653,18 +653,18 @@ public class SwingPrefixes extends JFrame{
 	// (diese Praefixe muessen aber gleichzeitig auch in der Menge der haeufigsten Praefixe sein)
 	
 	public void sucheAnfaengeImBaum(String suffix,int index){
-		Node aktuellerKnoten = meinSuffixBaum.knotenListe.get(index);
+		MorphoNode aktuellerKnoten = meinSuffixBaum.knotenListe.get(index);
 		Set keys = aktuellerKnoten.kinder.keySet();
 		for(Iterator it = keys.iterator(); it.hasNext(); ){
 			Integer kindIndex = aktuellerKnoten.kinder.get( (Character)it.next() );
-			Node kind = meinSuffixBaum.knotenListe.get( kindIndex );
+			MorphoNode kind = meinSuffixBaum.knotenListe.get( kindIndex );
 			if(suffix.startsWith(kind.inhalt)){
 				String restSuffix = suffix.substring( kind.inhalt.length() );
 				if( restSuffix.equals("")){
 					Set keys2 = kind.kinder.keySet();
 					for(Iterator iter = keys2.iterator(); iter.hasNext(); ){
 						Integer kindesKindIndex = kind.kinder.get( (Character)iter.next() );
-						Node kindesKind = meinSuffixBaum.knotenListe.get( kindesKindIndex );
+						MorphoNode kindesKind = meinSuffixBaum.knotenListe.get( kindesKindIndex );
 						if(kindesKind.inhalt.endsWith("$")){
 							String praefixOhneDollar = kindesKind.inhalt.replaceAll("\\$","");
 							// Inhalt von praefixOhneDollar muss vor dem Speichern in temp umgedreht werden:
@@ -690,11 +690,11 @@ public class SwingPrefixes extends JFrame{
 	
 	public void sucheBlaetterImBaum(Integer index, String blatt){
 		String leaf = blatt;
-		Node aktuellerKnoten = meinSuffixBaum.knotenListe.get(index);
+		MorphoNode aktuellerKnoten = meinSuffixBaum.knotenListe.get(index);
 		Set keys = aktuellerKnoten.kinder.keySet();
 		for(Iterator it = keys.iterator(); it.hasNext(); ){
 			Integer kindIndex = aktuellerKnoten.kinder.get( (Character)it.next() );
-			Node kind = meinSuffixBaum.knotenListe.get( kindIndex );
+			MorphoNode kind = meinSuffixBaum.knotenListe.get( kindIndex );
 			if(kind.inhalt.endsWith("$")){
 				leaf += kind.inhalt;
 				leaf = leaf.replaceAll("\\$","");

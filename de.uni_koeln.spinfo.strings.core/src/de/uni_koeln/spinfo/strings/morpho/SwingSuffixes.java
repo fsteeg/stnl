@@ -629,10 +629,10 @@ public class SwingSuffixes extends JFrame{
 	// (diese Suffixe muessen aber gleichzeitig auch in der Menge der haeufigsten Suffixe sein)
 	
 	void sucheEndungenImBaum(String praefix, Integer m){
-		Node mutter = meinSuffixBaum.knotenListe.get(m);	
+		MorphoNode mutter = meinSuffixBaum.knotenListe.get(m);	
 		Set keys = mutter.kinder.keySet();
 		for(Iterator it = keys.iterator(); it.hasNext(); ){
-			Node kind = meinSuffixBaum.knotenListe.get( mutter.kinder.get( (Character)it.next() ) );
+			MorphoNode kind = meinSuffixBaum.knotenListe.get( mutter.kinder.get( (Character)it.next() ) );
 			String label = kind.inhalt;
 			if(label.endsWith("$")){
 				label = label.replaceAll("\\$","");
@@ -656,10 +656,10 @@ public class SwingSuffixes extends JFrame{
 	}
 	
 	void kinderSpeichern(Integer m, String e){
-		Node mutter = meinSuffixBaum.knotenListe.get(m);
+		MorphoNode mutter = meinSuffixBaum.knotenListe.get(m);
 		Set keys = mutter.kinder.keySet();
 		for(Iterator it = keys.iterator(); it.hasNext(); ){
-			Node kind = meinSuffixBaum.knotenListe.get( mutter.kinder.get( (Character)it.next() ) );
+			MorphoNode kind = meinSuffixBaum.knotenListe.get( mutter.kinder.get( (Character)it.next() ) );
 			String label = kind.inhalt;
 			if(label.endsWith("$")){
 				String endung = e;
