@@ -15,7 +15,6 @@ import junit.framework.TestCase;
 import de.uni_koeln.spinfo.strings.algo.Util;
 import de.uni_koeln.spinfo.strings.algo.lca.LCA;
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.WordSuffixTree;
-import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory.SimpleNodeAccessor;
 
 /**
  * Some runtime complexity tests, to verify linear growing runtime of tree
@@ -37,9 +36,10 @@ public class TestWordSuffixTreeComplexity extends TestCase {
      * Test for {@link WordSuffixTree}
      */
     public void testConstructionRuntime() {
-        constructTree("Ich esse. Ich trinke. Und Ich schlafe.", false);
-        // constructTree(Util.getText(new File("texts/small-text.txt")), false);
-       //  constructTree(Util.getText(new File("texts/small-text.txt")), true);
+        constructTree("Ich esse Fisch. Ich esse Fleisch. Ich trinke. Ich schlafe.", false);
+//        constructTree("Ich esse. Ich trinke", false);
+//         constructTree(Util.getText(new File("texts/small-text.txt")), false);
+//         constructTree(Util.getText(new File("texts/small-text.txt")), true);
         //
         // constructTree(Util.getText(new File("texts/text1.txt")), false);
         // constructTree(Util.getText(new File("texts/text1.txt")), true);
@@ -80,7 +80,7 @@ public class TestWordSuffixTreeComplexity extends TestCase {
         long current;
         String[] in = text.split("[^a-zA-Z0-9\\$]");
         start = System.currentTimeMillis();
-        WordSuffixTree tree = new WordSuffixTree(text, reverse, true, new SimpleNodeAccessor());
+        WordSuffixTree tree = new WordSuffixTree(text, reverse, true);
         current = System.currentTimeMillis();
         System.out.print(in.length + " Tokens, " + text.length() + " Chars, "
                 + (current - start) + " ms. ");
