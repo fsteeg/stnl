@@ -5,6 +5,8 @@ import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor;
 
 public class SimpleNodeAccessor implements NodeAccessor {
 
+	private int idCounter = 1;
+	
 	/* (non-Javadoc)
 	 * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor#getParent(de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node)
 	 */
@@ -58,12 +60,32 @@ public class SimpleNodeAccessor implements NodeAccessor {
 	}
 
 	/* (non-Javadoc)
+	 * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor#createNode()
+	 */
+	public Node createNode() {
+		SimpleNode toReturn = new SimpleNode();
+		toReturn.setId(idCounter++);
+		return toReturn;
+	}
+	
+	/* (non-Javadoc)
 	 * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor#createNode(de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node, int, int, int, int)
 	 */
 	public Node createNode(Node parent, int suffixStart, int splittingPos, int number, int suffixIndex) {
-		return new SimpleNode((SimpleNode)parent,suffixStart,splittingPos,number,suffixIndex);
+		SimpleNode toReturn = new SimpleNode((SimpleNode)parent,suffixStart,splittingPos,number,suffixIndex);
+		toReturn.setId(idCounter++);
+		return toReturn;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor#createNode(de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node, int, int, int)
+	 */
+	public Node createNode(Node parent, int suffixStart, int number, int suffixIndex) {
+		SimpleNode toReturn = new SimpleNode((SimpleNode)parent,suffixStart,number,suffixIndex);
+		toReturn.setId(idCounter++);
+		return toReturn;
+	}
+	
 	/* (non-Javadoc)
 	 * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor#addChild(de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node, java.lang.Long, de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node)
 	 */
@@ -73,25 +95,13 @@ public class SimpleNodeAccessor implements NodeAccessor {
 	}
 
 	/* (non-Javadoc)
-	 * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor#createNode(de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node, int, int, int)
-	 */
-	public Node createNode(Node parent, int suffixStart, int number, int suffixIndex) {
-		return new SimpleNode((SimpleNode)parent,suffixStart,number,suffixIndex);
-	}
-
-	/* (non-Javadoc)
 	 * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor#setId(de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node, int)
 	 */
 	public void setId(Node root, int count) {
 		((SimpleNode)root).setId(count);
 	}
 
-	/* (non-Javadoc)
-	 * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor#createNode()
-	 */
-	public Node createNode() {
-		return new SimpleNode();
-	}
+
 	
 }
 

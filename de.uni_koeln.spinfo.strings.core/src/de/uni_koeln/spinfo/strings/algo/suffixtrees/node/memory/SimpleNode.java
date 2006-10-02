@@ -25,7 +25,6 @@ public class SimpleNode extends SuffixNode implements TreeNode {
 
     private int dfs = 0;
 
-    private int id = 0;
 
     private int suffixIndex;
 
@@ -60,7 +59,6 @@ public class SimpleNode extends SuffixNode implements TreeNode {
         children = null;
         this.textNumber = textNumber;
         this.suffixIndex = suffixIndex;
-        // checkParent(this);
     }
 
     /**
@@ -79,8 +77,10 @@ public class SimpleNode extends SuffixNode implements TreeNode {
         this.parent = parent;
         this.labelStart = labelStart;
         this.labelEnd = labelStop;
+        
         this.textNumber = 0;
         this.suffixIndex = 0;
+       // System.out.println("Node created: " + id + ", " + );
         // checkParent(this);
     }
 
@@ -139,7 +139,7 @@ public class SimpleNode extends SuffixNode implements TreeNode {
      */
     public void acceptDFSNum(int x) {
         this.dfs = x;
-        this.id = dfs;
+        setId(dfs);
 
     }
 
@@ -162,10 +162,7 @@ public class SimpleNode extends SuffixNode implements TreeNode {
 		return this.suffixLink;
 	}
 
-	public void setId(int id) {
-		this.id = id;
-		
-	}
+
 
 
 }

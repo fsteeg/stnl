@@ -115,7 +115,7 @@ public class Mapper {
             ArrayList<Node> list, boolean leavesOnly,
             BufferedWriter writer, int depth) throws IOException {
         tab(writer, depth);
-        accessor.setId(root,count);
+      //  accessor.setId(root,count);
         //root.id = count;
         if (accessor.getParent(root) != null) {
             writer.write(accessor.getParent(root).getId() + "->");
