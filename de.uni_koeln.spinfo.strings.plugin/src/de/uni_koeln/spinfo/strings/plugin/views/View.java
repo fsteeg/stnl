@@ -596,7 +596,7 @@ public class View extends ViewPart {
                                                                     .subTask(Messages
                                                                             .getString("View.CAPTION_WRITING")); //$NON-NLS-1$
                                                             tree
-                                                                    .exportDot(string);
+                                                                    .mapper.exportDot(string);
                                                             pm.worked(25);
                                                             // pm.subTask("Oeffne
                                                             // Dot-Text...");
