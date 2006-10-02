@@ -9,12 +9,10 @@
  */
 package de.uni_koeln.spinfo.strings.algo.tests;
 
-import java.io.File;
-
 import junit.framework.TestCase;
-import de.uni_koeln.spinfo.strings.algo.Util;
 import de.uni_koeln.spinfo.strings.algo.lca.LCA;
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.WordSuffixTree;
+import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory.SimpleNodeAccessor;
 
 /**
  * Some runtime complexity tests, to verify linear growing runtime of tree
@@ -75,12 +73,11 @@ public class TestWordSuffixTreeComplexity extends TestCase {
     }
 
     private void constructTree(String text, boolean reverse) {
-
         long start;
         long current;
         String[] in = text.split("[^a-zA-Z0-9\\$]");
         start = System.currentTimeMillis();
-        WordSuffixTree tree = new WordSuffixTree(text, reverse, true);
+        WordSuffixTree tree = new WordSuffixTree(text, reverse, true, new SimpleNodeAccessor());
         current = System.currentTimeMillis();
         System.out.print(in.length + " Tokens, " + text.length() + " Chars, "
                 + (current - start) + " ms. ");
