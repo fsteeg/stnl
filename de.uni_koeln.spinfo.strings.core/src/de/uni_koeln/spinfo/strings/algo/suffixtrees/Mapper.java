@@ -23,7 +23,7 @@ public class Mapper {
     private Map<Long, String> map;
 
     // these are for dot output
-    private int count = 1;
+   //  private int count = 1;
 
     private UkkonenSuffixTree tree;
 
@@ -56,8 +56,9 @@ public class Mapper {
             StringBuilder builder = new StringBuilder();
             for (int j = 0; j < label.size(); j++) {
                 String string = map.get(label.get(j));
-                if (string == null)
+                if (string == null) {
                     string = "$";
+                } 
                 builder.append(string + " ");
             }
             res = builder.toString().trim();
@@ -119,7 +120,7 @@ public class Mapper {
         //root.id = count;
         if (accessor.getParent(root) != null) {
             writer.write(accessor.getParent(root).getId() + "->");
-            writer.write("" + count);
+            writer.write("" + root.getId());
             writer.write("[label=\""
                     + getTranslatedEdgeLabel(root).toString().trim()
                     + ",\\n Text: " + root.getTextNumber() + ", Suffix: "
@@ -128,7 +129,7 @@ public class Mapper {
         Iterator iterator;
         if (list == null) {
             list = new ArrayList<Node>();
-            count = 1;
+            //count = 1;
         }
         if (!leavesOnly || (leavesOnly && accessor.isTerminal(root)))
             list.add(root);
@@ -139,7 +140,7 @@ public class Mapper {
             // last = count;
             while (iterator.hasNext()) {
                 Node next = (Node) iterator.next();
-                count++;
+                //count++;
                 list = printDotBody(next, list, leavesOnly, writer, depth);
             }
         }
