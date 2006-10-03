@@ -9,7 +9,10 @@
  */
 package de.uni_koeln.spinfo.strings.algo.tests;
 
+import java.io.File;
+
 import junit.framework.TestCase;
+import de.uni_koeln.spinfo.strings.algo.Util;
 import de.uni_koeln.spinfo.strings.algo.lca.LCA;
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.WordSuffixTree;
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory.SimpleNodeAccessor;
@@ -62,14 +65,13 @@ public class TestWordSuffixTreeComplexity extends TestCase {
         //
         // constructTree(Util.getText(new File("texts/text8.txt")), false);
         // constructTree(Util.getText(new File("texts/text8.txt")), true);
-
+    	
         // these take longer:
-        // constructTree(Util.getText(new File("texts/faust-1-de.txt")), false);
+   //      constructTree(Util.getText(new File("texts/faust-1-de.txt")), false);
         // constructTree(Util.getText(new File("texts/klsgh10.txt")), false);
         // constructTree(Util.getText(new File("texts/klsgh10.txt")), true);
 //        constructTree(Util.getText(new File("texts/wrnpc11.txt")), false);
         // constructTree(Util.getText(new File("texts/wrnpc11.txt")), true);
-
     }
 
     private void constructTree(String text, boolean reverse) {

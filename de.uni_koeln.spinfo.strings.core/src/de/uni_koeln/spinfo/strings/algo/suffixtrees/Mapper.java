@@ -104,7 +104,7 @@ public class Mapper {
                     .write("/* this is a generated dot file: www.graphviz.org */\n"
                             + "digraph suffixtree {\n"
                             + "\trankdir=LR\nnode[shape=box]");
-            printDotBody(tree.root, null, false, fileWriter, 0);
+            printDotBody(tree.getRoot(), null, false, fileWriter, 0);
             fileWriter.write("}");
             fileWriter.close();
         } catch (IOException e) {

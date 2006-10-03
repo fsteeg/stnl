@@ -1,6 +1,6 @@
 package de.uni_koeln.spinfo.strings.algo.suffixtrees.node;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public interface Node {
 
@@ -16,7 +16,7 @@ public interface Node {
 
 	int[] getAdditionalLabels();
 
-	HashMap<Long, Node> getChildren();
+	Map<Long, Node> getChildren();
 
 	int getSuffixIndex();
 

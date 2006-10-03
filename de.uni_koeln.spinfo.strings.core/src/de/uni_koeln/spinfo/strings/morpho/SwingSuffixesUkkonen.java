@@ -57,6 +57,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 
+import de.uni_koeln.spinfo.strings.algo.suffixtrees.SimpleSequenceAccessor;
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.UkkonenSuffixTree;
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node;
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory.SimpleNode;
@@ -68,7 +69,7 @@ public class SwingSuffixesUkkonen extends JFrame{
 	// aktuelles Fenster
 	public static SwingSuffixesUkkonen meinFenster;
 	
-	public UkkonenSuffixTree ukkonenSuffixBaum = new UkkonenSuffixTree(new SimpleNodeAccessor());
+	public UkkonenSuffixTree ukkonenSuffixBaum = new UkkonenSuffixTree(new SimpleNodeAccessor(), new SimpleSequenceAccessor(1000));
 	StringBuffer baumString = new StringBuffer();
 	String dateiEin = new String();
 	String pfadDateiEin = new String();
@@ -206,7 +207,7 @@ public class SwingSuffixesUkkonen extends JFrame{
 	public void erzeugeTree(){
 		baumString = new StringBuffer();
 		// Speicherobejekte erneuern
-		ukkonenSuffixBaum = new UkkonenSuffixTree(new SimpleNodeAccessor());
+		ukkonenSuffixBaum = new UkkonenSuffixTree(new SimpleNodeAccessor(), new SimpleSequenceAccessor());
 		dateinamenAnzeigen = dateiEin;
 		
 		String[] woerter = text.split("[^a-zA-Z_áÁéÉíÍóÓúÚñÄaÖöÜüß]+");

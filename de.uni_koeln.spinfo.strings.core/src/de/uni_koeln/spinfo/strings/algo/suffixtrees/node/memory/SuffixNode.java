@@ -50,12 +50,12 @@ public abstract class SuffixNode implements Node{
      * Determine if this node has a child corresponding to a given character
      * 
      * @param i
-     *            the first <code>Character</code> of the edge coming down
+     *            the first <code>Long</code> of the edge coming down
      *            this node.
      * @return <code>true</code> if the node has a child going down from that
-     *         character, false otherwise
+     *         Long, false otherwise
      */
-    abstract public boolean hasChild(Character i);
+    public abstract boolean hasChild(Long i);
 
     /**
      * Gets the child of of a node that is coming down from that particular
@@ -63,12 +63,12 @@ public abstract class SuffixNode implements Node{
      * on that particular character.
      * 
      * @param i
-     *            the first <code>Character</code> of the edge coming down
+     *            the first <code>Long</code> of the edge coming down
      *            this node
      * @return the appropriate child <code>SuffixNode</code>, or null if it
      *         doesn't exists.
      */
-    public abstract Node getChild(Character i);
+    public abstract Node getChild(Long i);
 
     // abstract void addChild(SuffixTree tree, int i, SuffixNode n);
 

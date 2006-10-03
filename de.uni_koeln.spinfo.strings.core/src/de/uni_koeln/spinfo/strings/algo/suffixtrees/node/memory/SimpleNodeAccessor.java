@@ -32,7 +32,7 @@ public class SimpleNodeAccessor implements NodeAccessor {
 	 * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor#setSuffixLink(de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node)
 	 */
 	public void setSuffixLink(Node from, Node to) {
-		((SimpleNode)from).suffixLink = (SimpleNode) to;
+		((SimpleNode)from).setSuffixLink(to);
 		
 	}
 
@@ -40,7 +40,7 @@ public class SimpleNodeAccessor implements NodeAccessor {
 	 * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor#setAdditionalLabels(de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node, int[])
 	 */
 	public void setAdditionalLabels(Node leaf, int[] additionalLabels) {
-		((SimpleNode)leaf).additionalLabels = additionalLabels;
+		((SimpleNode)leaf).setAdditionalLabels(additionalLabels);
 		
 	}
 
@@ -48,7 +48,7 @@ public class SimpleNodeAccessor implements NodeAccessor {
 	 * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor#setParent(de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node, de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node)
 	 */
 	public void setParent(Node child, Node parent) {
-		((SimpleNode)child).parent = (SimpleNode) parent;
+		((SimpleNode)child).setParent(parent);
 		
 	}
 
@@ -56,7 +56,7 @@ public class SimpleNodeAccessor implements NodeAccessor {
 	 * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor#setLabelEnd(de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node, int)
 	 */
 	public void setLabelEnd(Node leaf, int e) {
-		((SimpleNode)leaf).labelEnd = e;
+		((SimpleNode)leaf).setLabelEnd(e);
 	}
 
 	/* (non-Javadoc)
@@ -72,7 +72,7 @@ public class SimpleNodeAccessor implements NodeAccessor {
 	 * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor#createNode(de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node, int, int, int, int)
 	 */
 	public Node createNode(Node parent, int suffixStart, int splittingPos, int number, int suffixIndex) {
-		SimpleNode toReturn = new SimpleNode((SimpleNode)parent,suffixStart,splittingPos,number,suffixIndex);
+		SimpleNode toReturn = new SimpleNode(parent,suffixStart,splittingPos);
 		toReturn.setId(idCounter++);
 		return toReturn;
 	}
@@ -81,7 +81,7 @@ public class SimpleNodeAccessor implements NodeAccessor {
 	 * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor#createNode(de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node, int, int, int)
 	 */
 	public Node createNode(Node parent, int suffixStart, int number, int suffixIndex) {
-		SimpleNode toReturn = new SimpleNode((SimpleNode)parent,suffixStart,number,suffixIndex);
+		SimpleNode toReturn = new SimpleNode(parent,suffixStart,number,suffixIndex);
 		toReturn.setId(idCounter++);
 		return toReturn;
 	}

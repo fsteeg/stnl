@@ -20,14 +20,29 @@ import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node;
  * 
  * @author Francois Pepin (original version from BioJava API)
  * @author Fabian Steeg (fsteeg)
+ * @author Stephan Schwiebert (sschwieb)
  */
-public class SimpleNode extends SuffixNode implements TreeNode {
+public class SimpleNode implements Node, TreeNode {
 
     private int dfs = 0;
 
-
     private int suffixIndex;
 
+    private Node parent;
+
+    private Node suffixLink;
+
+    private int labelStart, labelEnd;
+
+    private HashMap<Long, Node> children;
+
+    private int[] additionalLabels;
+
+    private int id;
+
+    private int textNumber;
+
+    
     /**
      * Creates a root
      */
@@ -50,7 +65,7 @@ public class SimpleNode extends SuffixNode implements TreeNode {
      * @param position
      *            the starting value of the suffix
      */
-    public SimpleNode(SuffixNode parent, int position, int textNumber,
+    public SimpleNode(Node parent, int position, int textNumber,
             int suffixIndex) {
         this();
         this.parent = parent;
@@ -71,44 +86,95 @@ public class SimpleNode extends SuffixNode implements TreeNode {
      * @param labelStop
      *            the ending point of the path label
      */
-    public SimpleNode(SuffixNode parent, int labelStart, int labelStop,
-            int textNumber, int suffixIndex) {
+    public SimpleNode(Node parent, int labelStart, int labelStop) {
         this();
         this.parent = parent;
         this.labelStart = labelStart;
         this.labelEnd = labelStop;
-        
         this.textNumber = 0;
         this.suffixIndex = 0;
-       // System.out.println("Node created: " + id + ", " + );
-        // checkParent(this);
+    }
+  
+    /**
+     * @return Returns the children
+     */
+    public HashMap<Long, Node> getChildren() {
+        return children;
     }
 
+	public int getLabelStart() {
+		return labelStart;
+	}
+
+	public int getLabelEnd() {
+		return labelEnd;
+	}
+
+	public int[] getAdditionalLabels() {
+		return additionalLabels;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public int getId() {
+		return id;
+	}
+
+
+	public int getTextNumber() {
+		return textNumber;
+	}
+	
+
+  
     /**
-     * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory.SuffixNode#isTerminal()
+     * Determine is this node is terminal (has no children).
+     * <p>
+     * Note that this only happens at the terminated node (if the sequences have
+     * been terminated.
+     * 
+     * @return <code>true</code> if and only if this node has no children.
      */
     public boolean isTerminal() {
         return children == null;
     }
 
     /**
-     * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory.SuffixNode#hasChild(java.lang.Character)
+     * Determine if this node has a child corresponding to a given character
+     * 
+     * @param i
+     *            the first <code>Long</code> of the edge coming down
+     *            this node.
+     * @return <code>true</code> if the node has a child going down from that
+     *         Long, false otherwise
      */
-    public boolean hasChild(Character x) {
+    public boolean hasChild(Long x) {
         return getChild(x) != null;
     }
-
+    
     /**
-     * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory.SuffixNode#getChild(java.lang.Character)
+     * Gets the child of of a node that is coming down from that particular
+     * node. It returns null if no child exists or if no child exists starting
+     * on that particular character.
+     * 
+     * @param i
+     *            the first <code>Long</code> of the edge coming down
+     *            this node
+     * @return the appropriate child <code>SuffixNode</code>, or null if it
+     *         doesn't exists.
      */
-    public Node getChild(Character x) {
+    public Node getChild(Long x) {
         return (children == null) ? null : children.get(x);
     }
 
     /**
-     * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory.SuffixNode#getParent()
+     * Returns the parent of this node, null if it's the root.
+     * 
+     * @return the parent of this node, null if it's the root.
      */
-    public SuffixNode getParent() {
+    public Node getParent() {
         return parent;
     }
 
@@ -160,6 +226,24 @@ public class SimpleNode extends SuffixNode implements TreeNode {
 
 	public Node getSuffixLink() {
 		return this.suffixLink;
+	}
+
+	public void setSuffixLink(Node to) {
+		this.suffixLink = to;
+	}
+
+	public void setAdditionalLabels(int[] additionalLabels) {
+		this.additionalLabels = additionalLabels;
+		
+	}
+
+	public void setParent(Node parent) {
+		this.parent = parent;
+		
+	}
+
+	public void setLabelEnd(int e) {
+		this.labelEnd = e;
 	}
 
 

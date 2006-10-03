@@ -54,6 +54,8 @@ public class WordSuffixTree extends UkkonenSuffixTree {
 
     public Mapper mapper;
     
+    private static SimpleSequenceAccessor sentenceAccessor = new SimpleSequenceAccessor();
+    
     // private int last = 1;
 
     /**
@@ -69,7 +71,7 @@ public class WordSuffixTree extends UkkonenSuffixTree {
      *            seems to grow quadratic)
      */
     public WordSuffixTree(String text, boolean reverse, boolean generalized, NodeAccessor accessor) {
-        super(accessor);
+        super(accessor, sentenceAccessor);
     	this.reverse = reverse;
         this.generalized = generalized;
         setText(text);

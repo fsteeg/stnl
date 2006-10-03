@@ -52,16 +52,18 @@ import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor;
 public class UkkonenSuffixTree {
 
     public static final Long DEFAULT_TERM_CHAR = -1L;
+    
+    public static final int TO_A_LEAF = -1;
 
     private Long terminationChar;
 
-    Node root;
-
-    public static final int TO_A_LEAF = -1;
+    private Node root;
 
     private int e;
 
-    private List<Long> sequences;
+    private SequenceAccessor sequences;
+    
+//    private List<Long> sequences;
     
     protected NodeAccessor accessor;
 
@@ -78,25 +80,44 @@ public class UkkonenSuffixTree {
     private int rule;
 
     /**
-     * Initializes a new <code>UkkonenSuffixTree</code> instance.
-     */
-    public UkkonenSuffixTree(NodeAccessor accessor) {
-        terminationChar = DEFAULT_TERM_CHAR;
-        this.accessor = accessor;
+     * Initializes a new <code>UkkonenSuffixTree</code> instance with the given accessors.
+     */    
+    protected void initialize(NodeAccessor nodeAccessor, SequenceAccessor sequenceAccessor) {
+    	this.accessor = nodeAccessor;
+    	this.sequences = sequenceAccessor;
+    	terminationChar = DEFAULT_TERM_CHAR;
         root = accessor.createNode();
         e = 0;
-        sequences = new Vector<Long>();
     }
 
     /**
-     * Initializes a new <code>UkkonenSuffixTree</code> instance with a text.
+     * Initializes a new <code>UkkonenSuffixTree</code> instance with a text and the given accessors.
      * 
      * @param seqs
      *            The text to add
      */
-    public UkkonenSuffixTree(List<Long> seqs, NodeAccessor accessor) {
-        this(accessor);
+    public UkkonenSuffixTree(List<Long> seqs, NodeAccessor accessor, SequenceAccessor sequenceAccessor) {
+        this(accessor, sequenceAccessor);
         addSequence(seqs, 1, false);
+    }
+    
+    /**
+     * Empty Constructor that does not do anything. 
+     * NOTE: You <b>must</b> call <code>initialize</code>
+     * when using this Constructor!
+     */
+    public UkkonenSuffixTree() {
+    	
+    }
+    
+    /**
+     * Initializes a new <code>UkkonenSuffixTree</code> instance with the given accessors.
+     * 
+     * @param seqs
+     *            The text to add
+     */
+    public UkkonenSuffixTree(NodeAccessor accessor, SequenceAccessor sequenceAccessor) {
+        initialize(accessor, sequenceAccessor);
     }
 
     /**
@@ -185,13 +206,13 @@ public class UkkonenSuffixTree {
                     currentNode = accessor.getParent(currentNode);
 
                 if (root == currentNode) {
-                    currentNode = jumpTo(root, sequences, j, i + 1);
+                    currentNode = jumpTo(root, j, i + 1);
                 } else {
                     if (canLinkJump)
                         currentNode = accessor.getSuffixLink(currentNode);
                     gammaStart = j + getPathLength(currentNode);
 
-                    currentNode = jumpTo(currentNode, sequences, gammaStart,
+                    currentNode = jumpTo(currentNode, gammaStart,
                             i + 1);
                 }
 
@@ -322,7 +343,7 @@ public class UkkonenSuffixTree {
      *         stopped inside an edge. (check the rule variable to see where it
      *         stopped).
      */
-    public Node jumpTo(Node starting, List<Long> source, int from,
+    public Node jumpTo(Node starting, int from,
             int to) {
     	Node currentNode;
     	Node arrivedAt;
@@ -348,7 +369,7 @@ public class UkkonenSuffixTree {
             // "+(i++));
 
             if (accessor.isTerminal(currentNode)) {
-                System.out.println("ARRGH! at " + source.subList(original, to)
+                System.out.println("ARRGH! at " + sequences.subList(original, to)
                         + "(" + from + "," + original + "," + to + ") from "
                         + getLabel(originalNode));
                 // Something truly awful happened if this line is ever reached.
@@ -358,7 +379,7 @@ public class UkkonenSuffixTree {
             }
 
             arrivedAt = (Node) currentNode.getChildren().get(
-                    new Long(source.get(from)));
+                    sequences.get(from));
             if (arrivedAt == null) {
                 canGoDown = false;
                 arrivedAt = currentNode;
@@ -371,7 +392,7 @@ public class UkkonenSuffixTree {
                 // int before = currentNode.labelEnd + to - from + 1;
                 int after = getPathEnd(arrivedAt) - getEdgeLength(arrivedAt)
                         + to - from - 1;
-                if (sequences.get(after).equals(source.get(to - 1))) {
+                if (sequences.get(after).equals(sequences.get(to - 1))) {
                     if (getEdgeLength(arrivedAt) == to - from) {
                         if (accessor.isTerminal(arrivedAt))
                             rule = 1;
@@ -519,13 +540,13 @@ public class UkkonenSuffixTree {
         Node middle = accessor.createNode(parent,suffixStart,splittingPos,number,suffixIndex);
 //        SuffixNode middle = new SimpleNode(parent, suffixStart, splittingPos,
 //                number, suffixIndex);
-        Long x = new Long(sequences.get(child.getLabelStart() + getPathLength(child)
-                - getEdgeLength(child)));
+        long x = sequences.get(child.getLabelStart() + getPathLength(child)
+                - getEdgeLength(child));
 
         // System.out.println(parent.children.get(x)==child);
 
-        Long y = new Long(sequences.get(child.getLabelStart() + getPathLength(child)
-                - getEdgeLength(child) + getEdgeLength(middle)));
+        long y = sequences.get(child.getLabelStart() + getPathLength(child)
+                - getEdgeLength(child) + getEdgeLength(middle));
         
         
 //        parent.getChildren().remove(x);
