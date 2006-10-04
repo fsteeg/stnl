@@ -1,5 +1,7 @@
 package de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory;
 
+import java.util.Map;
+
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node;
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor;
 
@@ -62,7 +64,7 @@ public class SimpleNodeAccessor implements NodeAccessor {
 	/* (non-Javadoc)
 	 * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor#createNode()
 	 */
-	public Node createNode() {
+	public Node createRootNode() {
 		SimpleNode toReturn = new SimpleNode();
 		toReturn.setId(idCounter++);
 		return toReturn;
@@ -71,7 +73,7 @@ public class SimpleNodeAccessor implements NodeAccessor {
 	/* (non-Javadoc)
 	 * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor#createNode(de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node, int, int, int, int)
 	 */
-	public Node createNode(Node parent, int suffixStart, int splittingPos, int number, int suffixIndex) {
+	public Node createInternalNode(Node parent, int suffixStart, int splittingPos) {
 		SimpleNode toReturn = new SimpleNode(parent,suffixStart,splittingPos);
 		toReturn.setId(idCounter++);
 		return toReturn;
@@ -80,7 +82,7 @@ public class SimpleNodeAccessor implements NodeAccessor {
 	/* (non-Javadoc)
 	 * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor#createNode(de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node, int, int, int)
 	 */
-	public Node createNode(Node parent, int suffixStart, int number, int suffixIndex) {
+	public Node createLeafNode(Node parent, int suffixStart, int number, int suffixIndex) {
 		SimpleNode toReturn = new SimpleNode(parent,suffixStart,number,suffixIndex);
 		toReturn.setId(idCounter++);
 		return toReturn;
@@ -90,8 +92,13 @@ public class SimpleNodeAccessor implements NodeAccessor {
 	 * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor#addChild(de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node, java.lang.Long, de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node)
 	 */
 	public void addChild(Node parent, Long x, Node middle) {
-		parent.getChildren().put(x,middle);
-		
+		((SimpleNode)parent).getChildren().put(x,middle);
+	}
+	
+	
+
+	public Map<Long, Node> getChildren(Node root) {
+		return ((SimpleNode)root).getChildren();
 	}
 
 	/* (non-Javadoc)

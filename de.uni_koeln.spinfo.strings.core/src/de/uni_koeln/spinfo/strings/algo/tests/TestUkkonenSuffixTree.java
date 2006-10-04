@@ -42,8 +42,8 @@ public class TestUkkonenSuffixTree extends TestCase {
         l2.add(1l);
         l2.add(2l);
         l2.add(4l);
-        tree.addSequence(l1, 1, false);
-        tree.addSequence(l2, 2, false);
+        tree.addSequences(l1, 1, false);
+        tree.addSequences(l2, 2, false);
         tree.printTree();
     }
 

@@ -1,5 +1,12 @@
 package de.uni_koeln.spinfo.strings.algo.suffixtrees.node;
 
+import java.util.Map;
+
+/**
+ * 
+ * @author sschwieb
+ *
+ */
 public interface NodeAccessor {
 
 	public Node getParent(Node node);
@@ -16,17 +23,18 @@ public interface NodeAccessor {
 
 	public void setLabelEnd(Node leaf, int e);
 
-	public Node createNode(Node parent, int suffixStart, int splittingPos,
-			int number, int suffixIndex);
+	public Node createInternalNode(Node parent, int suffixStart, int splittingPos);
 
 	public void addChild(Node parent, Long x, Node middle);
 
-	public Node createNode(Node parent, int suffixStart, int number,
+	public Node createLeafNode(Node parent, int suffixStart, int number,
 			int suffixIndex);
 
 	public void setId(Node root, int count);
 
-	public Node createNode();
+	public Node createRootNode();
+
+	public Map<Long, Node> getChildren(Node root);
 
 
 }

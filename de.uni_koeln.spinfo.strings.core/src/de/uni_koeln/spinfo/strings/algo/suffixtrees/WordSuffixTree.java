@@ -169,7 +169,7 @@ public class WordSuffixTree extends UkkonenSuffixTree {
              * step 4: build a traditional suffix tree for the string of
              * numbers:
              */
-            super.addSequence(builder, sentenceCount, false);
+            super.addSequences(builder, sentenceCount, false);
             sentenceCount++;
         }
         System.out.print(counter + " Types, ");

@@ -134,7 +134,7 @@ public class Mapper {
         if (!leavesOnly || (leavesOnly && accessor.isTerminal(root)))
             list.add(root);
         if (!accessor.isTerminal(root)) {
-            iterator = root.getChildren().values().iterator();
+            iterator = accessor.getChildren(root).values().iterator();
             // writer.write("\n");
             depth = depth + 1;
             // last = count;
