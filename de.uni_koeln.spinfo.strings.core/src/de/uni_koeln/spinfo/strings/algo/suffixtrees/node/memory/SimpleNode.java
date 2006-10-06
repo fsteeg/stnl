@@ -38,9 +38,23 @@ public class SimpleNode implements Node, TreeNode {
 
     private int[] additionalLabels;
 
-    private int id;
+    private long id;
 
     private int textNumber;
+    
+    public String toString() {
+
+		String parentString = parent == null ? " none " : " " + parent.getId();
+    	return "Node [" +
+    		id +
+    		" lStart " + labelStart +
+    		" lEnd " + labelEnd +
+    		" adlLab " + additionalLabels +
+    		" link: " + suffixLink +
+    		" parent: " + parentString +
+    		" sIndex " + suffixIndex
+    	+ "]";
+    }
 
     
     /**
@@ -118,7 +132,7 @@ public class SimpleNode implements Node, TreeNode {
 		this.id = id;
 	}
 	
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 

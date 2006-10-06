@@ -60,6 +60,7 @@ import javax.swing.ScrollPaneConstants;
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.SimpleSequenceAccessor;
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.UkkonenSuffixTree;
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node;
+import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor;
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory.SimpleNode;
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory.SimpleNodeAccessor;
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory.SuffixNode;
@@ -68,8 +69,8 @@ public class SwingSuffixesUkkonen extends JFrame{
 	
 	// aktuelles Fenster
 	public static SwingSuffixesUkkonen meinFenster;
-	
-	public UkkonenSuffixTree ukkonenSuffixBaum = new UkkonenSuffixTree(new SimpleNodeAccessor(), new SimpleSequenceAccessor(1000));
+	private NodeAccessor nodeAccessor = new SimpleNodeAccessor();
+	public UkkonenSuffixTree ukkonenSuffixBaum = new UkkonenSuffixTree(nodeAccessor, new SimpleSequenceAccessor(1000));
 	StringBuffer baumString = new StringBuffer();
 	String dateiEin = new String();
 	String pfadDateiEin = new String();
@@ -242,8 +243,8 @@ public class SwingSuffixesUkkonen extends JFrame{
 		baumString.append(ukkonenSuffixBaum.getEdgeLabel(mutter));
 		baumString.append("\n");
 		// nur wenn der aktuelle Knoten kein Blatt ist, wird weiter nach Kindern gesucht:
-		if(mutter.getChildren().size()!=0){
-			Collection kinder = mutter.getChildren().values();
+		if(nodeAccessor.getChildren(mutter).size()!=0){
+			Collection kinder = nodeAccessor.getChildren(mutter).values();
 			for(Iterator it = kinder.iterator(); it.hasNext(); ){
 				SuffixNode kind = (SuffixNode)it.next();
 				kinder(kind, baumTiefe+1);
@@ -426,7 +427,7 @@ public class SwingSuffixesUkkonen extends JFrame{
 					ArrayList<Node> liste = new ArrayList<Node>();
 					ukkonenSuffixBaum.getAllNodes(ukkonenSuffixBaum.getRoot(), liste, false);
 					for (Node node : liste) {
-						if(node.getChildren().size()==0){
+						if(nodeAccessor.getChildren(node).size()==0){
 							String string2 = ukkonenSuffixBaum.getEdgeLabel(node).toString();
 							String suffix = string2;
 							suffix = suffix.replaceAll("\\$","");
@@ -728,7 +729,7 @@ public class SwingSuffixesUkkonen extends JFrame{
 	// und wird mit Index 0 aufgerufen
 	// (diese Suffixe muessen aber gleichzeitig auch in der Menge der haeufigsten Suffixe sein)	
 	void sucheEndungenImBaum(String praefix, Node mutter, String Prae){
-		Collection kinder = mutter.getChildren().values();
+		Collection kinder = nodeAccessor.getChildren(mutter).values();
 		for(Iterator it = kinder.iterator(); it.hasNext(); ){
 			SuffixNode kind = (SuffixNode)it.next();
 			String label = ukkonenSuffixBaum.getEdgeLabel(kind).toString();

@@ -25,7 +25,15 @@ public interface NodeAccessor {
 
 	public Node createInternalNode(Node parent, int suffixStart, int splittingPos);
 
-	public void addChild(Node parent, Long x, Node middle);
+	/**
+	 * Adds Node child to the children of Node parent. It is referenced by Long ref.
+	 * The modified parent is returned.
+	 * @param parent
+	 * @param ref
+	 * @param child
+	 * @return Modified parent
+	 */
+	public void addChild(Node parent, Long ref, Node child);
 
 	public Node createLeafNode(Node parent, int suffixStart, int number,
 			int suffixIndex);
@@ -33,6 +41,8 @@ public interface NodeAccessor {
 	public void setId(Node root, int count);
 
 	public Node createRootNode();
+	
+	public Node getRoot();
 
 	public Map<Long, Node> getChildren(Node root);
 

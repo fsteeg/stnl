@@ -233,4 +233,14 @@ public class WordSuffixTree extends UkkonenSuffixTree {
         return null;
     }
 
+	public void printNodes() {
+		Node root = super.getRoot();
+		ArrayList<Node> all = new ArrayList<Node>();
+		all.addAll(super.getAllNodes(root, null, false));
+		for (Node node : all) {
+			System.out.println(node.toString());
+		}
+		
+	}
+
 }

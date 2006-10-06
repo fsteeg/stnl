@@ -85,6 +85,7 @@ public class TestWordSuffixTreeComplexity extends TestCase {
                 + (current - start) + " ms. ");
         start = System.currentTimeMillis();
         tree.mapper.exportDot("output.dot");
+        tree.printNodes();
         current = System.currentTimeMillis();
         System.out.print("Output: ");
         System.out.print((current - start) + " ms.\n");

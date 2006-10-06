@@ -57,7 +57,7 @@ public class UkkonenSuffixTree {
 
     private Long terminationChar;
 
-    private Node root;
+   // private Node root;
 
     private int e;
 
@@ -86,7 +86,7 @@ public class UkkonenSuffixTree {
     	this.accessor = nodeAccessor;
     	this.sequences = sequenceAccessor;
     	terminationChar = DEFAULT_TERM_CHAR;
-        root = accessor.createRootNode();
+        accessor.createRootNode();
         e = 0;
     }
 
@@ -184,7 +184,7 @@ public class UkkonenSuffixTree {
         j = i;
         sequences.addAll(seq);
 
-        currentNode = root;
+        currentNode = accessor.getRoot();
 
         // phase i
         for (; i < sequences.size(); i++) {
@@ -200,12 +200,13 @@ public class UkkonenSuffixTree {
 
                 // find first node v at or above s[j-1,i] that is root or has a
                 // suffixLink
-                while (currentNode != root && accessor.getSuffixLink(currentNode) == null
+                while (!currentNode.equals(accessor.getRoot()) && accessor.getSuffixLink(currentNode) == null
                         && canLinkJump)
                     currentNode = accessor.getParent(currentNode);
 
-                if (root == currentNode) {
-                    currentNode = jumpTo(root, j, i + 1);
+                if (currentNode.equals(accessor.getRoot())) {
+                	System.out.println("Jumping from root" + j + ", " + (i + 1));
+                    currentNode = jumpTo(accessor.getRoot(), j, i + 1);
                 } else {
                     if (canLinkJump)
                         currentNode = accessor.getSuffixLink(currentNode);
@@ -361,7 +362,6 @@ public class UkkonenSuffixTree {
             rule = 5;
             return starting;
         }
-
         while (canGoDown) {
             // if (source.substring(from, to).equals("CAGCG"))
             // System.out.println(to+" here to "+source.substring(from, to)+"
@@ -376,12 +376,12 @@ public class UkkonenSuffixTree {
                 // couple
                 // of times already.
             }
-
-            arrivedAt = (Node) accessor.getChildren(currentNode).get(
-                    sequences.get(from));
+            Long key = sequences.get(from);
+            arrivedAt = (Node) accessor.getChildren(currentNode).get(key);
             if (arrivedAt == null) {
                 canGoDown = false;
                 arrivedAt = currentNode;
+                
                 rule = 2;
                 break;
             }
@@ -421,7 +421,7 @@ public class UkkonenSuffixTree {
     public int getEdgeLength(Node child) {
         int parentLength, childLength;
         Node parent;
-        if (child == root)
+        if (child.equals(accessor.getRoot()))
             return 0;
         parent = accessor.getParent(child);
         parentLength = getPathLength(parent);
@@ -452,7 +452,7 @@ public class UkkonenSuffixTree {
     }
 
     public List<Long> getLabel(Node node) {
-        if (node == root)
+        if (node.equals(accessor.getRoot()))
             return new Vector<Long>();
         else
             return sequences.subList(node.getLabelStart(),
@@ -494,7 +494,7 @@ public class UkkonenSuffixTree {
     // }
 
     public Node getRoot() {
-        return root;
+        return accessor.getRoot();
     }
 
     /***************************************************************************
@@ -523,7 +523,8 @@ public class UkkonenSuffixTree {
             int number, int suffixIndex) {
         // int number = getAllNodes(root, null, false).size();
         Node leaf = accessor.createLeafNode(parent, suffixStart, number, suffixIndex);
-        accessor.addChild(parent, sequences.get(splittingPos), leaf);
+        Long splitPos = sequences.get(splittingPos);
+        accessor.addChild(parent, splitPos, leaf);
 //        parent.getChildren().put(new Long(sequences.get(splittingPos)), leaf);
         // System.out.println("rule 2: "+sequences.charAt(splittingPos)+" from
         // "+getLabel(parent)+ " to "+getLabel(leaf));
@@ -567,7 +568,7 @@ public class UkkonenSuffixTree {
 
     private void finishAddition() {
         Node leaf;
-        ArrayList leaves = getAllNodes(root, null, true);
+        ArrayList leaves = getAllNodes(accessor.getRoot(), null, true);
         for (int i = 0; i < leaves.size(); i++) {
             leaf = (Node) leaves.get(i);
             if (leaf.getLabelEnd() == TO_A_LEAF)
@@ -577,11 +578,11 @@ public class UkkonenSuffixTree {
     }
     
     public void printTree() {
-        ArrayList allNodes = getAllNodes(root, null, false);
+        ArrayList allNodes = getAllNodes(accessor.getRoot(), null, false);
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < allNodes.size(); i++) {
             Node node = (Node) allNodes.get(i);
-            if (node == root)
+            if (node.equals(accessor.getRoot()))
                 System.out.println("root");
             else {
                 List<Long> thisLabel = getLabel(node);

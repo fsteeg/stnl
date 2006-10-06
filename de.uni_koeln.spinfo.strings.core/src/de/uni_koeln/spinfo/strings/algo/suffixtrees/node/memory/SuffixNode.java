@@ -31,7 +31,7 @@ public abstract class SuffixNode implements Node{
 
     protected int[] additionalLabels;
 
-    private int id;
+    private long id;
 
     protected int textNumber;
 
@@ -98,11 +98,11 @@ public abstract class SuffixNode implements Node{
 		return additionalLabels;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 

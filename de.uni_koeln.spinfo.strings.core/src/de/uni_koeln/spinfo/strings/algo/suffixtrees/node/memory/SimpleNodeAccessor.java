@@ -9,6 +9,8 @@ public class SimpleNodeAccessor implements NodeAccessor {
 
 	private int idCounter = 1;
 	
+	private SimpleNode root;
+	
 	/* (non-Javadoc)
 	 * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor#getParent(de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node)
 	 */
@@ -65,9 +67,10 @@ public class SimpleNodeAccessor implements NodeAccessor {
 	 * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor#createNode()
 	 */
 	public Node createRootNode() {
-		SimpleNode toReturn = new SimpleNode();
-		toReturn.setId(idCounter++);
-		return toReturn;
+		if(root != null) return root;
+		root = new SimpleNode();
+		root.setId(idCounter++);
+		return root;
 	}
 	
 	/* (non-Javadoc)
@@ -76,6 +79,7 @@ public class SimpleNodeAccessor implements NodeAccessor {
 	public Node createInternalNode(Node parent, int suffixStart, int splittingPos) {
 		SimpleNode toReturn = new SimpleNode(parent,suffixStart,splittingPos);
 		toReturn.setId(idCounter++);
+		System.out.println("Creating Internal Node:" + toReturn.getId());
 		return toReturn;
 	}
 
@@ -85,6 +89,7 @@ public class SimpleNodeAccessor implements NodeAccessor {
 	public Node createLeafNode(Node parent, int suffixStart, int number, int suffixIndex) {
 		SimpleNode toReturn = new SimpleNode(parent,suffixStart,number,suffixIndex);
 		toReturn.setId(idCounter++);
+		System.out.println("Creating Leaf Node:" + toReturn.getId());
 		return toReturn;
 	}
 	
@@ -92,7 +97,12 @@ public class SimpleNodeAccessor implements NodeAccessor {
 	 * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor#addChild(de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node, java.lang.Long, de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node)
 	 */
 	public void addChild(Node parent, Long x, Node middle) {
-		((SimpleNode)parent).getChildren().put(x,middle);
+		System.out.println("Add child " + middle.getId() + " to parent " + parent.getId());
+		
+		Node old = ((SimpleNode)parent).getChildren().put(x,middle);
+		if(old != null) {
+			System.out.println("Old child: " + old.getId());
+		}
 	}
 	
 	
@@ -106,6 +116,10 @@ public class SimpleNodeAccessor implements NodeAccessor {
 	 */
 	public void setId(Node root, int count) {
 		((SimpleNode)root).setId(count);
+	}
+
+	public Node getRoot() {
+		return root;
 	}
 
 
