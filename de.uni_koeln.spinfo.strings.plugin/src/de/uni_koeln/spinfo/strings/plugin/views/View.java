@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -42,10 +43,14 @@ import org.osgi.framework.Bundle;
 import de.uni_koeln.spinfo.strings.algo.KMismatch;
 import de.uni_koeln.spinfo.strings.algo.Util;
 import de.uni_koeln.spinfo.strings.algo.Wildcards;
+import de.uni_koeln.spinfo.strings.algo.suffixtrees.AlphanumericSuffixTree;
+import de.uni_koeln.spinfo.strings.algo.suffixtrees.CharSuffixTree;
+import de.uni_koeln.spinfo.strings.algo.suffixtrees.DAG;
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.WordSuffixTree;
-import de.uni_koeln.spinfo.strings.algo.suffixtrees.naive.CompactSuffixTree;
-import de.uni_koeln.spinfo.strings.algo.suffixtrees.naive.SimpleSuffixTree;
+import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node;
+import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory.SimpleNodeAccessor;
 import de.uni_koeln.spinfo.strings.plugin.StringsPlugin;
+import de.uni_koeln.spinfo.strings.plugin.dotviewer.DotDrawer;
 
 /**
  * 
@@ -55,18 +60,6 @@ import de.uni_koeln.spinfo.strings.plugin.StringsPlugin;
  * @author Fabian Steeg (fsteeg)
  */
 public class View extends ViewPart {
-
-    // some config values
-
-    private static final String DOT_CALL = "dot"; //$NON-NLS-1$
-
-    private static final String OUTPUT_FORMAT = "-Tpng";
-
-    private static final String VAR = "-o";
-
-    private static final String RESULT_PNG = "result.png"; //$NON-NLS-1$
-
-    private static final String OUTPUT_DOT = "output.dot"; //$NON-NLS-1$
 
     @SuppressWarnings("unused")// convention
     private static final String ID = "de.uni_koeln.spinfo.strings.plugin.views.View"; //$NON-NLS-1$
@@ -111,17 +104,7 @@ public class View extends ViewPart {
     private static final String CAPTION_WORD_BASED = Messages
             .getString("View.CAPTION_WORD_BASED"); //$NON-NLS-1$
 
-    private static final String CAPTION_DOT_SELECT_SHORT = Messages
-            .getString("View.CAPTION_DOT_SELECT_SHORT"); //$NON-NLS-1$
-
-    private static final String CAPTION_DOT_SELECT_LONG = Messages
-            .getString("View.CAPTION_DOT_SELECT_LONG"); //$NON-NLS-1$
-
     private static Browser browser;
-
-    private static String DOT_APP_PATH;
-
-    private static String TMP_DIR;
 
     // private static String COMMAND;
 
@@ -131,7 +114,7 @@ public class View extends ViewPart {
 
     private String DIR;
 
-    private static String[] COMMANDS;
+    private static DotDrawer drawer;
 
     // private String DIR;
 
@@ -144,7 +127,8 @@ public class View extends ViewPart {
      * it.
      */
     public void createPartControl(Composite parent) {
-        initPaths(parent);
+        drawer = new DotDrawer();
+        drawer.initPaths(parent);
         initDir();
         toolkit = new FormToolkit(parent.getDisplay());
         form = toolkit.createScrolledForm(parent);
@@ -155,75 +139,6 @@ public class View extends ViewPart {
         toolkit.paintBordersFor(form.getBody());
         createBottomComposite(form.getBody());
 
-    }
-
-    /**
-     * Sets the paths for dot and temp
-     * 
-     * @param parent
-     *            The parent
-     */
-    private void initPaths(Composite parent) {
-        // get the saved location for dot
-        DOT_APP_PATH = StringsPlugin.getDefault().getPreferenceStore()
-                .getString("dotpath"); //$NON-NLS-1$
-        if (DOT_APP_PATH.equals("")) { //$NON-NLS-1$
-            // path to dot has not been given, aks for it
-            askForDot(parent);
-        }
-        // its weird but dot cant write to the user dir on windows, so we use
-        // the dot-dir
-        TMP_DIR = Platform.getInstanceLocation().getURL().getPath();
-        if (Platform.getOS().contains("win")) { //$NON-NLS-1$
-            // TMP_DIR = DOT_APP_PATH;
-            TMP_DIR = TMP_DIR.substring(1);
-        }
-        // set the command to call
-        COMMANDS = new String[] { DOT_APP_PATH + DOT_CALL, OUTPUT_FORMAT, VAR,
-                TMP_DIR + RESULT_PNG, TMP_DIR + OUTPUT_DOT };
-        // COMMAND = DOT_APP_PATH + DOT_CALL + " " + TMP_DIR + RESULT_PNG + "\""
-        // + " " //$NON-NLS-1$ //$NON-NLS-2$
-        // + TMP_DIR + OUTPUT_DOT + "\"";
-        System.out.println("Will use command:");
-        for (String command : COMMANDS) {
-            System.out.println("command: " + command);
-        }
-    }
-
-    /**
-     * @param parent
-     */
-    private void askForDot(Composite parent) {
-        DirectoryDialog dialog = new DirectoryDialog(parent.getShell());
-        dialog.setMessage(CAPTION_DOT_SELECT_LONG);
-        dialog.setText(CAPTION_DOT_SELECT_SHORT);
-        try {
-            String open = dialog.open();
-            if (open != null) {
-                File folder = new File(open);
-                String[] files = folder.list();
-                boolean ok = false;
-                for (int i = 0; i < files.length; i++) {
-
-                    if (files[i].equals("dot") || files[i].equals("dot.exe")) //$NON-NLS-1$ //$NON-NLS-2$
-                        ok = true;
-                }
-                if (!ok)
-                    MessageDialog.openError(parent.getShell(), Messages
-                            .getString("View.CAPTION_NOT_FOUND"), //$NON-NLS-1$
-                            Messages.getString("View.CAPTION_DOT_NOT_FOUND")); //$NON-NLS-1$
-                else {
-                    StringsPlugin.getDefault().getPreferenceStore().setValue(
-                            "dotpath", //$NON-NLS-1$
-                            open + "/"); //$NON-NLS-1$
-                    DOT_APP_PATH = StringsPlugin.getDefault()
-                            .getPreferenceStore().getString("dotpath"); //$NON-NLS-1$   
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -249,11 +164,12 @@ public class View extends ViewPart {
             i++;
         }
         builder.append("}"); //$NON-NLS-1$
-        Util.saveString(TMP_DIR + OUTPUT_DOT, builder.toString()); //$NON-NLS-1$
+        Util.saveString(DotDrawer.OUTPUT_FOLDER + DotDrawer.DOT_FILE, builder
+                .toString()); //$NON-NLS-1$
         try {
-            if (DOT_APP_PATH.equals("")) { //$NON-NLS-1$
-                String replaceAll = (TMP_DIR + OUTPUT_DOT).replaceAll("\\.dot",
-                        "\\.txt");
+            if (DotDrawer.DOT_APP_PATH.equals("")) { //$NON-NLS-1$
+                String replaceAll = (DotDrawer.OUTPUT_FOLDER + DotDrawer.DOT_FILE)
+                        .replaceAll("\\.dot", "\\.txt");
                 Util.saveString(replaceAll, builder.toString()); //$NON-NLS-1$
                 System.out.println("Setting browser to: " + replaceAll);
                 browser.setUrl(replaceAll); //$NON-NLS-1$
@@ -262,7 +178,7 @@ public class View extends ViewPart {
                         Messages.getString("View.CAPTION_NO_DOT_PATH_SET")); //$NON-NLS-1$
 
             } else {
-                View.renderImage();
+                drawer.renderImage();
                 update();
             }
         } catch (InvocationTargetException e) {
@@ -279,7 +195,7 @@ public class View extends ViewPart {
      * Updates the browser-widget
      */
     public static void update() {
-        String string = TMP_DIR + RESULT_PNG;
+        String string = DotDrawer.OUTPUT_FOLDER + DotDrawer.RESULT_PNG;
         System.out.println("Setting Browser to: " + string);
         browser.setUrl(string);
     }
@@ -288,39 +204,6 @@ public class View extends ViewPart {
      * Passing the focus request to the viewer's control.
      */
     public void setFocus() {
-    }
-
-    /**
-     * Calls dot to render the image from the generated dot-file
-     * 
-     * @throws InterruptedException
-     * @throws InvocationTargetException
-     */
-    public static void renderImage() throws InvocationTargetException,
-            InterruptedException {
-
-        PlatformUI.getWorkbench().getProgressService().busyCursorWhile(
-                new IRunnableWithProgress() {
-
-                    public void run(IProgressMonitor monitor)
-                            throws InvocationTargetException,
-                            InterruptedException {
-                        monitor.setTaskName(Messages
-                                .getString("View.CAPTION_RENDERING")); //$NON-NLS-1$
-                        Runtime runtime = Runtime.getRuntime();
-                        Process p = null;
-                        try {
-                            p = runtime.exec(COMMANDS);
-                            p.waitFor();
-
-                        } catch (Exception x) {
-                            x.printStackTrace();
-                        }
-                        System.out.println("Exit status: " + p.exitValue()); //$NON-NLS-1$
-                    }
-
-                });
-
     }
 
     /**
@@ -342,20 +225,31 @@ public class View extends ViewPart {
         // View.update();
 
         long start = System.currentTimeMillis();
-        CompactSuffixTree tree = new CompactSuffixTree(new SimpleSuffixTree(
-                text, !forWords, reverse), false);
+
+        AlphanumericSuffixTree tree;
+
+        if (forWords)
+            tree = new WordSuffixTree(text, reverse, true,
+                    new SimpleNodeAccessor());
+        else
+            tree = new CharSuffixTree(text, reverse, true,
+                    new SimpleNodeAccessor());
+
+        // CompactSuffixTree tree = new CompactSuffixTree(new SimpleSuffixTree(
+        // text, !forWords, reverse), false);
         long end = System.currentTimeMillis();
         System.out.println("Construction of Tree took: " + (end - start)); //$NON-NLS-1$
 
         start = System.currentTimeMillis();
-        String string = OUTPUT_DOT;
-        String string2 = (TMP_DIR + OUTPUT_DOT.replaceAll("\\.dot", "\\.txt")); //$NON-NLS-1$
-        tree.exportAsDot(TMP_DIR + string);
+        String string = DotDrawer.DOT_FILE;
+        String string2 = (DotDrawer.OUTPUT_FOLDER + DotDrawer.DOT_FILE
+                .replaceAll("\\.dot", "\\.txt")); //$NON-NLS-1$
+        tree.exportDot(DotDrawer.OUTPUT_FOLDER + string);
         end = System.currentTimeMillis();
         System.out.println("Export of Tree took: " + (end - start)); //$NON-NLS-1$
 
         start = System.currentTimeMillis();
-        if (DOT_APP_PATH.equals("")) { //$NON-NLS-1$
+        if (DotDrawer.DOT_APP_PATH.equals("")) { //$NON-NLS-1$
             Util.saveString(string2, tree.toString());
             System.out.println("Setting browser to: " + string2);
             browser.setUrl(string2);
@@ -364,12 +258,77 @@ public class View extends ViewPart {
                     Messages.getString("View.CAPTION_NO_DOT_PATH_SET")); //$NON-NLS-1$
 
         } else {
-            View.renderImage();
+            drawer.renderImage();
             View.update();
         }
         end = System.currentTimeMillis();
         System.out.println("Rendering of Tree took: " + (end - start)); //$NON-NLS-1$
-        size = tree.getTreeSize();
+        size = tree.getAllNodes(tree.getRoot(), new ArrayList<Node>(), false)
+                .size();
+
+        label.setText("" + size); //$NON-NLS-1$
+    }
+
+    /**
+     * Construct a tree for an input, exports it as dot
+     * 
+     * @param text
+     *            The text to be represented by the tree
+     * @param forWords
+     *            flag to indicate is this tree is for words (or chars)
+     * @param reverse
+     *            flag to indicate if this tree should be build for a reverse
+     *            version of the text
+     * @throws InterruptedException
+     * @throws InvocationTargetException
+     */
+    public static void constructDAG(final String text, final boolean forWords,
+            final boolean reverse) throws InvocationTargetException,
+            InterruptedException {
+        // View.update();
+
+        long start = System.currentTimeMillis();
+
+        AlphanumericSuffixTree tree;
+
+        if (forWords)
+            tree = new WordSuffixTree(text, reverse, true,
+                    new SimpleNodeAccessor());
+        else
+            tree = new CharSuffixTree(text, reverse, true,
+                    new SimpleNodeAccessor());
+        DAG dag = new DAG(tree);
+        long end = System.currentTimeMillis();
+        System.out.println("Construction of Tree took: " + (end - start)); //$NON-NLS-1$
+
+        start = System.currentTimeMillis();
+        String string = DotDrawer.DOT_FILE;
+        String string2 = (DotDrawer.OUTPUT_FOLDER + DotDrawer.DOT_FILE
+                .replaceAll("\\.dot", "\\.txt")); //$NON-NLS-1$
+        ((AlphanumericSuffixTree) dag.graph).exportDot(DotDrawer.OUTPUT_FOLDER
+                + string);
+        end = System.currentTimeMillis();
+        System.out.println("Export of Tree took: " + (end - start)); //$NON-NLS-1$
+
+        start = System.currentTimeMillis();
+        if (DotDrawer.DOT_APP_PATH.equals("")) { //$NON-NLS-1$
+            Util.saveString(string2, ((AlphanumericSuffixTree) dag.graph)
+                    .toString());
+            System.out.println("Setting browser to: " + string2);
+            browser.setUrl(string2);
+            MessageDialog.openWarning(browser.getShell(), Messages
+                    .getString("View.CAPTION_NO_DOT_PATH_SET"), //$NON-NLS-1$
+                    Messages.getString("View.CAPTION_NO_DOT_PATH_SET")); //$NON-NLS-1$
+
+        } else {
+            drawer.renderImage();
+            View.update();
+        }
+        end = System.currentTimeMillis();
+        System.out.println("Rendering of Tree took: " + (end - start)); //$NON-NLS-1$
+        size = ((AlphanumericSuffixTree) dag.graph).getAllNodes(
+                ((AlphanumericSuffixTree) dag.graph).getRoot(),
+                new ArrayList<Node>(), false).size();
 
         label.setText("" + size); //$NON-NLS-1$
     }
@@ -387,7 +346,7 @@ public class View extends ViewPart {
         Composite bottom = toolkit.createComposite(parent, SWT.NONE);
         toolkit.paintBordersFor(bottom);
         // 10 rows
-        bottom.setLayout(new GridLayout(12, false));
+        bottom.setLayout(new GridLayout(13, false));
         final Button forWords = toolkit.createButton(bottom,
                 CAPTION_WORD_BASED, SWT.CHECK);
         forWords.setSelection(true);
@@ -447,6 +406,30 @@ public class View extends ViewPart {
                         // update();
                     }
                 });
+        // dag button
+        Button dag = toolkit.createButton(bottom, "DAG", SWT.NONE);
+        dag
+                .addSelectionListener(new org.eclipse.swt.events.SelectionListener() {
+
+                    public void widgetDefaultSelected(SelectionEvent e) {
+                    }
+
+                    public void widgetSelected(SelectionEvent e) {
+
+                        try {
+                            View.constructDAG(text.getText(), forWords
+                                    .getSelection(), reverse.getSelection());
+                        } catch (InvocationTargetException e1) {
+                            // TODO Auto-generated catch block
+                            e1.printStackTrace();
+                        } catch (InterruptedException e1) {
+                            // TODO Auto-generated catch block
+                            e1.printStackTrace();
+                        }
+
+                        // update();
+                    }
+                });
         label = toolkit.createLabel(bottom, CAPTION_LENGTH);
         // dot button
         Button dot = toolkit.createButton(bottom, CAPTION_DOT, SWT.NONE);
@@ -457,7 +440,8 @@ public class View extends ViewPart {
                     }
 
                     public void widgetSelected(SelectionEvent e) {
-                        browser.setUrl(TMP_DIR + OUTPUT_DOT);
+                        browser.setUrl(DotDrawer.OUTPUT_FOLDER
+                                + DotDrawer.DOT_FILE);
                     }
                 });
 
@@ -521,7 +505,7 @@ public class View extends ViewPart {
                         text.setText(CAPTION_TEXT);
                         StringsPlugin.getDefault().getPreferenceStore()
                                 .setValue("dotpath", ""); //$NON-NLS-1$ //$NON-NLS-2$
-                        initPaths(parent);
+                        drawer.initPaths(parent);
                     }
                 });
         // file button
@@ -590,13 +574,14 @@ public class View extends ViewPart {
                                                                             .getText(new File(
                                                                                     source)),
                                                                     false,
-                                                                    false);
+                                                                    false,
+                                                                    new SimpleNodeAccessor());
                                                             pm.worked(75);
                                                             pm
                                                                     .subTask(Messages
                                                                             .getString("View.CAPTION_WRITING")); //$NON-NLS-1$
                                                             tree
-                                                                    .mapper.exportDot(string);
+                                                                    .exportDot(string);
                                                             pm.worked(25);
                                                             // pm.subTask("Oeffne
                                                             // Dot-Text...");

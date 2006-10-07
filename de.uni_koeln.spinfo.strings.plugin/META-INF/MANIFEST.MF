@@ -9,7 +9,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.forms,
  org.junit,
- de.uni_koeln.spinfo.strings.core
+ de.uni_koeln.spinfo.strings.core,
+ de.uni_koeln.spinfo.strings.dotviewer
 Eclipse-AutoStart: true
 Export-Package: de.uni_koeln.spinfo.strings.plugin,
  de.uni_koeln.spinfo.strings.plugin.views
