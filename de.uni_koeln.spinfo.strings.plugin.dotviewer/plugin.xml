@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            name="GraphViz"
+            id="de.uni_koeln.spinfo.strings.dotviewer">
+      </category>
+      <view
+            name="GraphViz and Image Preview"
+            icon="icons/graphviz.png"
+            category="de.uni_koeln.spinfo.strings.dotviewer"
+            class="de.uni_koeln.spinfo.strings.plugin.dotviewer.ImageView"
+            id="de.uni_koeln.spinfo.strings.dotviewer.ImageView">
+      </view>
+   </extension>
+
+</plugin>
