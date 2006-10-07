@@ -115,6 +115,5 @@ public abstract class AlphanumericSuffixTree extends NumericSuffixTree {
      */
     public void exportDot(String string) {
         mapper.exportDot(string);
-
     }
 }

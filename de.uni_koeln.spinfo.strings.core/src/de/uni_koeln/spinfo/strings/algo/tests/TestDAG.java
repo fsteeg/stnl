@@ -38,12 +38,13 @@ public class TestDAG extends TestCase {
     @Test
     public void testDAGFromWordSuffixTree2() {
         WordSuffixTree wordTree = new WordSuffixTree(
-                 "Ich esse Fisch. Ich esse Fleisch. Wir essen. Wir trinken.",
+                "Ich esse Fisch. Ich esse Fleisch. Ich esse. Ich trinke.",
+//                 "Ich esse Fisch. Ich esse Fleisch. Wir essen. Wir trinken.",
 //                "Er hat gestern sehr gelacht. Sie hat heute sehr geweint. Es hat letztens sehr geregnet.",
                 false, true, new SimpleNodeAccessor());
         wordTree.exportDot("tree.dot");
         DAG wordDag = new DAG(wordTree);
-        ((WordSuffixTree) wordDag.graph).exportDot("dag.dot");
+        wordDag.exportDot("dag.dot");
     }
 
     private NumericSuffixTree createLongTree() {

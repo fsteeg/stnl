@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node;
+import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory.SimpleNodeAccessor;
 
 /**
  * A directed acyclic graph, a compact suffix tree
@@ -50,17 +51,19 @@ public class DAG {
     // TODO correct indices are not preserved
     private void merge(Pair pair) {
         Map<Long, Node> children = graph.accessor.getChildren(pair.p);
-//        System.out.println();
-//        System.out.println("p: " + ((WordSuffixTree)graph).mapper.getTranslatedEdgeLabel(pair.p));
-//        for (Long id : children.keySet()) {
-//            Node child = children.get(id);
-//            System.out.println("Child: " + ((WordSuffixTree)graph).mapper.getTranslatedEdgeLabel(child));
-//        }
+        // System.out.println();
+        // System.out.println("p: " +
+        // ((WordSuffixTree)graph).mapper.getTranslatedEdgeLabel(pair.p));
+        // for (Long id : children.keySet()) {
+        // Node child = children.get(id);
+        // System.out.println("Child: " +
+        // ((WordSuffixTree)graph).mapper.getTranslatedEdgeLabel(child));
+        // }
         // merge p into q: remove edges out of p
         List<Node> parents = graph.accessor.getParents(pair.p);
         for (Node parentOfP : parents) {
             graph.accessor.getParents(pair.q).add(parentOfP);
-            
+
         }
         children.clear();
         // clear parent of p
@@ -98,6 +101,14 @@ public class DAG {
         int leavesP = graph.getAllNodes(p, pLeaves, true).size();
         int leavesQ = graph.getAllNodes(q, qLeaves, true).size();
         return leavesP == leavesQ;
+    }
+
+    public void exportDot(String string) {
+        if (graph instanceof AlphanumericSuffixTree)
+            ((AlphanumericSuffixTree) graph).exportDot(string);
+        else
+            new Mapper(graph, new SimpleNodeAccessor()).exportDot(string);
+
     }
 }
 
