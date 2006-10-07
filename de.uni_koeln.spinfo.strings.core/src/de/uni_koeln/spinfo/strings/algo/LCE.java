@@ -57,7 +57,7 @@ public class LCE {
 //        this.s2 = s2;
         // build a generalized suffix tree for the two texts
         tree = new WordSuffixTree(s1 + "." + s2, false, true, new SimpleNodeAccessor());
-        tree.mapper.exportDot("export.dot");
+        tree.exportDot("export.dot");
         lca = new LCA((TreeNode) tree.getRoot());
     }
 

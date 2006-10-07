@@ -1,5 +1,6 @@
 package de.uni_koeln.spinfo.strings.algo.suffixtrees.node;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -9,7 +10,7 @@ import java.util.Map;
  */
 public interface NodeAccessor {
 
-	public Node getParent(Node node);
+	public List<Node> getParents(Node node);
 
 	public Node getSuffixLink(Node currentNode);
 
@@ -19,11 +20,11 @@ public interface NodeAccessor {
 
 	public void setAdditionalLabels(Node leaf, int[] additionalLabels);
 
-	public void setParent(Node child, Node parent);
+	public void setParents(Node child, List<Node> parent);
 
 	public void setLabelEnd(Node leaf, int e);
 
-	public Node createInternalNode(Node parent, int suffixStart, int splittingPos);
+	public Node createInternalNode(List<Node> parent, int suffixStart, int splittingPos);
 
 	/**
 	 * Adds Node child to the children of Node parent. It is referenced by Long ref.
@@ -35,7 +36,7 @@ public interface NodeAccessor {
 	 */
 	public void addChild(Node parent, Long ref, Node child);
 
-	public Node createLeafNode(Node parent, int suffixStart, int number,
+	public Node createLeafNode(List<Node> parent, int suffixStart, int number,
 			int suffixIndex);
 
 	public void setId(Node root, int count);

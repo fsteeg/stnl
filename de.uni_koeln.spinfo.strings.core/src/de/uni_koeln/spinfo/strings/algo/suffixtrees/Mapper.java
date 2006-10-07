@@ -14,7 +14,8 @@ import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node;
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor;
 
 /**
- * Mapping of symbols in texts to symbols in the tree. Also provides the dot-output.
+ * Mapping of symbols in texts to symbols in the tree. Also provides the
+ * dot-output.
  * 
  * @author fsteeg
  * 
@@ -23,13 +24,13 @@ public class Mapper {
     private Map<Long, String> map;
 
     // these are for dot output
-   //  private int count = 1;
+    // private int count = 1;
 
-    private UkkonenSuffixTree tree;
+    private NumericSuffixTree tree;
 
-	private NodeAccessor accessor;
+    private NodeAccessor accessor;
 
-    public Mapper(UkkonenSuffixTree tree, NodeAccessor accessor) {
+    public Mapper(NumericSuffixTree tree, NodeAccessor accessor) {
         this.tree = tree;
         map = new HashMap<Long, String>();
         this.accessor = accessor;
@@ -56,9 +57,11 @@ public class Mapper {
             StringBuilder builder = new StringBuilder();
             for (int j = 0; j < label.size(); j++) {
                 String string = map.get(label.get(j));
-                if (string == null) {
+                if (label.get(j) == -1L)
                     string = "$";
-                } 
+                if (string == null) {
+                    string = "" + label.get(j);
+                }
                 builder.append(string + " ");
             }
             res = builder.toString().trim();
@@ -112,24 +115,37 @@ public class Mapper {
         }
     }
 
-    private ArrayList<Node> printDotBody(Node root,
-            ArrayList<Node> list, boolean leavesOnly,
-            BufferedWriter writer, int depth) throws IOException {
+    private ArrayList<Node> printDotBody(Node root, ArrayList<Node> list,
+            boolean leavesOnly, BufferedWriter writer, int depth)
+            throws IOException {
         tab(writer, depth);
-      //  accessor.setId(root,count);
-        //root.id = count;
-        if (accessor.getParent(root) != null) {
-            writer.write(accessor.getParent(root).getId() + "->");
-            writer.write("" + root.getId());
-            writer.write("[label=\""
-                    + getTranslatedEdgeLabel(root).toString().trim()
-                    + ",\\n Text: " + root.getTextNumber() + ", Suffix: "
-                    + ((Node) root).getSuffixIndex() + "\"];\n");
+        List<Node> parents = accessor.getParents(root);
+        // accessor.setId(root,count);
+        // root.id = count;
+        if (parents != null) {
+            for (Node node : parents) {
+                String string = node.getId() + "->" + root.getId() + "\n";
+                writer.write(string);
+                tab(writer, depth);
+                writer.write("["
+                        + (parents.size() > 1 ? " style=dashed " : "")
+                        + "label=\""
+                        + getTranslatedEdgeLabel(root).toString().trim()
+                        + ",\\n Text: " + root.getTextNumber() + ", Suffix: "
+                        + ((Node) root).getSuffixIndex() + "\"];\n");
+//                if(root.getAdditionalLabels() != null){
+//                    
+//                    System.out.println("Drawing...");
+//                    for (int i : root.getAdditionalLabels()) {
+//                        System.out.println(i);
+//                    }
+//                }
+            }
         }
         Iterator iterator;
         if (list == null) {
             list = new ArrayList<Node>();
-            //count = 1;
+            // count = 1;
         }
         if (!leavesOnly || (leavesOnly && accessor.isTerminal(root)))
             list.add(root);
@@ -140,7 +156,7 @@ public class Mapper {
             // last = count;
             while (iterator.hasNext()) {
                 Node next = (Node) iterator.next();
-                //count++;
+                // count++;
                 list = printDotBody(next, list, leavesOnly, writer, depth);
             }
         }

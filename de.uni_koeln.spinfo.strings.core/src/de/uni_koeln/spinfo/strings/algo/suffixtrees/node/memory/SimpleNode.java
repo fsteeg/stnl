@@ -11,7 +11,9 @@ package de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
+import de.uni_koeln.spinfo.strings.algo.lca.LCA;
 import de.uni_koeln.spinfo.strings.algo.lca.TreeNode;
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node;
 
@@ -28,7 +30,7 @@ public class SimpleNode implements Node, TreeNode {
 
     private int suffixIndex;
 
-    private Node parent;
+    private List<Node> parent;
 
     private Node suffixLink;
 
@@ -44,14 +46,14 @@ public class SimpleNode implements Node, TreeNode {
     
     public String toString() {
 
-		String parentString = parent == null ? " none " : " " + parent.getId();
+		String parentString = parent==null || parent.size()==0 ? " none " : " " + parent.size();
     	return "Node [" +
     		id +
     		" lStart " + labelStart +
     		" lEnd " + labelEnd +
     		" adlLab " + additionalLabels +
     		" link: " + suffixLink +
-    		" parent: " + parentString +
+    		" parents: " + parentString +
     		" sIndex " + suffixIndex
     	+ "]";
     }
@@ -74,15 +76,15 @@ public class SimpleNode implements Node, TreeNode {
     /**
      * creates a leaf
      * 
-     * @param parent
+     * @param parents
      *            the parent node
      * @param position
      *            the starting value of the suffix
      */
-    public SimpleNode(Node parent, int position, int textNumber,
+    public SimpleNode(List<Node> parents, int position, int textNumber,
             int suffixIndex) {
         this();
-        this.parent = parent;
+        this.parent = parents;
         labelStart = position;
         labelEnd = A_LEAF;
         children = null;
@@ -93,16 +95,16 @@ public class SimpleNode implements Node, TreeNode {
     /**
      * creates an internal node
      * 
-     * @param parent
+     * @param parents
      *            the parent of this node
      * @param labelStart
      *            the starting point of the path label
      * @param labelStop
      *            the ending point of the path label
      */
-    public SimpleNode(Node parent, int labelStart, int labelStop) {
+    public SimpleNode(List<Node>parents, int labelStart, int labelStop) {
         this();
-        this.parent = parent;
+        this.parent = parents;
         this.labelStart = labelStart;
         this.labelEnd = labelStop;
         this.textNumber = 0;
@@ -188,7 +190,7 @@ public class SimpleNode implements Node, TreeNode {
      * 
      * @return the parent of this node, null if it's the root.
      */
-    public Node getParent() {
+    public List<Node> getParents() {
         return parent;
     }
 
@@ -251,14 +253,20 @@ public class SimpleNode implements Node, TreeNode {
 		
 	}
 
-	public void setParent(Node parent) {
-		this.parent = parent;
+	public void setParent(List<Node> parents) {
+		this.parent = parents;
 		
 	}
 
 	public void setLabelEnd(int e) {
 		this.labelEnd = e;
 	}
+
+
+    public void setLabelStart(int s) {
+        this.labelStart = s;
+        
+    }
 
 
 

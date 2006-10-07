@@ -13,11 +13,11 @@ import java.util.ArrayList;
 
 import junit.framework.TestCase;
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.SimpleSequenceAccessor;
-import de.uni_koeln.spinfo.strings.algo.suffixtrees.UkkonenSuffixTree;
+import de.uni_koeln.spinfo.strings.algo.suffixtrees.NumericSuffixTree;
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory.SimpleNodeAccessor;
 
 /**
- * Test for {@link UkkonenSuffixTree}
+ * Test for {@link NumericSuffixTree}
  * 
  * @author Fabian Steeg (fsteeg)
  */
@@ -27,7 +27,7 @@ public class TestUkkonenSuffixTree extends TestCase {
      * Test method for 'de.uni_koeln.spinfo.strings.plugin.algo.suffixtrees.UkkonenSuffixTree.printTree(int)'
      */
     public void testPrintTree() {
-        UkkonenSuffixTree tree = new UkkonenSuffixTree(new SimpleNodeAccessor(), new SimpleSequenceAccessor());
+        NumericSuffixTree tree = new NumericSuffixTree(new SimpleNodeAccessor(), new SimpleSequenceAccessor());
         ArrayList<Long> l1 = new ArrayList<Long>();
         l1.add(1l);
         l1.add(2l);

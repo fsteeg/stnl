@@ -32,39 +32,41 @@ public class TestWordSuffixTreeComplexity extends TestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
     }
-
+    public void testSmall(){
+        constructTree("Ich esse Fisch. Ich esse Fisch. Ich esse Fleisch. Ich trinke. Ich schlafe.", false, true);
+    }
     /**
      * Test for {@link WordSuffixTree}
      */
     public void testConstructionRuntime() {
-        constructTree("Ich esse Fisch. Ich esse Fleisch. Ich trinke. Ich schlafe.", false);
+       //TODO problem when two trees are constructed...
 //        constructTree("Ich esse. Ich trinke", false);
 //         constructTree(Util.getText(new File("texts/small-text.txt")), false);
 //         constructTree(Util.getText(new File("texts/small-text.txt")), true);
-        //
-        // constructTree(Util.getText(new File("texts/text1.txt")), false);
-        // constructTree(Util.getText(new File("texts/text1.txt")), true);
-        //
-        // constructTree(Util.getText(new File("texts/text2.txt")), false);
-        // constructTree(Util.getText(new File("texts/text2.txt")), true);
-        //
-        // constructTree(Util.getText(new File("texts/text3.txt")), false);
-        // constructTree(Util.getText(new File("texts/text3.txt")), true);
-        //
-        // constructTree(Util.getText(new File("texts/text4.txt")), false);
-        // constructTree(Util.getText(new File("texts/text4.txt")), true);
-        //
-        // constructTree(Util.getText(new File("texts/text5.txt")), false);
-        // constructTree(Util.getText(new File("texts/text5.txt")), true);
-        //
-        // constructTree(Util.getText(new File("texts/text6.txt")), false);
-        // constructTree(Util.getText(new File("texts/text6.txt")), true);
-        //
-        // constructTree(Util.getText(new File("texts/text7.txt")), false);
-        // constructTree(Util.getText(new File("texts/text7.txt")), true);
-        //
-        // constructTree(Util.getText(new File("texts/text8.txt")), false);
-        // constructTree(Util.getText(new File("texts/text8.txt")), true);
+        
+         constructTree(Util.getText(new File("texts/text1.txt")), false, false);
+         constructTree(Util.getText(new File("texts/text1.txt")), true, true);
+        
+         constructTree(Util.getText(new File("texts/text2.txt")), false, false);
+         constructTree(Util.getText(new File("texts/text2.txt")), true, true);
+        
+         constructTree(Util.getText(new File("texts/text3.txt")), false, false);
+         constructTree(Util.getText(new File("texts/text3.txt")), true, true);
+        
+         constructTree(Util.getText(new File("texts/text4.txt")), false, false);
+         constructTree(Util.getText(new File("texts/text4.txt")), true, true);
+        
+         constructTree(Util.getText(new File("texts/text5.txt")), false, false);
+         constructTree(Util.getText(new File("texts/text5.txt")), true, true);
+        
+         constructTree(Util.getText(new File("texts/text6.txt")), false, false);
+         constructTree(Util.getText(new File("texts/text6.txt")), true, true);
+        
+         constructTree(Util.getText(new File("texts/text7.txt")), false, false);
+//         constructTree(Util.getText(new File("texts/text7.txt")), true, true);
+        
+         constructTree(Util.getText(new File("texts/text8.txt")), false, false);
+//         constructTree(Util.getText(new File("texts/text8.txt")), true, true);
     	
         // these take longer:
    //      constructTree(Util.getText(new File("texts/faust-1-de.txt")), false);
@@ -74,20 +76,21 @@ public class TestWordSuffixTreeComplexity extends TestCase {
         // constructTree(Util.getText(new File("texts/wrnpc11.txt")), true);
     }
 
-    private void constructTree(String text, boolean reverse) {
+    private void constructTree(String text, boolean reverse, boolean generalized) {
         long start;
         long current;
         String[] in = text.split("[^a-zA-Z0-9\\$]");
         start = System.currentTimeMillis();
-        WordSuffixTree tree = new WordSuffixTree(text, reverse, true, new SimpleNodeAccessor());
+        WordSuffixTree tree = new WordSuffixTree(text, reverse, generalized, new SimpleNodeAccessor());
         current = System.currentTimeMillis();
         System.out.print(in.length + " Tokens, " + text.length() + " Chars, "
                 + (current - start) + " ms. ");
         start = System.currentTimeMillis();
-        tree.mapper.exportDot("output.dot");
-        tree.printNodes();
-        current = System.currentTimeMillis();
-        System.out.print("Output: ");
-        System.out.print((current - start) + " ms.\n");
+        System.out.println();
+//        tree.mapper.exportDot("output.dot");
+//        tree.printNodes();
+//        current = System.currentTimeMillis();
+//        System.out.print("Output: ");
+//        System.out.print((current - start) + " ms.\n");
     }
 }

@@ -1,5 +1,6 @@
 package de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory;
 
+import java.util.List;
 import java.util.Map;
 
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node;
@@ -14,8 +15,8 @@ public class SimpleNodeAccessor implements NodeAccessor {
 	/* (non-Javadoc)
 	 * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor#getParent(de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node)
 	 */
-	public Node getParent(Node node) {
-		return ((SimpleNode)node).getParent();
+	public List<Node> getParents(Node node) {
+		return ((SimpleNode)node).getParents();
 	}
 
 	/* (non-Javadoc)
@@ -51,7 +52,7 @@ public class SimpleNodeAccessor implements NodeAccessor {
 	/* (non-Javadoc)
 	 * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor#setParent(de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node, de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node)
 	 */
-	public void setParent(Node child, Node parent) {
+	public void setParents(Node child, List<Node> parent) {
 		((SimpleNode)child).setParent(parent);
 		
 	}
@@ -76,20 +77,20 @@ public class SimpleNodeAccessor implements NodeAccessor {
 	/* (non-Javadoc)
 	 * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor#createNode(de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node, int, int, int, int)
 	 */
-	public Node createInternalNode(Node parent, int suffixStart, int splittingPos) {
+	public Node createInternalNode(List<Node> parent, int suffixStart, int splittingPos) {
 		SimpleNode toReturn = new SimpleNode(parent,suffixStart,splittingPos);
 		toReturn.setId(idCounter++);
-		System.out.println("Creating Internal Node:" + toReturn.getId());
+//		System.out.println("Creating Internal Node:" + toReturn.getId());
 		return toReturn;
 	}
 
 	/* (non-Javadoc)
 	 * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor#createNode(de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node, int, int, int)
 	 */
-	public Node createLeafNode(Node parent, int suffixStart, int number, int suffixIndex) {
+	public Node createLeafNode(List<Node> parent, int suffixStart, int number, int suffixIndex) {
 		SimpleNode toReturn = new SimpleNode(parent,suffixStart,number,suffixIndex);
 		toReturn.setId(idCounter++);
-		System.out.println("Creating Leaf Node:" + toReturn.getId());
+//		System.out.println("Creating Leaf Node:" + toReturn.getId());
 		return toReturn;
 	}
 	
@@ -97,11 +98,11 @@ public class SimpleNodeAccessor implements NodeAccessor {
 	 * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor#addChild(de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node, java.lang.Long, de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node)
 	 */
 	public void addChild(Node parent, Long x, Node middle) {
-		System.out.println("Add child " + middle.getId() + " to parent " + parent.getId());
+//		System.out.println("Add child " + middle.getId() + " to parent " + parent.getId());
 		
 		Node old = ((SimpleNode)parent).getChildren().put(x,middle);
 		if(old != null) {
-			System.out.println("Old child: " + old.getId());
+//			System.out.println("Old child: " + old.getId());
 		}
 	}
 	
@@ -121,6 +122,8 @@ public class SimpleNodeAccessor implements NodeAccessor {
 	public Node getRoot() {
 		return root;
 	}
+    
+    
 
 
 	

@@ -10,10 +10,16 @@ public interface Node {
 	int getTextNumber();
 
 	int getLabelStart();
+    
+    void setLabelStart(int s);
 
 	int getLabelEnd();
+    
+    void setLabelEnd(int end);
 
 	int[] getAdditionalLabels();
+    
+    void setAdditionalLabels(int[] labels);
 
 	//HashMap<Long, Node> getChildren();
 
