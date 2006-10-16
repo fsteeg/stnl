@@ -11,18 +11,17 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.ui.PlatformUI;
 
-
 /**
  * Class for drawing dot graphs from eclipse, using an given dot installation
  * 
  * @author fsteeg
- *
+ * 
  */
 public class DotDrawer {
 
     // some config values
 
-    public static final String DOT_CALL = "dot"; //$NON-NLS-1$
+    public static String DOT_CALL = "dot"; //$NON-NLS-1$
 
     public static final String OUTPUT_FORMAT = "-Tpng";
 
@@ -47,21 +46,26 @@ public class DotDrawer {
     private static String INPUT_FOLDER = null;
 
     /**
-     * @param outputFolder The path to write the result to
+     * @param outputFolder
+     *            The path to write the result to
      */
-    public DotDrawer(String inputFolder, String outputFolder, String in, String out) {
-        OUTPUT_FOLDER = outputFolder + File.separator;
-        INPUT_FOLDER = inputFolder + File.separator;
+    public DotDrawer(String inputFolder, String outputFolder, String in,
+            String out) {
+        OUTPUT_FOLDER = outputFolder;// + File.separator;
+        INPUT_FOLDER = inputFolder;// + File.separator;
         DOT_FILE = in;
         RESULT_PNG = out;
     }
 
     /**
-     * Output will be written to the instance location, accessible via OUTPUT_DIR
+     * Output will be written to the instance location, accessible via
+     * OUTPUT_DIR
      */
     public DotDrawer() {
-        OUTPUT_FOLDER = Platform.getInstanceLocation().getURL().getPath() + File.separator;
-        INPUT_FOLDER = Platform.getInstanceLocation().getURL().getPath() + File.separator;
+        OUTPUT_FOLDER = Platform.getInstanceLocation().getURL().getPath();// +
+                                                                            // File.separator;
+        INPUT_FOLDER = Platform.getInstanceLocation().getURL().getPath();// +
+                                                                            // File.separator;
         DOT_FILE = "output.dot";
         RESULT_PNG = "result.png";
     }
@@ -82,7 +86,11 @@ public class DotDrawer {
         }
         if (Platform.getOS().contains("win")) { //$NON-NLS-1$
             // TMP_DIR = DOT_APP_PATH;
-            OUTPUT_FOLDER = OUTPUT_FOLDER.substring(1);
+            if (OUTPUT_FOLDER.startsWith("/")) {
+                OUTPUT_FOLDER = OUTPUT_FOLDER.substring(1);
+                INPUT_FOLDER = INPUT_FOLDER.substring(1);
+            }
+            DOT_CALL = "dot.exe";
         }
         // set the command to call
         COMMANDS = new String[] { DOT_APP_PATH + DOT_CALL, OUTPUT_FORMAT, VAR,
@@ -119,9 +127,12 @@ public class DotDrawer {
                             .getString("View.CAPTION_NOT_FOUND"), //$NON-NLS-1$
                             Messages.getString("View.CAPTION_DOT_NOT_FOUND")); //$NON-NLS-1$
                 else {
-                    ImageViewerPlugin.getDefault().getPreferenceStore().setValue(
-                            "dotpath", //$NON-NLS-1$
-                            open + "/"); //$NON-NLS-1$
+                    String string = open + File.separator;
+                    ImageViewerPlugin.getDefault().getPreferenceStore()
+                            .setValue("dotpath", //$NON-NLS-1$
+                                    string); //$NON-NLS-1$
+                    System.out.println("PATH: " + string);
+                    System.out.println("SEP: " + File.separator);
                     DOT_APP_PATH = ImageViewerPlugin.getDefault()
                             .getPreferenceStore().getString("dotpath"); //$NON-NLS-1$   
                 }

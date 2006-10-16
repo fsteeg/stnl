@@ -10,6 +10,7 @@
  *******************************************************************************/
 package de.uni_koeln.spinfo.strings.plugin.dotviewer;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -18,6 +19,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
@@ -95,8 +97,8 @@ public class ImageView extends ViewPart {
     }
 
     private IFile generateImageFromDot(IFile file) {
-        String inFolder = file.getParent().getLocation().toPortableString();
-        String outFolder = file.getParent().getLocation().toPortableString();
+        String inFolder = Platform.getInstanceLocation().getURL().getPath() + file.getParent().getName() + "/";
+        String outFolder = Platform.getInstanceLocation().getURL().getPath()+ file.getParent().getName() + "/";
         System.out.println("in: " + inFolder);
         System.out.println("out: " + outFolder);
         DotDrawer drawer = new DotDrawer(inFolder, outFolder, file.getName(),
