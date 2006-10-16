@@ -28,6 +28,7 @@ public class ImageViewerPlugin extends AbstractUIPlugin {
 
 	//The shared instance.
 	private static ImageViewerPlugin plugin;
+    static String ID = "de.uni_koeln.spinfo.strings.plugin.dotviewer";
 	
 	/**
 	 * The constructor.
@@ -66,7 +67,7 @@ public class ImageViewerPlugin extends AbstractUIPlugin {
 	 * @return the image descriptor
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
-		return AbstractUIPlugin.imageDescriptorFromPlugin("de.uni_koeln.spinfo.strings.plugin.dotviewer", path);
+        return AbstractUIPlugin.imageDescriptorFromPlugin(ID, path);
 	}
     
      /**
@@ -74,7 +75,7 @@ public class ImageViewerPlugin extends AbstractUIPlugin {
      *            The files path
      * @return Return the file
      */
-    public File getFileInPlugin(IPath path) {
+    public static File getFileInPlugin(IPath path) {
         try {
             Bundle bundle = getDefault().getBundle();
             URL installURL = new URL(bundle.getEntry("/"), path.toString());

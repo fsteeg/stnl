@@ -10,16 +10,22 @@
  *******************************************************************************/
 package de.uni_koeln.spinfo.strings.plugin.dotviewer;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
+import java.util.HashMap;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
@@ -31,7 +37,7 @@ import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISelectionService;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.ViewPart;
-
+import org.osgi.framework.Bundle;
 
 public class ImageView extends ViewPart {
     ImageViewer viewer;
@@ -65,11 +71,34 @@ public class ImageView extends ViewPart {
 
     };
 
+    DotDrawer drawer;
+
     public void createPartControl(Composite parent) {
         parent.setLayout(new FillLayout());
         viewer = new ImageViewer(parent, SWT.NONE);
-
         getSelectionService().addSelectionListener(selectionListener);
+        addResetButton();
+    }
+
+    private void addResetButton() {
+        Action addItemAction = new Action("Dot...") {
+            public void run() {
+                ImageViewerPlugin.getDefault().getPreferenceStore().setValue(
+                        "dotpath", //$NON-NLS-1$
+                        "");
+                drawer.initPaths(viewer.getShell());
+            }
+        };
+        //TODO somethigns wrong here...
+        ImageDescriptor desc = ImageViewerPlugin
+                .getImageDescriptor("icons/update.gif");
+//        Bundle bundle = Platform.getBundle(ImageViewerPlugin.ID);
+//        IPath path = new Path("icons/update.gif");
+//        URL url = FileLocator.find(bundle, path, new HashMap());
+//        ImageDescriptor desc = ImageDescriptor.createFromURL(url);
+        addItemAction.setImageDescriptor(desc);
+        IToolBarManager mgr = getViewSite().getActionBars().getToolBarManager();
+        mgr.add(addItemAction);
     }
 
     protected void setImage(IFile file) {
@@ -97,11 +126,13 @@ public class ImageView extends ViewPart {
     }
 
     private IFile generateImageFromDot(IFile file) {
-        String inFolder = Platform.getInstanceLocation().getURL().getPath() + file.getParent().getName() + "/";
-        String outFolder = Platform.getInstanceLocation().getURL().getPath()+ file.getParent().getName() + "/";
+        String inFolder = Platform.getInstanceLocation().getURL().getPath()
+                + file.getParent().getName() + "/";
+        String outFolder = Platform.getInstanceLocation().getURL().getPath()
+                + file.getParent().getName() + "/";
         System.out.println("in: " + inFolder);
         System.out.println("out: " + outFolder);
-        DotDrawer drawer = new DotDrawer(inFolder, outFolder, file.getName(),
+        drawer = new DotDrawer(inFolder, outFolder, file.getName(),
                 "result.png");
         drawer.initPaths(this.getViewSite().getShell());
         try {
