@@ -8,23 +8,23 @@ import java.util.Map;
  * @author sschwieb
  *
  */
-public interface NodeAccessor {
+public interface NodeAccessor<T extends Node> {
 
-	public List<Node> getParents(Node node);
+	public List<T> getParents(T node);
 
-	public Node getSuffixLink(Node currentNode);
+	public T getSuffixLink(T node);
 
-	public boolean isTerminal(Node currentNode);
+	public boolean isTerminal(T node);
 
-	public void setSuffixLink(Node from, Node to);
+	public void setSuffixLink(T from, T to);
 
-	public void setAdditionalLabels(Node leaf, int[] additionalLabels);
+	public void setAdditionalLabels(T node, int[] additionalLabels);
 
-	public void setParents(Node child, List<Node> parent);
+	public void setParents(T child, List<T> parent);
 
-	public void setLabelEnd(Node leaf, int e);
+	public void setLabelEnd(T leaf, int end);
 
-	public Node createInternalNode(List<Node> parent, int suffixStart, int splittingPos);
+	public T createInternalNode(List<T> parent, int suffixStart, int splittingPos);
 
 	/**
 	 * Adds Node child to the children of Node parent. It is referenced by Long ref.
@@ -34,18 +34,25 @@ public interface NodeAccessor {
 	 * @param child
 	 * @return Modified parent
 	 */
-	public void addChild(Node parent, Long ref, Node child);
+	public void addChild(T parent, Long ref, T child);
 
-	public Node createLeafNode(List<Node> parent, int suffixStart, int number,
+	public T createLeafNode(List<T> parent, int suffixStart, int number,
 			int suffixIndex);
 
-	public void setId(Node root, int count);
+	/**
+	 * 
+	 * @param root
+	 * @param count
+	 * @deprecated setId can't be used in EJB context and should either be
+	 * removed or renamed (and change something else, but not the id).
+	 */
+	public void setId(T root, int count);
 
-	public Node createRootNode();
+	public T createRootNode();
 	
-	public Node getRoot();
+	public T getRoot();
 
-	public Map<Long, Node> getChildren(Node root);
+	public Map<Long, T> getChildren(T node);
 
 
 }

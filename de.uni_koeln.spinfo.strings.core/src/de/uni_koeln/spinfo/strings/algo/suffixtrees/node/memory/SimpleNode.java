@@ -30,13 +30,13 @@ public class SimpleNode implements Node, TreeNode {
 
     private int suffixIndex;
 
-    private List<Node> parent;
+    private List<SimpleNode> parent;
 
-    private Node suffixLink;
+    private SimpleNode suffixLink;
 
     private int labelStart, labelEnd;
 
-    private HashMap<Long, Node> children;
+    private HashMap<Long, SimpleNode> children;
 
     private int[] additionalLabels;
 
@@ -67,7 +67,7 @@ public class SimpleNode implements Node, TreeNode {
         suffixLink = null;
         labelStart = 0;
         labelEnd = 0;
-        children = new HashMap<Long, Node>();
+        children = new HashMap<Long, SimpleNode>();
         additionalLabels = null;
         textNumber = 0;
         suffixIndex = 0;
@@ -81,7 +81,7 @@ public class SimpleNode implements Node, TreeNode {
      * @param position
      *            the starting value of the suffix
      */
-    public SimpleNode(List<Node> parents, int position, int textNumber,
+    public SimpleNode(List<SimpleNode> parents, int position, int textNumber,
             int suffixIndex) {
         this();
         this.parent = parents;
@@ -102,7 +102,7 @@ public class SimpleNode implements Node, TreeNode {
      * @param labelStop
      *            the ending point of the path label
      */
-    public SimpleNode(List<Node>parents, int labelStart, int labelStop) {
+    public SimpleNode(List<SimpleNode>parents, int labelStart, int labelStop) {
         this();
         this.parent = parents;
         this.labelStart = labelStart;
@@ -114,7 +114,7 @@ public class SimpleNode implements Node, TreeNode {
     /**
      * @return Returns the children
      */
-    public HashMap<Long, Node> getChildren() {
+    public HashMap<Long, SimpleNode> getChildren() {
         return children;
     }
 
@@ -190,7 +190,7 @@ public class SimpleNode implements Node, TreeNode {
      * 
      * @return the parent of this node, null if it's the root.
      */
-    public List<Node> getParents() {
+    public List<SimpleNode> getParents() {
         return parent;
     }
 
@@ -240,11 +240,11 @@ public class SimpleNode implements Node, TreeNode {
 		return suffixIndex;
 	}
 
-	public Node getSuffixLink() {
+	public SimpleNode getSuffixLink() {
 		return this.suffixLink;
 	}
 
-	public void setSuffixLink(Node to) {
+	public void setSuffixLink(SimpleNode to) {
 		this.suffixLink = to;
 	}
 
@@ -253,7 +253,7 @@ public class SimpleNode implements Node, TreeNode {
 		
 	}
 
-	public void setParent(List<Node> parents) {
+	public void setParent(List<SimpleNode> parents) {
 		this.parent = parents;
 		
 	}

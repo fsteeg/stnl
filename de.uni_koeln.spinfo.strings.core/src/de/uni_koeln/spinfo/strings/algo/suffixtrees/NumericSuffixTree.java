@@ -10,7 +10,6 @@
 package de.uni_koeln.spinfo.strings.algo.suffixtrees;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -50,7 +49,7 @@ import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor;
  * @author Francois Pepin (original version from BioJava API), fsteeg (switched
  *         to longs)
  */
-public class NumericSuffixTree {
+public class NumericSuffixTree<T extends Node> {
 
     public static final Long DEFAULT_TERM_CHAR = -1L;
 
@@ -66,7 +65,7 @@ public class NumericSuffixTree {
 
     // private List<Long> sequences;
 
-    protected NodeAccessor accessor;
+    protected NodeAccessor<T> accessor;
 
     /**
      * Describes the rule that needs to be applied after walking down a tree.
@@ -84,7 +83,7 @@ public class NumericSuffixTree {
      * Initializes a new <code>UkkonenSuffixTree</code> instance with the
      * given accessors.
      */
-    protected void initialize(NodeAccessor nodeAccessor,
+    protected void initialize(NodeAccessor<T> nodeAccessor,
             SequenceAccessor sequenceAccessor) {
         this.accessor = nodeAccessor;
         this.sequences = sequenceAccessor;
@@ -100,7 +99,7 @@ public class NumericSuffixTree {
      * @param seqs
      *            The text to add
      */
-    public NumericSuffixTree(List<Long> seqs, NodeAccessor accessor,
+    public NumericSuffixTree(List<Long> seqs, NodeAccessor<T> accessor,
             SequenceAccessor sequenceAccessor) {
         this(accessor, sequenceAccessor);
         addSequences(seqs, 1, false);
@@ -121,7 +120,7 @@ public class NumericSuffixTree {
      * @param seqs
      *            The text to add
      */
-    public NumericSuffixTree(NodeAccessor accessor,
+    public NumericSuffixTree(NodeAccessor<T> accessor,
             SequenceAccessor sequenceAccessor) {
         initialize(accessor, sequenceAccessor);
     }
@@ -143,7 +142,7 @@ public class NumericSuffixTree {
         int i;
         int start, end;
         ArrayList<List<Long>> toBeAdded = new ArrayList<List<Long>>();
-        Iterator iterator;
+        Iterator<List<Long>> iterator;
         List<Long> subseq;
 
         if (seq == null || seq.size() == 0)
@@ -164,7 +163,7 @@ public class NumericSuffixTree {
         iterator = toBeAdded.iterator();
         i = 0;
         while (iterator.hasNext()) {
-            subseq = (List<Long>) iterator.next();
+            subseq = iterator.next();
             addSingleSequence(subseq, number);
             i++;
         }
@@ -180,8 +179,8 @@ public class NumericSuffixTree {
     protected void addSingleSequence(List<Long> seq, int number) {
         int i, gammaStart;
         int j = 0;
-        Node oldNode = null, newNode;
-        Node currentNode;
+        T oldNode = null, newNode;
+        T currentNode;
         boolean canLinkJump = false;
 
         // Puts i at the end of the previous sequences
@@ -350,13 +349,13 @@ public class NumericSuffixTree {
      *         stopped inside an edge. (check the rule variable to see where it
      *         stopped).
      */
-    public Node jumpTo(Node starting, int from, int to) {
-        Node currentNode;
-        Node arrivedAt;
+    public T jumpTo(T starting, int from, int to) {
+        T currentNode;
+        T arrivedAt;
         boolean canGoDown = true;
         int edgeLength;
         int original = from;
-        Node originalNode = starting;
+        T originalNode = starting;
         // int i = 0;
 
         currentNode = starting;
@@ -384,7 +383,7 @@ public class NumericSuffixTree {
                 // of times already.
             }
             Long key = sequences.get(from);
-            arrivedAt = (Node) accessor.getChildren(currentNode).get(key);
+            arrivedAt = (T) accessor.getChildren(currentNode).get(key);
             if (arrivedAt == null) {
                 canGoDown = false;
                 arrivedAt = currentNode;
@@ -425,9 +424,9 @@ public class NumericSuffixTree {
      * Tree navigation methods
      **************************************************************************/
 
-    public int getEdgeLength(Node child) {
+    public int getEdgeLength(T child) {
         int parentLength, childLength;
-        Node parent;
+        T parent;
         if (child.equals(accessor.getRoot())||accessor.getParents(child).size()==0)
             return 0;
         parent = accessor.getParents(child).get(0);
@@ -444,21 +443,21 @@ public class NumericSuffixTree {
         return childLength - parentLength;
     }
 
-    public List<Long> getEdgeLabel(Node child) {
+    public List<Long> getEdgeLabel(T child) {
         return sequences.subList(child.getLabelStart()
                 + (getPathLength(child) - getEdgeLength(child)), (child
                 .getLabelEnd() == TO_A_LEAF) ? e : child.getLabelEnd());
     }
 
-    public int getPathLength(Node node) {
+    public int getPathLength(T node) {
         return getPathEnd(node) - node.getLabelStart();
     }
 
-    public int getPathEnd(Node node) {
+    public int getPathEnd(T node) {
         return node.getLabelEnd() == TO_A_LEAF ? e : node.getLabelEnd();
     }
 
-    public List<Long> getLabel(Node node) {
+    public List<Long> getLabel(T node) {
         if (node.equals(accessor.getRoot()))
             return new Vector<Long>();
         else
@@ -475,17 +474,17 @@ public class NumericSuffixTree {
      *            if true, only leaves will be retuned
      * @return The nodes in the specified subtree
      */
-    public ArrayList<Node> getAllNodes(Node root, ArrayList<Node> list,
+    public ArrayList<T> getAllNodes(T root, ArrayList<T> list,
             boolean leavesOnly) {
         Iterator iterator;
         if (list == null)
-            list = new ArrayList<Node>();
+            list = new ArrayList<T>();
         if (!leavesOnly || (leavesOnly && accessor.isTerminal(root)))
             list.add(root);
         if (!accessor.isTerminal(root)) {
             iterator = accessor.getChildren(root).values().iterator();
             while (iterator.hasNext())
-                list = getAllNodes((Node) iterator.next(), list, leavesOnly);
+                list = getAllNodes((T) iterator.next(), list, leavesOnly);
         }
 
         return list;
@@ -508,7 +507,7 @@ public class NumericSuffixTree {
     // System.out.println(builder.toString());
     // }
 
-    public Node getRoot() {
+    public T getRoot() {
         return accessor.getRoot();
     }
 
@@ -519,7 +518,7 @@ public class NumericSuffixTree {
     /***************************************************************************
      * Tree modification methods
      **************************************************************************/
-    private void addPositionToLeaf(int pos, Node leaf) {
+    private void addPositionToLeaf(int pos, T leaf) {
         int[] moreLabels;
         int[] additionalLabels = leaf.getAdditionalLabels();
         if (additionalLabels == null)
@@ -534,11 +533,12 @@ public class NumericSuffixTree {
         accessor.setAdditionalLabels(leaf, additionalLabels);
     }
 
-    private void doRule2(Node parent, int splittingPos, int suffixStart,
+    private void doRule2(T parent, int splittingPos, int suffixStart,
             int number, int suffixIndex) {
         // int number = getAllNodes(root, null, false).size();
-        Node leaf = accessor.createLeafNode(new Vector<Node>(Arrays
-                .asList(new Node[] { parent })), suffixStart, number,
+    	Vector<T> v = new Vector<T>();
+    	v.add(parent);
+        T leaf = accessor.createLeafNode(v, suffixStart, number,
                 suffixIndex);
         Long splitPos = sequences.get(splittingPos);
         accessor.addChild(parent, splitPos, leaf);
@@ -549,16 +549,17 @@ public class NumericSuffixTree {
 
     }
 
-    private Node doRule3(Node child, int splittingPos, int suffixStart,
+    private T doRule3(T child, int splittingPos, int suffixStart,
             int number, int suffixIndex) {
         // return toBeSplit.splitEdge(endOfSubSeq,
         // sequences.charAt(endOfSubSeq),
         // toBeSplit.getStart()+endOfSubSeq-rule3Position,
         // suffixStart);
         // int number = getAllNodes(root, null, false).size();
-        Node parent = accessor.getParents(child).get(0);
-        Node middle = accessor.createInternalNode(new Vector<Node>(Arrays
-                .asList(new Node[] { parent })), suffixStart, splittingPos);
+        T parent = accessor.getParents(child).get(0);
+        Vector<T> v = new Vector<T>();
+    	v.add(parent);
+        T middle = accessor.createInternalNode(v, suffixStart, splittingPos);
         // SuffixNode middle = new SimpleNode(parent, suffixStart, splittingPos,
         // number, suffixIndex);
         int edgeLength = getEdgeLength(child);
@@ -576,8 +577,9 @@ public class NumericSuffixTree {
         accessor.addChild(middle, y, child);
         // middle.getChildren().put(y, child);
         // child.parent = middle;
-        accessor.setParents(child, new Vector<Node>(Arrays
-                .asList(new Node[] { middle })));
+        Vector<T> m = new Vector<T>();
+    	m.add(middle);
+        accessor.setParents(child, m);
         // System.out.println("rule 3: "+sequences.charAt(splittingPos)+"
         // between "+getLabel(parent)+" and "+getLabel(child) + " Addition
         // made:"+(number==getAllNodes(root, null,false).size()-1));
@@ -586,10 +588,10 @@ public class NumericSuffixTree {
     }
 
     private void finishAddition() {
-        Node leaf;
-        ArrayList leaves = getAllNodes(accessor.getRoot(), null, true);
+        T leaf;
+        ArrayList<T> leaves = getAllNodes(accessor.getRoot(), null, true);
         for (int i = 0; i < leaves.size(); i++) {
-            leaf = (Node) leaves.get(i);
+            leaf = leaves.get(i);
             if (leaf.getLabelEnd() == TO_A_LEAF)
                 accessor.setLabelEnd(leaf, e);
         }
@@ -597,10 +599,10 @@ public class NumericSuffixTree {
     }
 
     public void printTree() {
-        ArrayList allNodes = getAllNodes(accessor.getRoot(), null, false);
+        ArrayList<T> allNodes = getAllNodes(accessor.getRoot(), null, false);
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < allNodes.size(); i++) {
-            Node node = (Node) allNodes.get(i);
+            T node = allNodes.get(i);
             if (node.equals(accessor.getRoot()))
                 System.out.println("root");
             else {
