@@ -142,28 +142,38 @@ public class NumericSuffixTree<T extends Node> {
         ArrayList<List<Long>> toBeAdded = new ArrayList<List<Long>>();
         Iterator<List<Long>> iterator;
         List<Long> subseq;
-
+        System.out.println("Add Sequences...");
         if (seq == null || seq.size() == 0)
             return;
 
         // terminate the String if it's not terminated.
         if (!doNotTerminate && seq.get(seq.size() - 1) != TERMINATION_SYMBOL)
             seq.add(TERMINATION_SYMBOL);
-
+        System.out.println("Counting term chars...");
         // count how many termination Chars in in.
         start = 0;
-        for (i = 0; seq.subList(i, seq.size()).indexOf(TERMINATION_SYMBOL) != -1; i = seq
-                .subList(i, seq.size()).indexOf(TERMINATION_SYMBOL) + 1) {
+        for (i = 0;
+        	seq.subList(i, seq.size()).indexOf(TERMINATION_SYMBOL) != -1; 
+        	i = seq.subList(i, seq.size()).indexOf(TERMINATION_SYMBOL) + 1) {
             end = seq.subList(i, seq.size()).indexOf(TERMINATION_SYMBOL);
             toBeAdded.add(seq.subList(start, end + 1));
         }
-
-        iterator = toBeAdded.iterator();
-        i = 0;
+        System.out.println("Number of sequences to be added: " + toBeAdded.iterator());
+        addSequences(toBeAdded,number);
+//        iterator = toBeAdded.iterator();
+//        i = 0;
+//        while (iterator.hasNext()) {
+//            subseq = iterator.next();
+//            addSingleSequence(subseq, number);
+//            i++;
+//        }
+    }
+    
+    public void addSequences(List<List<Long>> toBeAdded, int number) {
+    	Iterator<List<Long>> iterator = toBeAdded.iterator();
         while (iterator.hasNext()) {
-            subseq = iterator.next();
+            List<Long> subseq = iterator.next();
             addSingleSequence(subseq, number);
-            i++;
         }
     }
 
