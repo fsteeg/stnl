@@ -9,11 +9,12 @@
  */
 package de.uni_koeln.spinfo.strings.algo.tests;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import junit.framework.TestCase;
-import de.uni_koeln.spinfo.strings.algo.suffixtrees.SimpleSequenceAccessor;
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.NumericSuffixTree;
+import de.uni_koeln.spinfo.strings.algo.suffixtrees.SimpleSequenceAccessor;
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory.SimpleNodeAccessor;
 
 /**
@@ -44,7 +45,7 @@ public class TestUkkonenSuffixTree extends TestCase {
         l2.add(4l);
         tree.addSequences(l1, 1, false);
         tree.addSequences(l2, 2, false);
-        tree.printTree();
+        tree.printTree(new PrintWriter(System.out));
     }
 
 }

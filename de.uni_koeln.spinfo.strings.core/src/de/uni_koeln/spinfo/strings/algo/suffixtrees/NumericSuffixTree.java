@@ -9,6 +9,7 @@
  */
 package de.uni_koeln.spinfo.strings.algo.suffixtrees;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.Vector;
 
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node;
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor;
+import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory.SimpleNode;
 
 /**
  * <p>
@@ -51,13 +53,9 @@ import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor;
  */
 public class NumericSuffixTree<T extends Node> {
 
-    public static final Long DEFAULT_TERM_CHAR = -1L;
+    public static final Long TERMINATION_SYMBOL = -1L;
 
     public static final int TO_A_LEAF = -1;
-
-    private Long terminationChar;
-
-    // private Node root;
 
     private int e;
 
@@ -87,7 +85,7 @@ public class NumericSuffixTree<T extends Node> {
             SequenceAccessor sequenceAccessor) {
         this.accessor = nodeAccessor;
         this.sequences = sequenceAccessor;
-        terminationChar = DEFAULT_TERM_CHAR;
+        //terminationChar = DEFAULT_TERM_CHAR;
         accessor.createRootNode();
         e = 0;
     }
@@ -149,14 +147,14 @@ public class NumericSuffixTree<T extends Node> {
             return;
 
         // terminate the String if it's not terminated.
-        if (!doNotTerminate && seq.get(seq.size() - 1) != terminationChar)
-            seq.add(terminationChar);
+        if (!doNotTerminate && seq.get(seq.size() - 1) != TERMINATION_SYMBOL)
+            seq.add(TERMINATION_SYMBOL);
 
         // count how many termination Chars in in.
         start = 0;
-        for (i = 0; seq.subList(i, seq.size()).indexOf(terminationChar) != -1; i = seq
-                .subList(i, seq.size()).indexOf(terminationChar) + 1) {
-            end = seq.subList(i, seq.size()).indexOf(terminationChar);
+        for (i = 0; seq.subList(i, seq.size()).indexOf(TERMINATION_SYMBOL) != -1; i = seq
+                .subList(i, seq.size()).indexOf(TERMINATION_SYMBOL) + 1) {
+            end = seq.subList(i, seq.size()).indexOf(TERMINATION_SYMBOL);
             toBeAdded.add(seq.subList(start, end + 1));
         }
 
@@ -598,6 +596,23 @@ public class NumericSuffixTree<T extends Node> {
 
     }
 
+    public void printTree(PrintWriter destination) {
+        ArrayList<T> allNodes = getAllNodes(accessor.getRoot(), null, false);
+        System.out.println("Number of Nodes: " + allNodes.size());
+        for (int i = 0; i < allNodes.size(); i++) {
+        	T node = allNodes.get(i);
+            if (node.equals(accessor.getRoot()))
+                destination.write("root");
+            else {
+                List<Long> thisLabel = getLabel(node);
+                List<Long> parentLabel = getLabel(accessor.getParents(node)
+                        .get(0));
+                destination.write("NodeImpl " + i + " label: \t" + thisLabel
+                        + " attached to: \t" + parentLabel + "\n");
+            }
+        }
+    }
+    /*
     public void printTree() {
         ArrayList<T> allNodes = getAllNodes(accessor.getRoot(), null, false);
         StringBuilder builder = new StringBuilder();
@@ -614,7 +629,7 @@ public class NumericSuffixTree<T extends Node> {
             }
         }
         System.out.println(builder.toString());
-    }
+    }*/
 
     /***************************************************************************
      * end Tree modification methods

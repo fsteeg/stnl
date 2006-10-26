@@ -10,6 +10,9 @@
 package de.uni_koeln.spinfo.strings.algo.tests;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 import junit.framework.TestCase;
 import de.uni_koeln.spinfo.strings.algo.Util;
@@ -35,6 +38,13 @@ public class TestWordSuffixTreeComplexity extends TestCase {
     public void testSmall(){
         constructTree("Ich esse Fisch. Ich esse Fisch. Ich esse Fleisch. Ich trinke. Ich schlafe.", false, true);
     }
+    
+    
+    public void testWinnetou1() {
+
+        constructTree(Util.getText(new File("texts/winnetou1.1.xml")), false, true);
+    }
+    
     /**
      * Test for {@link WordSuffixTree}
      */
@@ -87,6 +97,15 @@ public class TestWordSuffixTreeComplexity extends TestCase {
                 + (current - start) + " ms. ");
         start = System.currentTimeMillis();
         System.out.println();
+        System.out.println("Writing tree to \"output.txt\", please wait...");
+        try {
+        	 PrintWriter pw = new PrintWriter(new FileWriter("output.txt"));
+			tree.printTree(pw);
+			pw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 //        tree.mapper.exportDot("output.dot");
 //        tree.printNodes();
 //        current = System.currentTimeMillis();
