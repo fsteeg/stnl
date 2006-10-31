@@ -19,7 +19,7 @@ public abstract class AlphanumericSuffixTree extends NumericSuffixTree {
 
     boolean generalized;
 
-    Mapper mapper;
+    public Mapper mapper;
 
     SimpleSequenceAccessor sentenceAccessor;
 
@@ -113,7 +113,10 @@ public abstract class AlphanumericSuffixTree extends NumericSuffixTree {
      * @param string
      *            The location to store the dot file
      */
-    public void exportDot(String string) {
-        mapper.exportDot(string);
+    public void exportDot(String string, boolean num) {
+        if (num)
+            super.exportDot(string);
+        else
+            mapper.exportDot(string);
     }
 }

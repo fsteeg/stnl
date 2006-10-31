@@ -9,14 +9,9 @@
  */
 package de.uni_koeln.spinfo.strings.algo.tests;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-
 import junit.framework.TestCase;
-import de.uni_koeln.spinfo.strings.algo.Util;
 import de.uni_koeln.spinfo.strings.algo.lca.LCA;
+import de.uni_koeln.spinfo.strings.algo.suffixtrees.NumericSuffixTree;
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.WordSuffixTree;
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory.SimpleNodeAccessor;
 
@@ -36,14 +31,14 @@ public class TestWordSuffixTreeComplexity extends TestCase {
         super.tearDown();
     }
     public void testSmall(){
-        constructTree("Ich esse Fisch. Ich esse Fisch. Ich esse Fleisch. Ich trinke. Ich schlafe.", false, true);
+        constructTree("Ich esse Fisch. Ich esse Fleisch.", false, true);
     }
     
     
-    public void testWinnetou1() {
-
-        constructTree(Util.getText(new File("texts/winnetou1.1.xml")), false, true);
-    }
+//    public void testWinnetou1() {
+//
+//        constructTree(Util.getText(new File("texts/winnetou1.1.xml")), false, true);
+//    }
     
     /**
      * Test for {@link WordSuffixTree}
@@ -54,30 +49,30 @@ public class TestWordSuffixTreeComplexity extends TestCase {
 //         constructTree(Util.getText(new File("texts/small-text.txt")), false);
 //         constructTree(Util.getText(new File("texts/small-text.txt")), true);
         
-         constructTree(Util.getText(new File("texts/text1.txt")), false, false);
-         constructTree(Util.getText(new File("texts/text1.txt")), true, true);
-        
-         constructTree(Util.getText(new File("texts/text2.txt")), false, false);
-         constructTree(Util.getText(new File("texts/text2.txt")), true, true);
-        
-         constructTree(Util.getText(new File("texts/text3.txt")), false, false);
-         constructTree(Util.getText(new File("texts/text3.txt")), true, true);
-        
-         constructTree(Util.getText(new File("texts/text4.txt")), false, false);
-         constructTree(Util.getText(new File("texts/text4.txt")), true, true);
-        
-         constructTree(Util.getText(new File("texts/text5.txt")), false, false);
-         constructTree(Util.getText(new File("texts/text5.txt")), true, true);
-        
-         constructTree(Util.getText(new File("texts/text6.txt")), false, false);
-         constructTree(Util.getText(new File("texts/text6.txt")), true, true);
-        
-         constructTree(Util.getText(new File("texts/text7.txt")), false, false);
+//         constructTree(Util.getText(new File("texts/text1.txt")), false, false);
+//         constructTree(Util.getText(new File("texts/text1.txt")), false, true);
+//         System.out.println();
+//         constructTree(Util.getText(new File("texts/text2.txt")), false, false);
+//         constructTree(Util.getText(new File("texts/text2.txt")), false, true);
+//         System.out.println();
+//         constructTree(Util.getText(new File("texts/text3.txt")), false, false);
+//         constructTree(Util.getText(new File("texts/text3.txt")), false, true);
+//         System.out.println();
+//         constructTree(Util.getText(new File("texts/text4.txt")), false, false);
+//         constructTree(Util.getText(new File("texts/text4.txt")), false, true);
+//         System.out.println();
+//         constructTree(Util.getText(new File("texts/text5.txt")), false, false);
+//         constructTree(Util.getText(new File("texts/text5.txt")), false, true);
+//         System.out.println();
+//         constructTree(Util.getText(new File("texts/text6.txt")), false, false);
+//         constructTree(Util.getText(new File("texts/text6.txt")), false, true);
+//         System.out.println();
+//         constructTree(Util.getText(new File("texts/text7.txt")), false, false);
 //         constructTree(Util.getText(new File("texts/text7.txt")), true, true);
-        
-         constructTree(Util.getText(new File("texts/text8.txt")), false, false);
+//         System.out.println();
+//         constructTree(Util.getText(new File("texts/text8.txt")), false, false);
 //         constructTree(Util.getText(new File("texts/text8.txt")), true, true);
-    	
+//    	
         // these take longer:
    //      constructTree(Util.getText(new File("texts/faust-1-de.txt")), false);
         // constructTree(Util.getText(new File("texts/klsgh10.txt")), false);
@@ -96,16 +91,19 @@ public class TestWordSuffixTreeComplexity extends TestCase {
         System.out.print(in.length + " Tokens, " + text.length() + " Chars, "
                 + (current - start) + " ms. ");
         start = System.currentTimeMillis();
+        tree.exportDot("word.dot.txt");
+        
+//        tree.exportDot("num.dot.txt");
         System.out.println();
-        System.out.println("Writing tree to \"output.txt\", please wait...");
-        try {
-        	 PrintWriter pw = new PrintWriter(new FileWriter("output.txt"));
-			tree.printTree(pw);
-			pw.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//        System.out.println("Writing tree to \"output.txt\", please wait...");
+//        try {
+//        	 PrintWriter pw = new PrintWriter(new FileWriter("output.txt"));
+//			tree.printTree(pw);
+//			pw.close();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 //        tree.mapper.exportDot("output.dot");
 //        tree.printNodes();
 //        current = System.currentTimeMillis();

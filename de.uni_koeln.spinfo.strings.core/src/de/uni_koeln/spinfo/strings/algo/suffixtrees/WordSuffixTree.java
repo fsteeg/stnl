@@ -62,7 +62,7 @@ public class WordSuffixTree extends AlphanumericSuffixTree {
          * map but its nice and fast):
          */
         long counter = 0;
-        Map<String, Long> trie = new HashMap<String, Long>();
+        Map<String, Long> map = new HashMap<String, Long>();
         mapper = new Mapper(this, accessor);
         String[] sentences = text.split("[\\.!?;:]");
         Set<String> sentencesSet = new HashSet<String>();
@@ -80,6 +80,7 @@ public class WordSuffixTree extends AlphanumericSuffixTree {
         /** step 2: number those types */
         System.out.print(sentencesSet.size() + " Sentences, ");
         int sentenceCount = 1;
+        List<Long> all = new ArrayList<Long>();
         for (String sentence : sentencesSet) {
             // split each sentence into words
             String[] tokens = sentence.split("[^a-zA-Z0-9]");
@@ -93,16 +94,16 @@ public class WordSuffixTree extends AlphanumericSuffixTree {
                 }
                 tokens = tokRev;
             }
-            List<Long> builder = new ArrayList<Long>();
+            List<Long> seq = new ArrayList<Long>();
             for (String word : tokens) {
-                if (!trie.containsKey(word)) {
+                if (!map.containsKey(word)) {
                     // TODO attention, here we skip a $ in the weird-chars
                     // string, which would cause the tree to think it should
                     // terminate:
                     if (((char) counter) == '$')
                         counter++;
                     // map a word to a number:
-                    trie.put(word, counter);
+                    map.put(word, counter);
                     // TODO is there a better way do achieve this:
                     // map the number to the word:
                     mapper.put(counter, word);
@@ -117,18 +118,24 @@ public class WordSuffixTree extends AlphanumericSuffixTree {
 
             for (int i = 0; i < ids.length; i++) {
                 String rec = tokens[i];
-                Object val = trie.get(rec);
+                Object val = map.get(rec);
                 ids[i] = (Long) val;
-                builder.add(ids[i]);
+                seq.add(ids[i]);
             }
 
             /**
              * step 4: build a traditional suffix tree for the string of
              * numbers:
              */
-            super.addSequences(builder, sentenceCount, false);
+//            super.addSequences(builder, sentenceCount, false);
+            
+            all.addAll(seq);
+            all.add(NumericSuffixTree.TERMINATION_SYMBOL);
+            
+            
             sentenceCount++;
         }
+        super.addSequences(all, sentenceCount, false);
         System.out.print(counter + " Types, ");
 
         /**
