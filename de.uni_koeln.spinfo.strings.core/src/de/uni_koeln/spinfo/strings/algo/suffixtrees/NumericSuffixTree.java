@@ -15,6 +15,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -34,11 +35,11 @@ import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory.SuffixNode;
  * </p>
  * 
  * <pre>
- *                                   root(4)
- *                                   |
- *                                   A(2)--------G(1)-----T(1)
- *                                   |           |
- *                                   A(1)--G(1)  T(1)
+ *                                          root(4)
+ *                                          |
+ *                                          A(2)--------G(1)-----T(1)
+ *                                          |           |
+ *                                          A(1)--G(1)  T(1)
  * </pre>
  * 
  * <p>
@@ -199,13 +200,16 @@ public class NumericSuffixTree<T extends Node> {
         T oldNode = null, newNode;
         T currentNode;
         boolean canLinkJump = false;
-
+        Map map = new HashMap();
+        int matchesUntil = 0;
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(
-                    "hoola.txt"));
-            int matchesUntil = match(seq, accessor.getRoot(), 0,
-                    bufferedWriter, 0);
-            System.out.println("match: " + matchesUntil);
+                    "holla.txt"));
+            map = match(seq, accessor.getRoot(), 0, bufferedWriter, 0, false);
+            matchesUntil = map.get("index") != null ? (Integer) map
+                    .get("index") : 0;
+                    
+            System.out.println("adding: "+seq+", match until: " + matchesUntil);
             bufferedWriter.close();
         } catch (IOException e1) {
             // TODO Auto-generated catch block
@@ -214,11 +218,20 @@ public class NumericSuffixTree<T extends Node> {
 
         // Puts i at the end of the previous sequences
         i = sequences.size();
+
+//        i = i + matchesUntil;
+
         int k = i;
         j = i;
         sequences.addAll(seq);
 
         currentNode = accessor.getRoot();
+
+        // T node = (T) map.get("node");
+        // if (node != null){
+        // System.out.println("setting new node: " + getEdgeLabel(node));
+        // currentNode = node;
+        // }
 
         // phase i
         for (; i < sequences.size(); i++) {
@@ -295,15 +308,16 @@ public class NumericSuffixTree<T extends Node> {
 
     }
 
-    private int match(List<Long> seq, T root, int result, BufferedWriter writer,
-            int depth) {
+    private Map match(List<Long> seq, T root, int result,
+            BufferedWriter writer, int depth, boolean matched) {
+        Map map = new HashMap();
         try {
             tab(writer, depth);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        SimpleNode r = (SimpleNode) root;
+        // SimpleNode r = (SimpleNode) root;
         Map<Long, T> children = accessor.getChildren(root);
         List<Long> label = getLabel(root);
         try {
@@ -317,28 +331,33 @@ public class NumericSuffixTree<T extends Node> {
             // System.out.println("kinder");
 
             for (T child : children.values()) {
-                boolean matched = false;
-                label = getLabel(child);
+//                boolean matched = false;
+                label = getEdgeLabel(child);
                 for (int i = 0; i < seq.size() && i < label.size(); i++) {
 
                     if (seq.get(i).equals(label.get(i))) {
                         result++;
                         matched = true;
-                    } else if (matched)
-                        return result;
-                    else
+                    } else if (matched) {
+                        map.put("index", result);
+                        // map.put("node", child);
+                        return map;
+                    } else{
+                        matched=false;
                         break;
+                        
+                    }
 
                 }
                 if (matched)
-                    match(seq.subList(result, seq.size()), (T) child, result,
-                            writer, depth);
+                    return match(seq.subList(result, seq.size()), (T) child, result,
+                            writer, depth, matched);
 
             }
         } else
             System.out.println("Blatt!");
         // TODO Auto-generated method stub
-        return result;
+        return map;
     }
 
     /**
@@ -530,7 +549,7 @@ public class NumericSuffixTree<T extends Node> {
         return childLength - parentLength;
     }
 
-    public List<Long> getEdgeLabel(T child) {
+    protected List<Long> getEdgeLabel(T child) {
         return sequences.subList(child.getLabelStart()
                 + (getPathLength(child) - getEdgeLength(child)), (child
                 .getLabelEnd() == TO_A_LEAF) ? e : child.getLabelEnd());
@@ -776,11 +795,11 @@ public class NumericSuffixTree<T extends Node> {
         }
     }
 
-    private ArrayList<Node> printDotBody(Node root, ArrayList<Node> list,
+    private ArrayList<Node> printDotBody(T root, ArrayList<Node> list,
             boolean leavesOnly, BufferedWriter writer, int depth)
             throws IOException {
         tab(writer, depth);
-        List<T> parents = accessor.getParents((T) root);
+        List<T> parents = accessor.getParents(root);
         // accessor.setId(root,count);
         // root.id = count;
         if (parents != null) {
@@ -789,7 +808,7 @@ public class NumericSuffixTree<T extends Node> {
                 writer.write(string);
                 tab(writer, depth);
                 writer.write("[" + (parents.size() > 1 ? " style=dashed " : "")
-                        + "label=\"" + getLabel((T) root).toString().trim()
+                        + "label=\"" + getEdgeLabel(root).toString().trim()
                         + ",\\n Text: " + root.getTextNumber() + ", Suffix: "
                         + ((Node) root).getSuffixIndex() + "\"];\n");
                 // if(root.getAdditionalLabels() != null){
@@ -808,15 +827,15 @@ public class NumericSuffixTree<T extends Node> {
         }
         if (!leavesOnly || (leavesOnly && accessor.isTerminal((T) root)))
             list.add(root);
-        if (!accessor.isTerminal((T) root)) {
-            iterator = accessor.getChildren((T) root).values().iterator();
+        if (!accessor.isTerminal(root)) {
+            iterator = accessor.getChildren(root).values().iterator();
             // writer.write("\n");
             depth = depth + 1;
             // last = count;
             while (iterator.hasNext()) {
                 Node next = (Node) iterator.next();
                 // count++;
-                list = printDotBody(next, list, leavesOnly, writer, depth);
+                list = printDotBody((T) next, list, leavesOnly, writer, depth);
             }
         }
         return list;

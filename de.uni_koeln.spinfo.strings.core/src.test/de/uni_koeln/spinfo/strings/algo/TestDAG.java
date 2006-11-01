@@ -1,7 +1,7 @@
 /**
  * 
  */
-package de.uni_koeln.spinfo.strings.algo.tests;
+package de.uni_koeln.spinfo.strings.algo;
 
 import java.util.Arrays;
 import java.util.Vector;

@@ -1,4 +1,4 @@
-package de.uni_koeln.spinfo.strings.algo.tests;
+package de.uni_koeln.spinfo.strings.algo;
 
 import junit.framework.TestCase;
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.CharSuffixTree;

@@ -7,7 +7,7 @@
 
  You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package de.uni_koeln.spinfo.strings.algo.tests;
+package de.uni_koeln.spinfo.strings.algo;
 
 import junit.framework.TestCase;
 import de.uni_koeln.spinfo.strings.algo.lca.LCA;
@@ -31,7 +31,7 @@ public class TestWordSuffixTreeComplexity extends TestCase {
         super.tearDown();
     }
     public void testSmall(){
-        constructTree("Ich esse Fisch. Ich esse Fleisch.", false, true);
+        constructTree("Ich esse Fisch. Ich esse Fleisch. Ich esse Muesli. Ich trinke. Ich trinke.", false, true);
     }
     
     
@@ -91,7 +91,8 @@ public class TestWordSuffixTreeComplexity extends TestCase {
         System.out.print(in.length + " Tokens, " + text.length() + " Chars, "
                 + (current - start) + " ms. ");
         start = System.currentTimeMillis();
-        tree.exportDot("word.dot.txt");
+        tree.exportDot("num.dot", true);
+        tree.exportDot("word.dot", false);
         
 //        tree.exportDot("num.dot.txt");
         System.out.println();

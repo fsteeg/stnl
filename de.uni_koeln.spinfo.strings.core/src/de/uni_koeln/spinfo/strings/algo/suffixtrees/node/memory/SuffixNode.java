@@ -82,7 +82,7 @@ public abstract class SuffixNode implements Node{
     /**
      * @return Returns the children
      */
-    public HashMap<Long, Node> getChildren() {
+    public HashMap<Long, Node> getChildrenMapping() {
         return children;
     }
 

@@ -11,5 +11,4 @@ Export-Package: de.uni_koeln.spinfo.strings.algo,
  de.uni_koeln.spinfo.strings.algo.suffixtrees,
  de.uni_koeln.spinfo.strings.algo.suffixtrees.naive,
  de.uni_koeln.spinfo.strings.algo.suffixtrees.node,
- de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory,
- de.uni_koeln.spinfo.strings.algo.tests
+ de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory

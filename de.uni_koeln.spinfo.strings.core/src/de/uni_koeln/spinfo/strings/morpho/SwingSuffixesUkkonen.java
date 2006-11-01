@@ -264,7 +264,7 @@ public class SwingSuffixesUkkonen extends JFrame {
             t--;
         }
         baumString.append(tabs);
-        baumString.append(ukkonenSuffixBaum.getEdgeLabel(mutter));
+        baumString.append(ukkonenSuffixBaum.getIncomingEdgeLabel(mutter));
         baumString.append("\n");
         // nur wenn der aktuelle Knoten kein Blatt ist, wird weiter nach Kindern
         // gesucht:
@@ -463,14 +463,14 @@ public class SwingSuffixesUkkonen extends JFrame {
                     for (Node node : liste) {
                         if (nodeAccessor.getChildren(node) != null
                                 && nodeAccessor.getChildren(node).size() == 0) {
-                            String string2 = ukkonenSuffixBaum.getEdgeLabel(
+                            String string2 = ukkonenSuffixBaum.getIncomingEdgeLabel(
                                     node).toString();
                             String suffix = string2;
                             suffix = suffix.replaceAll("\\$", "");
                             while (!ukkonenSuffixBaum.getRoot().equals(
                                     ((SimpleNode) node).getParents())) {
                                 string2 = ukkonenSuffixBaum
-                                        .getEdgeLabel(
+                                        .getIncomingEdgeLabel(
                                                 ((SimpleNode) node)
                                                         .getParents().get(0))
                                         .toString()
@@ -600,14 +600,14 @@ public class SwingSuffixesUkkonen extends JFrame {
                             liste, true);
                     for (Node node : liste) {
                         // label ist zunaechst der Inhalt des Blatts
-                        String label = ukkonenSuffixBaum.getEdgeLabel(node)
+                        String label = ukkonenSuffixBaum.getIncomingEdgeLabel(node)
                                 .toString();
                         String suffix = label;
                         String praefix = "";
                         suffix = suffix.replaceAll("\\$", "");
                         while (!ukkonenSuffixBaum.getRoot().equals(
                                 ((SimpleNode) node).getParents())) {
-                            praefix = ukkonenSuffixBaum.getEdgeLabel(
+                            praefix = ukkonenSuffixBaum.getIncomingEdgeLabel(
                                     ((SimpleNode) node).getParents().get(0))
                                     .toString()
                                     + praefix;
@@ -817,7 +817,7 @@ public class SwingSuffixesUkkonen extends JFrame {
         Collection kinder = nodeAccessor.getChildren(mutter).values();
         for (Iterator it = kinder.iterator(); it.hasNext();) {
             SuffixNode kind = (SuffixNode) it.next();
-            String label = ukkonenSuffixBaum.getEdgeLabel(kind).toString();
+            String label = ukkonenSuffixBaum.getIncomingEdgeLabel(kind).toString();
             if (kind.isTerminal()) {
                 label = label.replaceAll("\\$", "");
                 if (label.startsWith(praefix)) {
@@ -839,10 +839,10 @@ public class SwingSuffixesUkkonen extends JFrame {
     }
 
     void kinderSpeichern(SuffixNode mutter, String e, String Prae) {
-        Collection kinder = mutter.getChildren().values();
+        Collection kinder = mutter.getChildren();
         for (Iterator it = kinder.iterator(); it.hasNext();) {
             SuffixNode kind = (SuffixNode) it.next();
-            String label = ukkonenSuffixBaum.getEdgeLabel(kind).toString();
+            String label = ukkonenSuffixBaum.getIncomingEdgeLabel(kind).toString();
             if (kind.isTerminal()) {
                 String endung = e;
                 label = label.replaceAll("\\$", "");

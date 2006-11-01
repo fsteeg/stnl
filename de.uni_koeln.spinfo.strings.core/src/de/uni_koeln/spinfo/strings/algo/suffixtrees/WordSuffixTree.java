@@ -53,6 +53,16 @@ public class WordSuffixTree extends AlphanumericSuffixTree {
     }
 
     /**
+     * TODO
+     * @param string
+     * @param b
+     * @param c
+     */
+    public WordSuffixTree(String string, boolean b, boolean c) {
+        this(string,b,c,new SimpleNodeAccessor());
+    }
+
+    /**
      * 
      */
     void construct() {

@@ -9,9 +9,11 @@
  */
 package de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import de.uni_koeln.spinfo.strings.algo.lca.LCA;
 import de.uni_koeln.spinfo.strings.algo.lca.TreeNode;
@@ -43,22 +45,16 @@ public class SimpleNode implements Node, TreeNode {
     private long id;
 
     private int textNumber;
-    
+
     public String toString() {
 
-		String parentString = parent==null || parent.size()==0 ? " none " : " " + parent.size();
-    	return "Node [" +
-    		id +
-    		" lStart " + labelStart +
-    		" lEnd " + labelEnd +
-    		" adlLab " + additionalLabels +
-    		" link: " + suffixLink +
-    		" parents: " + parentString +
-    		" sIndex " + suffixIndex
-    	+ "]";
+        String parentString = parent == null || parent.size() == 0 ? " none "
+                : " " + parent.size();
+        return "Node [" + id + " lStart " + labelStart + " lEnd " + labelEnd
+                + " adlLab " + additionalLabels + " link: " + suffixLink
+                + " parents: " + parentString + " sIndex " + suffixIndex + "]";
     }
 
-    
     /**
      * Creates a root
      */
@@ -102,7 +98,7 @@ public class SimpleNode implements Node, TreeNode {
      * @param labelStop
      *            the ending point of the path label
      */
-    public SimpleNode(List<SimpleNode>parents, int labelStart, int labelStop) {
+    public SimpleNode(List<SimpleNode> parents, int labelStart, int labelStop) {
         this();
         this.parent = parents;
         this.labelStart = labelStart;
@@ -110,41 +106,43 @@ public class SimpleNode implements Node, TreeNode {
         this.textNumber = 0;
         this.suffixIndex = 0;
     }
-  
+
     /**
      * @return Returns the children
      */
-    public HashMap<Long, SimpleNode> getChildren() {
-        return children;
+    // public HashMap<Long, SimpleNode> getChildren() {
+    // return children;
+    // }
+    public List<Node> getChildren() {
+        // TODO vorsicht das jetzt ein neues...
+        return children != null ? new ArrayList<Node>(children
+                .values()) : null;
     }
 
-	public int getLabelStart() {
-		return labelStart;
-	}
+    public int getLabelStart() {
+        return labelStart;
+    }
 
-	public int getLabelEnd() {
-		return labelEnd;
-	}
+    public int getLabelEnd() {
+        return labelEnd;
+    }
 
-	public int[] getAdditionalLabels() {
-		return additionalLabels;
-	}
+    public int[] getAdditionalLabels() {
+        return additionalLabels;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
-	
-	public long getId() {
-		return id;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
+    public long getId() {
+        return id;
+    }
 
-	public int getTextNumber() {
-		return textNumber;
-	}
-	
+    public int getTextNumber() {
+        return textNumber;
+    }
 
-  
     /**
      * Determine is this node is terminal (has no children).
      * <p>
@@ -161,23 +159,23 @@ public class SimpleNode implements Node, TreeNode {
      * Determine if this node has a child corresponding to a given character
      * 
      * @param i
-     *            the first <code>Long</code> of the edge coming down
-     *            this node.
+     *            the first <code>Long</code> of the edge coming down this
+     *            node.
      * @return <code>true</code> if the node has a child going down from that
      *         Long, false otherwise
      */
     public boolean hasChild(Long x) {
         return getChild(x) != null;
     }
-    
+
     /**
      * Gets the child of of a node that is coming down from that particular
      * node. It returns null if no child exists or if no child exists starting
      * on that particular character.
      * 
      * @param i
-     *            the first <code>Long</code> of the edge coming down
-     *            this node
+     *            the first <code>Long</code> of the edge coming down this
+     *            node
      * @return the appropriate child <code>SuffixNode</code>, or null if it
      *         doesn't exists.
      */
@@ -232,43 +230,49 @@ public class SimpleNode implements Node, TreeNode {
         return this.dfs;
     }
 
-	public int getDfs() {
-		return dfs;
-	}
-	
-	public int getSuffixIndex() {
-		return suffixIndex;
-	}
+    public int getDfs() {
+        return dfs;
+    }
 
-	public SimpleNode getSuffixLink() {
-		return this.suffixLink;
-	}
+    public int getSuffixIndex() {
+        return suffixIndex;
+    }
 
-	public void setSuffixLink(SimpleNode to) {
-		this.suffixLink = to;
-	}
+    public SimpleNode getSuffixLink() {
+        return this.suffixLink;
+    }
 
-	public void setAdditionalLabels(int[] additionalLabels) {
-		this.additionalLabels = additionalLabels;
-		
-	}
+    public void setSuffixLink(SimpleNode to) {
+        this.suffixLink = to;
+    }
 
-	public void setParent(List<SimpleNode> parents) {
-		this.parent = parents;
-		
-	}
+    public void setAdditionalLabels(int[] additionalLabels) {
+        this.additionalLabels = additionalLabels;
 
-	public void setLabelEnd(int e) {
-		this.labelEnd = e;
-	}
+    }
 
+    public void setParent(List<SimpleNode> parents) {
+        this.parent = parents;
+
+    }
+
+    public void setLabelEnd(int e) {
+        this.labelEnd = e;
+    }
 
     public void setLabelStart(int s) {
         this.labelStart = s;
-        
+
     }
 
+    public Map<Long, SimpleNode> getChildrenMapping() {
 
+        return children;
+    }
 
+    public boolean isInternal() {
+        return this.getParents() != null && this.getParents().size() > 0
+                && this.children != null && this.children.values().size() > 0;
+    }
 
 }

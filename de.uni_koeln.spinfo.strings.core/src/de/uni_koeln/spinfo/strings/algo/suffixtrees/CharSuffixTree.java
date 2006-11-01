@@ -34,6 +34,10 @@ public class CharSuffixTree extends AlphanumericSuffixTree {
         super(text, reverse, generalized, accessor);
     }
 
+    public CharSuffixTree(String text, boolean b, boolean c) {
+        this(text,b,c, new SimpleNodeAccessor());
+    }
+
     /**
      * 
      */

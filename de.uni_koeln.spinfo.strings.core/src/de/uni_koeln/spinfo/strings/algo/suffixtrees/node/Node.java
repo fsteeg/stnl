@@ -1,5 +1,7 @@
 package de.uni_koeln.spinfo.strings.algo.suffixtrees.node;
 
+import java.util.List;
+
 
 public interface Node {
 
@@ -26,6 +28,10 @@ public interface Node {
 	int getSuffixIndex();
 
 	int getDfs();
+
+    List<Node> getChildren();
+
+    boolean isInternal();
 	
 }
 

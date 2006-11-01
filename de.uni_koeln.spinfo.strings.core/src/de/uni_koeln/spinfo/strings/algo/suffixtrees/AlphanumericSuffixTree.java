@@ -4,6 +4,10 @@
 package de.uni_koeln.spinfo.strings.algo.suffixtrees;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node;
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor;
@@ -112,11 +116,64 @@ public abstract class AlphanumericSuffixTree extends NumericSuffixTree {
     /**
      * @param string
      *            The location to store the dot file
+     * @param numerical
+     *            If true the numerical values are displayed in the tree
      */
-    public void exportDot(String string, boolean num) {
-        if (num)
+    public void exportDot(String string, boolean numerical) {
+        if (numerical)
             super.exportDot(string);
         else
             mapper.exportDot(string);
+    }
+
+    /**
+     * (non-Javadoc)
+     * 
+     * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.NumericSuffixTree#exportDot(java.lang.String)
+     */
+    public void exportDot(String string) {
+        mapper.exportDot(string);
+    }
+
+    /**
+     * @param node
+     *            The node to get the incoming label for
+     * @return Returns the incoming label for the node
+     */
+    public String getIncomingEdgeLabel(Node node) {
+        return mapper.getTranslatedEdgeLabel(node).toString().replaceAll("\\$",
+                "").trim();
+    }
+
+    /**
+     * @return Returns all nodes in the tree
+     */
+    public List<Node> getAllNodes() {
+        return getAllNodes(super.getRoot(), new ArrayList(), false);
+    }
+
+    /**
+     * @param node
+     *            The node to start from
+     * @return Returns all concatenations of all edge labels on all paths from
+     *         the node to a leaf
+     */
+    public Collection<? extends String> getLabelsUntilLeaf(Node node) {
+        Set<String> result = new HashSet<String>();
+        addAllLabels(node, result, "");
+        return result;
+    }
+
+    private void addAllLabels(Node node, Set<String> result, String builder) {
+        List<Node> children = node.getChildren();
+        for (Node child : children) {
+            String concat = builder + getIncomingEdgeLabel(child) + " ";
+            if (!child.isInternal()) {
+                result.add(concat.trim());
+            } else {
+                addAllLabels(child, result, concat);
+            }
+        }
+
     }
 }
