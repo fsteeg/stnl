@@ -17,8 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import de.uni_koeln.spinfo.strings.algo.LCE;
-import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node;
+import de.uni_koeln.spinfo.strings.algo.TestCharSuffixTree;
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor;
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory.SimpleNodeAccessor;
 
@@ -29,13 +28,41 @@ import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory.SimpleNodeAccess
  */
 public class CharSuffixTree extends AlphanumericSuffixTree {
 
+    /**
+     * @param text
+     *            The input text
+     * @param reverse
+     *            If true the tree is built for the reversed text
+     * @param generalized
+     *            If true the tree is generalized
+     * @param accessor
+     *            The accessor to use (memory vs DB)
+     */
     public CharSuffixTree(String text, boolean reverse, boolean generalized,
             NodeAccessor accessor) {
         super(text, reverse, generalized, accessor);
     }
 
-    public CharSuffixTree(String text, boolean b, boolean c) {
-        this(text,b,c, new SimpleNodeAccessor());
+    /**
+     * @param text
+     *            The input text
+     * @param reverse
+     *            If true the tree is built for the reversed text
+     * @param generalized
+     *            If true the tree is generalized
+     */
+    public CharSuffixTree(String text, boolean reverse, boolean generalized) {
+        this(text, reverse, generalized, new SimpleNodeAccessor());
+    }
+
+    /**
+     * Builds a forward, generalized tree for text
+     * 
+     * @param text
+     *            The input text
+     */
+    public CharSuffixTree(String text) {
+        this(text, false, true);
     }
 
     /**

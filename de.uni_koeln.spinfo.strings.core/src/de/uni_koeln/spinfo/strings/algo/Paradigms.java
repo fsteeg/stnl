@@ -92,6 +92,21 @@ public class Paradigms {
         }
         return cf;
     }
+    
+    public Set<Set<String>> getParadigms(
+            AlphanumericSuffixTree tree) {
+        Set<Set<String>> paradigms = new HashSet<Set<String>>();
+        for (Node node : tree.getAllNodes()) {
+            if (node.isInternal()) {
+                Set<String> paradigm = new HashSet<String>();
+                for (Node child : node.getChildren()) {
+                    paradigm.add(tree.getIncomingEdgeLabel(child));
+                }
+                paradigms.add(paradigm);
+            }
+        }
+        return paradigms;
+    }
 
     /**
      * brute-force way of deriving paradigms from given paradigms (NOTE: just

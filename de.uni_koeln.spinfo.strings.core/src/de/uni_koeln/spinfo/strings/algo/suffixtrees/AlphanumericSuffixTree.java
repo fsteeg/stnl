@@ -165,6 +165,8 @@ public abstract class AlphanumericSuffixTree extends NumericSuffixTree {
     }
 
     private void addAllLabels(Node node, Set<String> result, String builder) {
+        if (!node.isInternal())
+            return;
         List<Node> children = node.getChildren();
         for (Node child : children) {
             String concat = builder + getIncomingEdgeLabel(child) + " ";
@@ -176,4 +178,25 @@ public abstract class AlphanumericSuffixTree extends NumericSuffixTree {
         }
 
     }
+
+    public ArrayList<Node> getAllNodes(Node node, boolean leafsOnly) {
+        return getAllNodes(node, new ArrayList(), leafsOnly);
+    }
+
+//    public int[] find(String string) {
+//        for (Node node : getAllNodes()) {
+//            // if (node.isInternal()) {
+//            String prefix = getIncomingEdgeLabel(node);
+//            if (string.startsWith(prefix)) {
+//                String suffix = string.substring(prefix.length());
+//                Collection<? extends String> labelsUntilLeaf = getLabelsUntilLeaf(node);
+//                if (prefix.equals(string) || labelsUntilLeaf.contains(suffix.trim())) {
+//                    return new int[] { node.getSuffixIndex(),
+//                            node.getTextNumber() };
+//                }
+//            }
+//            // }
+//        }
+//        return null;
+//    }
 }
