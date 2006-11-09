@@ -1,9 +1,10 @@
 package de.uni_koeln.spinfo.strings.algo.suffixtrees;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimpleSequenceAccessor extends ArrayList<Long> implements SequenceAccessor {
+public class SimpleSequenceAccessor extends ArrayList<Long> implements SequenceAccessor, Serializable {
 
 	private static final long serialVersionUID = -396809574132369635L;
 	
