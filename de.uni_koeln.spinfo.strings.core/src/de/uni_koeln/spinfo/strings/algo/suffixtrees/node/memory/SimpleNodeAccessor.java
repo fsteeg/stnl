@@ -71,6 +71,35 @@ public class SimpleNodeAccessor implements NodeAccessor<SimpleNode> {
 
     }
 
+	/* (non-Javadoc)
+	 * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor#createNode(de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node, int, int, int)
+	 */
+	public SimpleNode createLeafNode(List<SimpleNode> parent, int suffixStart, long number, int suffixIndex) {
+		SimpleNode toReturn = new SimpleNode(parent,suffixStart,number,suffixIndex);
+		toReturn.setId(idCounter++);
+//		System.out.println("Creating Leaf Node:" + toReturn.getId());
+		return toReturn;
+	}
+
+	
+    /*
+     * (non-Javadoc)
+     * 
+     * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor#addChild(de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node,
+     *      java.lang.Long,
+     *      de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node)
+     */
+    public void addChild(SimpleNode parent, Long x, SimpleNode middle) {
+        // System.out.println("Add child " + middle.getId() + " to parent " +
+        // parent.getId());
+
+        SimpleNode old = parent.getChildrenMapping().put(x, middle);
+        if (old != null) {
+            // System.out.println("Old child: " + old.getId());
+        }
+    }
+
+	
     /*
      * (non-Javadoc)
      * 
@@ -123,22 +152,6 @@ public class SimpleNodeAccessor implements NodeAccessor<SimpleNode> {
         return toReturn;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor#addChild(de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node,
-     *      java.lang.Long,
-     *      de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node)
-     */
-    public void addChild(SimpleNode parent, Long x, SimpleNode middle) {
-        // System.out.println("Add child " + middle.getId() + " to parent " +
-        // parent.getId());
-
-        SimpleNode old = parent.getChildrenMapping().put(x, middle);
-        if (old != null) {
-            // System.out.println("Old child: " + old.getId());
-        }
-    }
 
     public Map<Long, SimpleNode> getChildren(SimpleNode node) {
         return node.getChildrenMapping();
