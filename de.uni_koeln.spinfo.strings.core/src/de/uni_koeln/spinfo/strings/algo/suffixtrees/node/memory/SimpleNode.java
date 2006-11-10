@@ -9,6 +9,7 @@
  */
 package de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -26,7 +27,7 @@ import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node;
  * @author Fabian Steeg (fsteeg)
  * @author Stephan Schwiebert (sschwieb)
  */
-public class SimpleNode implements Node, TreeNode {
+public class SimpleNode implements Node, TreeNode, Serializable {
 
     private int dfs = 0;
 
@@ -44,7 +45,7 @@ public class SimpleNode implements Node, TreeNode {
 
     private long id;
 
-    private int textNumber;
+    private long textNumber;
 
     public String toString() {
 
@@ -77,7 +78,7 @@ public class SimpleNode implements Node, TreeNode {
      * @param position
      *            the starting value of the suffix
      */
-    public SimpleNode(List<SimpleNode> parents, int position, int textNumber,
+    public SimpleNode(List<SimpleNode> parents, int position, long textNumber,
             int suffixIndex) {
         this();
         this.parent = parents;
@@ -139,9 +140,9 @@ public class SimpleNode implements Node, TreeNode {
         return id;
     }
 
-    public int getTextNumber() {
-        return textNumber;
-    }
+	public long getTextNumber() {
+		return textNumber;
+	}
 
     /**
      * Determine is this node is terminal (has no children).
