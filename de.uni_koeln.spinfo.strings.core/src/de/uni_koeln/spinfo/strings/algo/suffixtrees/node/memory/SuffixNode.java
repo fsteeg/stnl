@@ -107,7 +107,7 @@ public abstract class SuffixNode implements Node{
 	}
 
 
-	public int getTextNumber() {
+	public long getTextNumber() {
 		return textNumber;
 	}
 	
