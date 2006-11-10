@@ -9,7 +9,7 @@ public interface Node {
 	
 	long getId();
 	
-	int getTextNumber();
+	long getTextNumber();
 
 	int getLabelStart();
     
@@ -29,9 +29,9 @@ public interface Node {
 
 	int getDfs();
 
-    List<Node> getChildren();
+  //  List<Node> getChildren();
 
-    boolean isInternal();
+  //  boolean isInternal();
 	
 }
 
