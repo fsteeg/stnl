@@ -1,3 +1,4 @@
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -6,14 +7,10 @@ public class Application {
 	//The input buffer and character count.  Please note that N
 	//is the length of the input string -1, which means it
 	//denotes the maximum index in the input buffer.
-	public static char[] t = new char[100];
+	public static String t = new String();
 	public static int n;
 	
 	public static Suffixtree ukkonen;
-	
-	//Necessary forward references
-	//	void validate();
-	//	int walk_tree( int start_node, int last_char_so_far );
 	
 	public static void main(String[] args)
 	{
@@ -27,15 +24,18 @@ public class Application {
 	         + "but the validation code will flag it as being an\n"
 	         + "invalid tree\n\n"
 	         + "Enter string: ");
-	    InputStreamReader reader = new InputStreamReader(System.in);
+	    BufferedReader reader = new BufferedReader( new InputStreamReader(System.in) );
+//	    InputStreamReader reader = new InputStreamReader(System.in);
 	    try {
-			reader.read(t);
+	    	t = reader.readLine();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	    // Eingabe soll eigentlich in der Länge beschränkt sein
 	    //cin.getline( T, MAX_LENGTH - 1 );
-	    n = t.length - 1;
+	    n = t.length() - 1;
+	    
+	    System.out.println("N: " + n + "\n");
 	    
 		//	 The active point is the first non-leaf suffix in the
 		//	 tree.  We start by setting this to be the empty string
@@ -43,8 +43,11 @@ public class Application {
 		//	 value after every new prefix is added.
 		
 	    Suffix active = new Suffix( 0, 0, -1 );  // The initial active prefix
-	    for ( int i = 0 ; i <= n ; i++ )
+	    for ( int i = 0 ; i <= n ; i++ ){
+	    	System.out.println("ADDING: " + i);
 	        Suffix.addPrefix( active, i );
+	        
+	    }
 			
 		//	 Once all N prefixes have been added, the resulting table
 		//	 of edges is printed out, and a validation step is

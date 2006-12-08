@@ -47,10 +47,11 @@ public class Edge {
 			
 	public void insert()
 	{
-	    int i = Suffixtree.hash( start_node, Application.t[ first_char_index ] );
-	    while ( Application.ukkonen.edges.get(i).start_node != -1 )
+	    int i = Suffixtree.hash( start_node, Application.t.charAt( first_char_index ) );
+	    while ( Application.ukkonen.edges.get(i) != null /*|| Application.ukkonen.edges.get(i).start_node != -1 */)
 	        i = ++i % Suffixtree.HASH_TABLE_SIZE;
-	    Application.ukkonen.edges.set(i, this);
+	    Application.ukkonen.edges.put(i, this);
+	    System.out.println("ADDED!");
 	}
 	
 	//		Removing an edge from the hash table is a little more tricky.
@@ -64,7 +65,7 @@ public class Edge {
 			
 	public void remove()
 	{
-	    int i = Suffixtree.hash( start_node, Application.t[ first_char_index ] );
+	    int i = Suffixtree.hash( start_node, Application.t.charAt( first_char_index ) );
 	    while ( Application.ukkonen.edges.get(i).start_node != start_node ||
 	    		Application.ukkonen.edges.get(i).first_char_index != first_char_index )
 	    		i = ++i % Suffixtree.HASH_TABLE_SIZE;
@@ -75,7 +76,7 @@ public class Edge {
 				i = ++i % Suffixtree.HASH_TABLE_SIZE;
 				if ( Application.ukkonen.edges.get(i).start_node == -1 )
 					return;
-				int r = Suffixtree.hash( Application.ukkonen.edges.get(i).start_node, Application.t[ Application.ukkonen.edges.get(i).first_char_index ] );
+				int r = Suffixtree.hash( Application.ukkonen.edges.get(i).start_node, Application.t.charAt( Application.ukkonen.edges.get(i).first_char_index ) );
 				if ( i >= r && r > j )
 					continue;
 				if ( r > j && j > i )
@@ -84,7 +85,7 @@ public class Edge {
 					continue;
 				break;
 			}
-			Application.ukkonen.edges.set(j, Application.ukkonen.edges.get(i));
+			Application.ukkonen.edges.put(j, Application.ukkonen.edges.get(i));
 	   }
 	}
 			
