@@ -126,8 +126,10 @@ public class Suffix {
 			Edge new_edge = new Edge(last_char_index, Application.n,
 					parent_node);
 			new_edge.insert();
-			if (last_parent_node > 0)
+			if (last_parent_node > 0){
+				System.out.println("1 Setting suffix node to: " + parent_node);
 				Suffixtree.nodes.get(last_parent_node).suffix_node = parent_node;
+			}
 			last_parent_node = parent_node;
 
 			// This final step is where we move to the next smaller suffix
@@ -138,8 +140,10 @@ public class Suffix {
 				active.origin_node = Suffixtree.nodes.get(active.origin_node).suffix_node;
 			active.canonize();
 		}
-		if (last_parent_node > 0)
+		if (last_parent_node > 0){
+			System.out.println("2 Setting suffix node to: " + parent_node);
 			Suffixtree.nodes.get(last_parent_node).suffix_node = parent_node;
+		}
 		active.last_char_index++; // Now the endpoint is the next active point
 		active.canonize();
 	}

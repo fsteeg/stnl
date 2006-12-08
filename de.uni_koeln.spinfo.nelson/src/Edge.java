@@ -48,7 +48,7 @@ public class Edge {
 	public void insert()
 	{
 	    int i = Suffixtree.hash( start_node, Application.t.charAt( first_char_index ) );
-	    while ( Application.ukkonen.edges.get(i) != null /*|| Application.ukkonen.edges.get(i).start_node != -1 */)
+	    while ( Application.ukkonen.edges.get(i).start_node != -1 )
 	        i = ++i % Suffixtree.HASH_TABLE_SIZE;
 	    Application.ukkonen.edges.put(i, this);
 	    System.out.println("ADDED!");
@@ -111,6 +111,7 @@ public class Edge {
 		remove();
 		Edge new_edge = new Edge( first_char_index, first_char_index + s.last_char_index - s.first_char_index, s.origin_node);
 		new_edge.insert();
+		System.out.println("Setting suffix node to: " + s.origin_node);
 		Suffixtree.nodes.get( new_edge.end_node ).suffix_node = s.origin_node;
 		first_char_index += s.last_char_index - s.first_char_index + 1;
 		start_node = new_edge.end_node;

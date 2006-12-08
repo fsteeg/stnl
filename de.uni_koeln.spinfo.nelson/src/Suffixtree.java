@@ -1,12 +1,16 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Suffixtree {
-	
-	public Suffixtree(){
-		for (int i = 0; i < 2000; i++) {
+
+	public Suffixtree() {
+		for (int i = 0; i < MAX_LENGTH * 2; i++) {
 			nodes.add(new Node());
+		}
+		for (int i = 0; i < HASH_TABLE_SIZE; i++) {
+			edges.put(i, new Edge());
 		}
 	}
 
@@ -24,7 +28,6 @@ public class Suffixtree {
 	// defined, with no children.
 	// ==> class Nodes sets count = 1
 	public static ArrayList<Node> nodes = new ArrayList<Node>();
-	
 
 	// This is the hash table where all the currently
 	// defined edges are stored. You can dump out
@@ -54,11 +57,11 @@ public class Suffixtree {
 	// nodes should match the node count.
 	//
 
-	char[] currentString = new char[1000];
+	char[] currentString = new char[MAX_LENGTH];
 
-	char[] goodSuffixes = new char[1000];
+	char[] goodSuffixes = new char[MAX_LENGTH];
 
-	char[] branchCount = new char[2000];
+	char[] branchCount = new char[MAX_LENGTH*2];
 
 	public void validate() {
 		for (int i = 0; i < Application.n; i++)
@@ -110,10 +113,10 @@ public class Suffixtree {
 		for (;;) {
 			Map<Integer, Edge> hashMap = this.edges;
 			Edge edge = hashMap.get(i);
-			if (edge != null && edge.start_node == node)
+			if (edge.start_node == node)
 				if (c == Application.t.charAt(edge.first_char_index))
 					return edge;
-			if (edge==null /* edge.start_node == -1 */ ){
+			if (edge.start_node == -1) {
 				edge = new Edge();
 				edge.start_node = -1;
 				return edge;
@@ -129,23 +132,24 @@ public class Suffixtree {
 	// print out the tree in a graphical fashion, but I don't!
 
 	public void dump_edges(int current_n) {
-		System.out.println(" Start  End  Suf  First Last  String\n");
+		System.out.println("Start\tEnd\tSuf\tFirst\tLast\tString\n");
 		for (int j = 0; j < Suffixtree.HASH_TABLE_SIZE; j++) {
 			// Edge *s = Edges + j;
 			Edge s = this.edges.get(j);
-			if ( s == null /* s.start_node == -1 */)
+			if (s.start_node == -1)
 				continue;
 			int end = s.end_node;
-			System.out.println(s.start_node + "  " + end + "  "
-					+ Suffixtree.nodes.get(end).suffix_node + "  "
-					+ s.first_char_index + "  " + s.last_char_index);
+			System.out.print(s.start_node + "\t" + end + "\t"
+					+ Suffixtree.nodes.get(end).suffix_node + "\t"
+					+ s.first_char_index + "\t" + s.last_char_index + "\t");
 			int top;
 			if (current_n > s.last_char_index)
 				top = s.last_char_index;
 			else
 				top = current_n;
 			for (int l = s.first_char_index; l <= top; l++)
-				System.out.println(Application.t.charAt(l));
+				System.out.print(Application.t.charAt(l));
+			System.out.println();
 		}
 	}
 
@@ -159,11 +163,13 @@ public class Suffixtree {
 							.println("Logic error on node " + edge.start_node);
 				branchCount[edge.start_node]++;
 				edges++;
-				int l = last_char_so_far;
-				for (int j = edge.first_char_index; j <= edge.last_char_index; j++)
-					currentString[l++] = Application.t.charAt(j);
-				currentString[l] = '\0';
-				if (walk_tree(edge.end_node, l) == 1) {
+				int last = last_char_so_far;
+				for (int j = edge.first_char_index; j <= edge.last_char_index; j++) {
+					currentString[last] = Application.t.charAt(j);
+					last++;
+				}
+				currentString[last] = '\0';
+				if (walk_tree(edge.end_node, last) == 1) {
 					if (branchCount[edge.end_node] > 0)
 						System.out.println("Logic error on node "
 								+ edge.end_node);
@@ -171,6 +177,7 @@ public class Suffixtree {
 				}
 			}
 		}
+		//		
 		//
 		// If this node didn't have any child edges, it means we
 		// are at a leaf node, and can check on this suffix. We
@@ -178,16 +185,24 @@ public class Suffixtree {
 		// off it's entry in the GoodSuffixes list.
 		//
 		if (edges == 0) {
-			System.out.println("Suffix : ");
+			//fehlte das?
+			//branchCount[start_node] = (char)-1;
+			
+			// System.out.println("CurrentString: (" + start_node + ", "
+			// + last_char_so_far + ") " + new String(currentString));
+			System.out.print("Suffix: ");
+			String suffix = "";
 			for (int m = 0; m < last_char_so_far; m++)
-				System.out.println(currentString[m]);
-			goodSuffixes[currentString.length - 1]++;
-			// System.out.println("comparing: " << ( T + Application.n -
-			// currentString.length + 1 )
-			// << " to " << currentString << endl;
-			// if ( strcmp(T + Application.n - currentString.length + 1,
-			// currentString ) != 0 )
-			// System.out.println("Comparison failure!\n");
+				suffix = suffix + currentString[m];
+			System.out.println(suffix);
+			goodSuffixes[last_char_so_far - 1]++;
+			String substring = Application.t.substring(Application.t.length()
+					- last_char_so_far);
+			System.out.println("Comparing: " + suffix + " to: " + substring);
+
+			if (!(suffix).equals(substring))
+				System.out.println("Comparison failure!\n");
+
 			return 1;
 		} else
 			return 0;
