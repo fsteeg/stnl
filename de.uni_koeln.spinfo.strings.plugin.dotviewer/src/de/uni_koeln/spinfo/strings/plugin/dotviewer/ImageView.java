@@ -13,14 +13,12 @@ package de.uni_koeln.spinfo.strings.plugin.dotviewer;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
-import java.util.HashMap;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.action.Action;
@@ -37,7 +35,6 @@ import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISelectionService;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.ViewPart;
-import org.osgi.framework.Bundle;
 
 public class ImageView extends ViewPart {
     ImageViewer viewer;
@@ -66,7 +63,7 @@ public class ImageView extends ViewPart {
         }
 
         private void selectionChanged(IFile file) {
-            setImage(file);
+            setImage(file, true);
         }
 
     };
@@ -78,10 +75,13 @@ public class ImageView extends ViewPart {
         viewer = new ImageViewer(parent, SWT.NONE);
         getSelectionService().addSelectionListener(selectionListener);
         addResetButton();
+        IWorkspace workspace = ResourcesPlugin.getWorkspace();
+        DotFileListener listener = new DotFileListener(this);
+        workspace.addResourceChangeListener(listener);
     }
 
     private void addResetButton() {
-        Action addItemAction = new Action("Dot...") {
+        Action addItemAction = new Action("Reset") {
             public void run() {
                 ImageViewerPlugin.getDefault().getPreferenceStore().setValue(
                         "dotpath", //$NON-NLS-1$
@@ -89,23 +89,24 @@ public class ImageView extends ViewPart {
                 drawer.initPaths(viewer.getShell());
             }
         };
-        //TODO somethigns wrong here...
+        // TODO somethigns wrong here...
         ImageDescriptor desc = ImageViewerPlugin
                 .getImageDescriptor("icons/update.gif");
-//        Bundle bundle = Platform.getBundle(ImageViewerPlugin.ID);
-//        IPath path = new Path("icons/update.gif");
-//        URL url = FileLocator.find(bundle, path, new HashMap());
-//        ImageDescriptor desc = ImageDescriptor.createFromURL(url);
+        // Bundle bundle = Platform.getBundle(ImageViewerPlugin.ID);
+        // IPath path = new Path("icons/update.gif");
+        // URL url = FileLocator.find(bundle, path, new HashMap());
+        // ImageDescriptor desc = ImageDescriptor.createFromURL(url);
         addItemAction.setImageDescriptor(desc);
         IToolBarManager mgr = getViewSite().getActionBars().getToolBarManager();
         mgr.add(addItemAction);
     }
 
-    protected void setImage(IFile file) {
+    protected void setImage(IFile file, boolean refresh) {
         InputStream in = null;
         try {
             if (file.getFileExtension().equals("dot")) {
-                file = generateImageFromDot(file);
+                file = generateImageFromDot(file, refresh);
+                System.out.println("huhu");
             }
             in = file.getContents();
             Image newImage = new Image(Display.getDefault(), in);
@@ -125,15 +126,16 @@ public class ImageView extends ViewPart {
         }
     }
 
-    private IFile generateImageFromDot(IFile file) {
-        String inFolder = Platform.getInstanceLocation().getURL().getPath()
-                + file.getParent().getName() + "/";
-        String outFolder = Platform.getInstanceLocation().getURL().getPath()
-                + file.getParent().getName() + "/";
-        System.out.println("in: " + inFolder);
-        System.out.println("out: " + outFolder);
-        drawer = new DotDrawer(inFolder, outFolder, file.getName(),
-                "result.png");
+    private IFile generateImageFromDot(IFile file, boolean refresh) {
+        // String inFolder = Platform.getInstanceLocation().getURL().getPath()
+        // + file.getParent().getFullPath().toString().substring(1) + "/";
+        String folder = Platform.getInstanceLocation().getURL().getPath()
+                + file.getParent().getFullPath().toString().substring(1) + "/";
+        System.out.println("in: " + folder);
+        System.out.println("out: " + folder);
+        String name = file.getName().split("\\.")[0] + ".png";
+
+        drawer = new DotDrawer(folder, folder, file.getName(), name);
         drawer.initPaths(this.getViewSite().getShell());
         try {
             drawer.renderImage();
@@ -142,12 +144,14 @@ public class ImageView extends ViewPart {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        IFile res = (IFile) file.getParent().findMember(new Path("result.png"));
-        try {
-            res.refreshLocal(IResource.DEPTH_ZERO, null);
-        } catch (CoreException e) {
-            e.printStackTrace();
+        if (refresh) {
+            try {
+                file.getParent().refreshLocal(IResource.DEPTH_ONE, null);
+            } catch (CoreException e) {
+                e.printStackTrace();
+            }
         }
+        IFile res = (IFile) file.getParent().findMember(new Path(name));
         return res;
     }
 
