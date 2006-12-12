@@ -1,0 +1,28 @@
+TODOs
+
+- Evaluation implementieren: F-Mass
+- Nicht nur wenn Paradigma komplett gleich, sondern wenn n gleiche Woerter
+- n anpassen beim lernen, Evaluieren
+- Stopwoerter englisch
+- Richtige Texte, englisch (delicious, Ressourcen im Brueckner-Artikel)
+- In Klassen aufteilen: Lernen und Klassifizieren
+
+Ideen
+
+- Stemming mit WordNet?
+- Tagging von WordNet verwenden?
+- Sem. Relationen, z.B. Synonyme
+- Delicious API ins Projekt
+
+Bereiche
+
+- ML-Terminologie: Lernen, Cube
+- Brueckner-Begriffe, unser System klassifizieren
+- Code, UML
+- Evaluation, Recall, Precision, F-Mass
+
+Aufteilung HA
+
+- Verfahren: Web, Crawling, Delicious, Korpora
+- Verfahren: Tesla, Java EE, SALE
+- Verfahren: struktur. Syntaxanalyse mit Suffixbaeumen
