@@ -1,0 +1,186 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- $Id: build-html.xml,v 1.22 2005/05/27 04:03:31 andyc Exp $ -->
+<project default='all' basedir='.'>
+
+ <!-- PROPERTIES -->
+ <property name='version'   value='0.9.5'/>
+ <property name='name'      value='nekohtml'/>
+ <property name='fullname'  value='${name}-${version}'/>
+ <property name='Title'     value='NekoHTML'/>
+ <property name='FullTitle' value='CyberNeko HTML Parser'/>
+ <property name='Name'      value='${Title} ${version}'/>
+ <property name='author'    value='Andy Clark'/>
+ <property name='copyright' value='(C) Copyright 2002-2005, ${author}. All rights reserved.'/>
+ <property name='URL'       value='http://www.apache.org/~andyc/neko/doc/html/index.html'/>
+  
+ <property name='jarfile'        value='${name}.jar'/>
+ <property name='jarfileXni'     value='${name}Xni.jar'/>
+ <property name='jarfileSamples' value='${name}Samples.jar'/>
+ <property name='jarfileTest'    value='${name}Test.jar'/>
+
+ <property name='zipfile' value='${fullname}.zip'/>
+ <property name='tarfile' value='${fullname}.tar'/>
+ <property name='tgzfile' value='${fullname}.tar.gz'/>
+
+ <property name='contents.misc'   value='LICENSE,LICENSE_apache,README_html,TODO_html,build.bat,build-html.xml,build-html-test.xml'/>
+ <property name='contents.jars'   value='${jarfile},${jarfileXni},${jarfileSamples}'/>
+ <property name='contents.source' value='src/html/META-INF/**,src/html/**/*.java,src/html/**/*.properties'/>
+ <property name='contents.docs'   value='doc/style.css,doc/html/**,data/html/test*.html*,data/html/canonical/*'/>
+ <property name='contents.libs'   value='lib/xercesMinimal.jar'/>
+ <property name='contents' 
+           value='${contents.misc},${contents.jars},${contents.source},${contents.docs},${contents.libs}'/>
+
+ <property name='package' value='org.cyberneko.html'/>
+
+ <property name='version.dir'      value='bin/html/src'/>
+ <property name='version.manifest' value='${version.dir}/MANIFEST_html'/>
+ <property name='version.dir.java' value='${version.dir}/org/cyberneko/html'/>
+ <property name='version.java'     value='${version.dir.java}/Version.java'/>
+ 
+ <!-- TARGETS --> 
+ <target name='universe' depends='full,all'/>
+
+ <target name='all' depends='zip,tgz'/>
+
+ <target name='full'>
+  <property name='contents.full' value='lib/**'/>
+ </target>
+
+ <target name='compile' depends='version'>
+  <mkdir dir="bin/html"/>
+  <javac srcdir='src/html' destdir='bin/html' includes='org/**,sample/**' debug='true'/>
+  <javac srcdir='bin/html/src' destdir='bin/html' includes='org/**'/>
+ </target>
+
+ <target name='jar' depends='compile'>
+  <copy todir='bin/html'>
+   <fileset dir='.' includes='LICENSE'/>
+   <fileset dir='src/html' includes='**/*.properties'/>
+  </copy>
+  <jar jarfile='${jarfile}' basedir='bin/html' 
+       manifest='${version.manifest}'
+       includes='LICENSE,org/**/*.class,org/**/*.properties'/>
+  <jar jarfile='${jarfileSamples}' basedir='bin/html'
+       includes='LICENSE,sample/**'/>
+ </target> 
+
+ <target name='jar-xni'>
+  <mkdir dir="bin/html"/>
+  <copy todir='bin/html'>
+   <fileset dir='.' includes='LICENSE'/>
+   <fileset dir='src/html' includes='META-INF/services/**'/>
+  </copy>
+  <jar jarfile='${jarfileXni}' basedir='bin/html'
+       includes='LICENSE,META-INF/services/**'/>
+ </target>
+
+ <target name='package' depends='jar,doc'>
+  <mkdir dir='bin/package/${fullname}'/>
+  <copy todir='bin/package/${fullname}'>
+   <fileset dir='.' includes='${contents},${contents.full}'/>
+   <fileset dir='bin' includes='${contents.jars}'/>
+  </copy>
+ </target>
+
+ <target name='package-nodir'>
+  <mkdir dir='bin/package-${name}'/>
+  <copy todir='bin/package-${name}'>
+   <fileset dir='bin/package/${fullname}' includes='**'/>
+  </copy>
+ </target>
+
+ <target name='zip' depends='package'>
+  <zip zipfile='${zipfile}' basedir='bin/package' includes='${fullname}/**'/>
+ </target>
+
+ <target name='tgz' depends='package'>
+  <tar tarfile='${tarfile}' basedir='bin/package' includes='${fullname}/**'/>
+  <gzip zipfile='${tgzfile}' src='${tarfile}'/>
+  <delete file='${tarfile}'/>
+ </target>
+
+ <target name='doc' unless='docs.done'>
+  <delete dir='doc/html/javadoc'/>
+  <mkdir dir='doc/html/javadoc'/>
+  <javadoc packagenames='${package},${package}.parsers,${package}.filters'
+           sourcepath='src/html' destdir='doc/html/javadoc'
+           author='true' version='true' use='true'
+           windowtitle="${Name} Implementation"
+           doctitle="${Name}"
+           bottom="${copyright}" 
+           />
+  <property name='docs.done' value='true'/>
+ </target>
+
+ <target name='version-init'>
+  <mkdir dir='${version.dir.java}/'/>
+  <dependset>
+   <srcfilelist dir='.' files='build-html.xml'/>
+   <targetfilelist dir='.' files='${version.manifest},${version.java}'/>
+  </dependset>
+  <available property='available.version' file='${version.java}'/>
+ </target>
+
+ <target name='version' depends='version-init' unless='available.version'>
+  <echo message='Generating ${version.java}'/>
+  <echo file='${version.java}'>/* ${copyright} */
+
+package org.cyberneko.html;
+
+/**
+ * This class holds version information for the ${FullTitle}.
+ *
+ * @author ${author}
+ */
+public class Version {
+
+    /** Returns the version string. */
+    public static String getVersion() { return "${Name}"; }
+
+    /** Prints the version string to standard output. */
+    public static void main(String[] argv) {
+        System.out.println(getVersion());
+    } // main(String[])
+
+} // class Version</echo>
+  <echo message='Generating ${version.manifest}'/>
+  <echo file='${version.manifest}'>
+Name: org/cyberneko/html/
+Implementation-Title: ${FullTitle}
+Implementation-Version: ${version}
+Implementation-Vendor: ${author}
+Implementation-URL: ${URL}
+Specification-Title: Hyper-Text Markup Language (HTML)
+Specification-Vendor: World Wide Web Consortium (W3C)
+Specification-Version: 4.01
+
+</echo>
+ </target>
+ 
+ <target name='test' depends='jar'>
+  <javac srcdir='src/html' destdir='bin/html' includes='test/**'/>
+  <jar jarfile='${jarfileTest}' basedir='bin/html' 
+       includes='test/**/*.class,test/**/*.properties'/>
+  <mkdir dir='data/html/output'/>
+  <java classname='org.apache.tools.ant.Main' fork='true' failonerror='true'>
+   <classpath>
+    <pathelement path='${java.class.path}'/>
+    <pathelement location='${jarfile}'/>
+    <pathelement location='${jarfileTest}'/>
+   </classpath>
+   <arg value='-f'/>
+   <arg value='build-html-test.xml'/>
+  </java>
+ </target>
+
+ <target name='clean'>
+  <delete dir='bin/html' quiet='true'/>
+  <delete dir='doc/html/javadoc' quiet='true'/>
+  <delete quiet='true'>
+   <fileset dir='.' includes='${name}*.jar,${name}*.zip,${name}*.tar.gz'/>
+  </delete>
+  <delete dir='bin/package' quiet='true'/>
+  <delete dir='bin/package-${name}' quiet='true'/>
+ </target>
+
+</project>
