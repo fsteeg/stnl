@@ -17,13 +17,17 @@ public class Preprocessor {
 
     public String clean() {
         DOMParser parser = new DOMParser();
-//        System.out.println("Parsing: " + url);
+        // System.out.println("Parsing: " + url);
         try {
             parser.parse(url);
         } catch (SAXException e) {
             e.printStackTrace();
             return "";
         } catch (IOException e) {
+            System.out.println("Catching...");
+            e.printStackTrace();
+            return "";
+        } catch (RuntimeException e) {
             System.out.println("Catching...");
             e.printStackTrace();
             return "";
@@ -34,9 +38,10 @@ public class Preprocessor {
     public String print(Node node, String indent) {
         StringBuilder builder = new StringBuilder();
         if (node instanceof HTMLParagraphElement) {
-//            System.out.println(indent + node.getClass().getName());
-            builder.append(node.getTextContent().trim().replaceAll("[ \t\n]+", " "));
-//            System.out.println("Content: " + node.getTextContent());
+            // System.out.println(indent + node.getClass().getName());
+            builder.append(node.getTextContent().trim().replaceAll("[ \t\n]+",
+                    " "));
+            // System.out.println("Content: " + node.getTextContent());
         }
         Node child = node.getFirstChild();
         while (child != null) {
