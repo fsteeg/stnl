@@ -1,10 +1,11 @@
 package de.uni_koeln.spinfo.is.document_tagger;
 
+import java.util.HashSet;
 import java.util.List;
-import java.util.Vector;
+import java.util.Set;
 
 public class Text {
-    List<String> tags = new Vector<String>();
+    Set<String> tags = new HashSet<String>();
     String content = "";
     public String location;
     
@@ -16,7 +17,7 @@ public class Text {
        }
        return builder.substring(1) + "\n\n" + content + "\n\n";
     }
-    public Text(String content, List<String> tags, String location) {
+    public Text(String content, Set<String> tags, String location) {
         this.content = content;
         this.tags = tags;
         this.location = location;

@@ -92,7 +92,7 @@ public class WordSuffixTree extends AlphanumericSuffixTree {
             }
         }
         /** step 2: number those types */
-        System.out.print(sentencesSet.size() + " Sentences, ");
+//        System.out.print(sentencesSet.size() + " Sentences, ");
         int sentenceCount = 1;
         List<Long> all = new ArrayList<Long>();
         for (String sentence : sentencesSet) {
@@ -150,8 +150,8 @@ public class WordSuffixTree extends AlphanumericSuffixTree {
             sentenceCount++;
         }
         super.addSequences(all, sentenceCount, false);
-        System.out.print(counter + " Types.");
-        System.out.println();
+//        System.out.print(counter + " Types.");
+//        System.out.println();
 
         /**
          * step 5: expand the tree for words: not present, the tree takes care

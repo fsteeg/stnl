@@ -25,10 +25,10 @@ public class Paradigms {
     public Paradigms(String text) {
         derivedParadigms = new HashSet<Set<String>>();
         // forward: "the man. the boy." --> [man, boy]
-        this.forwardTree = new WordSuffixTree(text, false, true);
+        this.forwardTree = new WordSuffixTree(text, false, false);
         pardigmsInText = bootstrapParadigms(forwardTree);
         // backward: "a man. the man." --> [a, the]
-        this.backwardTree = new WordSuffixTree(text, true, true);
+        this.backwardTree = new WordSuffixTree(text, true, false);
         pardigmsInText.addAll(bootstrapParadigms(backwardTree));
     }
 

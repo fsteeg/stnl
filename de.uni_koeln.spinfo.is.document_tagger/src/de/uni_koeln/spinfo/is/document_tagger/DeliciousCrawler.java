@@ -1,10 +1,10 @@
 package de.uni_koeln.spinfo.is.document_tagger;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
-
-import org.junit.Test;
 
 import del.icio.us.Delicious;
 import del.icio.us.beans.Post;
@@ -38,7 +38,7 @@ public class DeliciousCrawler {
             // System.out.println(i + " " + post);
             // System.out.println(post.getDescription());
             // System.out.println(post.getExtended());
-            List<String> tags = Arrays.asList(post.getTagsAsArray(" "));
+            Set<String> tags = new HashSet<String>(Arrays.asList(post.getTagsAsArray(" ")));
             String clean = new Preprocessor(post.getHref()).clean();
             // for (String s : tags) {
             // System.out.println("TAG: " + s);
