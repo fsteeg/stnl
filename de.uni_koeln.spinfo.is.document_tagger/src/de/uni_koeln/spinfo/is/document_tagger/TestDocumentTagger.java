@@ -9,7 +9,7 @@ public class TestDocumentTagger {
     public void testTagger() {
         System.out.println("Creating tagger.");
         DocumentTagger tagger = new DocumentTagger();
-        List<Text> crawl = new DeliciousCrawler(1000).crawl();
+        List<Text> crawl = new DeliciousCrawler(20).crawl();
         tagger.learn(crawl.subList(0, crawl.size() / 2));
         tagger.tag(crawl.subList(crawl.size() / 2, crawl.size()));
 

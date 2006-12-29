@@ -150,7 +150,8 @@ public class WordSuffixTree extends AlphanumericSuffixTree {
             sentenceCount++;
         }
         super.addSequences(all, sentenceCount, false);
-        System.out.print(counter + " Types, ");
+        System.out.print(counter + " Types.");
+        System.out.println();
 
         /**
          * step 5: expand the tree for words: not present, the tree takes care
