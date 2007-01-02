@@ -1,11 +1,17 @@
 TODOs
 
-- Evaluation implementieren: F-Mass
-- Nicht nur wenn Paradigma komplett gleich, sondern wenn n gleiche Woerter
+- [DONE] Evaluation implementieren: F-Mass
+- [DONE] Nicht nur wenn Paradigma komplett gleich, sondern wenn n gleiche Woerter
 - n anpassen beim lernen, Evaluieren
-- Stopwoerter englisch
-- Richtige Texte, englisch (delicious, Ressourcen im Brueckner-Artikel)
-- In Klassen aufteilen: Lernen und Klassifizieren
+- [DONE] Stopwoerter englisch
+- [DONE] Richtige Texte, englisch (delicious, Ressourcen im Brueckner-Artikel)
+- [DONE] In Klassen aufteilen: Lernen und Klassifizieren
+- Ausgabe der gelesenen Seiten: x gelesen, y ok.
+- Statusanzeige mit spinning slash oder sowas in der Art
+- Aufraeumen, Code, Struktur
+- Binaeren Index einlesen als option
+- Klassifikation optimieren damit man mal mit 800 laufen lassen kann
+- Vereinheitliche: Texte aus Dateien im Filesystem oder ueber einen Delicious-Account
 
 Ideen
 
@@ -13,6 +19,8 @@ Ideen
 - Tagging von WordNet verwenden?
 - Sem. Relationen, z.B. Synonyme
 - Delicious API ins Projekt
+- Zum Thema SALE, Tesla: Alles noetig fuer viele vers. Sachen, auch hier: 
+Text->Toekns->Stemming->Filtern/Wortlisten->Suffixbaum->Paradigmen->Verschlagwortung
 
 Bereiche
 
