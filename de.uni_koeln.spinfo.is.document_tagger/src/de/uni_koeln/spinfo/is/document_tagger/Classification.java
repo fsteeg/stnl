@@ -47,9 +47,9 @@ public class Classification {
                         int counted = 0;
                         // TODO adjust this during learning, to optimize
                         // results:
-                        int threshold = 1;
+                        int threshold = 4;
                         for (String s : set) {
-                            if (r.contains(s)) {
+                            if (r != null && r.contains(s)) {
                                 counted++;
                             }
                         }
