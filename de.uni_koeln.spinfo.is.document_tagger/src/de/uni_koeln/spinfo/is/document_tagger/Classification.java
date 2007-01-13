@@ -29,8 +29,8 @@ public class Classification {
      *            The texts to tag.
      */
     public void tag(List<Text> texts) {
-        for (Text originalTags : texts) {
-            String content = originalTags.content;
+        for (Text text : texts) {
+            String content = text.content;
             Paradigms p = new Paradigms(content);
             Set<Set<String>> results = p.pardigmsInText;
             Set<String> newTags = new HashSet<String>();
@@ -41,12 +41,13 @@ public class Classification {
                     if (set == null)
                         continue;
                     for (Set<String> r : results) {
+                        r = Preprocessor.filter(r, "stopwords");
                         if (newTags.contains(tag))
                             continue;
                         int counted = 0;
                         // TODO adjust this during learning, to optimize
                         // results:
-                        int threshold = 4;
+                        int threshold = 1;
                         for (String s : set) {
                             if (r.contains(s)) {
                                 counted++;
@@ -61,7 +62,7 @@ public class Classification {
                     }
                 }
             }
-            evaluate(originalTags, newTags);
+            evaluate(text, newTags);
         }
 
     }

@@ -14,6 +14,11 @@ TODOs
 - Klassifikation optimieren damit man mal mit 800 laufen lassen kann
 - [DONE] Nur bestimmte tags oder besser: bundles crawlen, ein bundle eine domaene
 - [DONE] Vereinheitliche: Texte aus Dateien im Filesystem oder ueber einen Delicious-Account
+- Tokenisierung da stimmt was nicht, beu umbruechen fehlen leerzeichen
+- Stopword-Filtern noch nicht ok, teils gross-klein, teils fehlen wohl noch ein paar woerter
+- Stopword-Filtern performanter, nicht jedesmal neu und mit Arrays.binarySearch
+- fuer englisch und deutsch filtern immer, weil text kann beides sein wenn delicious... so viel zu bedenken fuer freies texte crawlen... eher delicious zum zusammenstellen des korpus mit komfort...
+- fuer dt. scheint das encoding Aerger zu machen
 
 Ideen
 
@@ -24,6 +29,7 @@ Ideen
 - Anders parsen: nicht nur p-content
 - Zum Thema SALE, Tesla: Alles noetig fuer viele vers. Sachen, auch hier: 
 Text->Toekns->Stemming->Filtern/Wortlisten->Suffixbaum->Paradigmen->Verschlagwortung
+-Paradigmen anders, von wegen dirived und solche ideen, Suffixbaum-Sachen
 
 Bereiche
 

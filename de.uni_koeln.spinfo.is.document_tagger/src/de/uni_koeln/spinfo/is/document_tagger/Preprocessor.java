@@ -84,10 +84,10 @@ public class Preprocessor {
     static Set<String> filter(Set<String> paradigm, String location) {
         String stopwords = Util.getText(new File(location));
         for (String stopword : stopwords.split(" ")) {
-            Set<String> cleaned = new HashSet<String>(paradigm);
+            Set<String> cleaned = new HashSet<String>();
             for (String m : paradigm) {
-                if (m.equalsIgnoreCase(stopword))
-                    cleaned.remove(stopword);
+                if (!m.equalsIgnoreCase(stopword))
+                    cleaned.add(m);
             }
             paradigm = cleaned;
         }

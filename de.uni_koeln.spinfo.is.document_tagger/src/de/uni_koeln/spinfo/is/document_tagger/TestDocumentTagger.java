@@ -19,7 +19,7 @@ public class TestDocumentTagger {
     public void testTaggerDeliciousBundle() {
         System.out.println("Creating tagger.");
         DocumentTagger tagger = new DocumentTagger();
-        DeliciousCrawler deliciousCrawler = new DeliciousCrawler(20);
+        DeliciousCrawler deliciousCrawler = new DeliciousCrawler(10);
         List<Text> crawl = deliciousCrawler.crawl("linguistics");
         System.out.println("Crawled a corpus of "
                 + deliciousCrawler.wordCount() + " words.");
