@@ -1,0 +1,22 @@
+/* this is a generated dot file: www.graphviz.org */
+digraph suffixtree {
+	rankdir=LR
+node[shape=box]			1->4
+		[label="[2, -1],\n Text: 3, Suffix: 2"];
+		1->8
+		[label="[1],\n Text: 0, Suffix: 0"];
+			8->3
+			[label="[1, 2, -1],\n Text: 3, Suffix: 1"];
+			8->9
+			[label="[1, 3, -1],\n Text: 3, Suffix: 2"];
+		1->10
+		[label="[3, -1],\n Text: 3, Suffix: 2"];
+		1->5
+		[label="[-1],\n Text: 3, Suffix: 3"];
+		1->6
+		[label="[0, 1],\n Text: 0, Suffix: 0"];
+			6->2
+			[label="[0, 1, 2, -1],\n Text: 3, Suffix: 0"];
+			6->7
+			[label="[0, 1, 3, -1],\n Text: 3, Suffix: 2"];
+}

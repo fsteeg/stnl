@@ -1,0 +1,14 @@
+digraph hierarchy{
+	node[shape=record,style=filled,fillcolor=white]
+	edge[dir=back, arrowtail=empty]
+	
+	NumericSuffixTree[label = "{NumericSuffixTree||+ getRoot() : Node\l+ exportDot(location : String)}"]
+	AlphanumericSuffixTree[label = "{AlphanumericSuffixTree|+ mapper : Mapper|+ exportDot(location : String)\l+ construct()}"]
+	CharSuffixTree[label = "{CharSuffixTree||+ construct()}"]
+	WordSuffixTree[label = "{WordSuffixTree||+ construct()}"]
+	
+	NumericSuffixTree->AlphanumericSuffixTree
+	AlphanumericSuffixTree->CharSuffixTree
+	AlphanumericSuffixTree->WordSuffixTree
+	
+}
