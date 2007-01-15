@@ -20,6 +20,8 @@ import de.uni_koeln.spinfo.strings.algo.Paradigms;
 public class Acquirement {
     DocumentTagger tagger;
 
+    private List<Text> texts;
+
     /**
      * @param tagger
      *            The tagger
@@ -33,37 +35,50 @@ public class Acquirement {
      * tags to paradigms.
      */
     private void extractParadigms() {
-        for (String text : tagger.tagsForContent.keySet()) {
-            Paradigms p = new Paradigms(text);
+        for (Text text : texts) {
+            Paradigms p = new Paradigms(text.content);
             Set<Set<String>> results = p.pardigmsInText;
-            String[] tags = tagger.tagsForContent.get(text);
-            for (Set<String> paradigm : results) {
-                paradigm = Preprocessor.filter(paradigm, "stopwords");
-                if (paradigm == null)
-                    continue;
-                for (String tag : tags) {
-                    Set<Set<String>> paradigms = tagger.paradigmsForTags
-                            .get(tag);
-                    if (paradigms == null) {
-                        Set<Set<String>> par = new HashSet<Set<String>>();
-                        par.add(paradigm);
-                        tagger.paradigmsForTags.put(tag, par);
-                    } else {
-                        paradigms.add(paradigm);
-                    }
+            Set<String> tags = text.tags;
+            
+            for (String tag : tags) {
+                Set<Set<String>> paradigms = tagger.paradigmsForTags
+                        .get(tag);
+                if (paradigms == null) {
+                    Set<Set<String>> par = new HashSet<Set<String>>();
+                    par.addAll(results);
+                    tagger.paradigmsForTags.put(tag, par);
+                } else {
+                    paradigms.addAll(results);
                 }
             }
-            try {
-                // store the result on disk:
-                ObjectOutputStream out = new ObjectOutputStream(
-                        new FileOutputStream("index.bin"));
-                out.writeObject(tagger.paradigmsForTags);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
+            
+//            for (Set<String> paradigm : results) {
+//                paradigm = Preprocessor.filter(paradigm, "stopwords");
+//                if (paradigm == null)
+//                    continue;
+//                for (String tag : tags) {
+//                    Set<Set<String>> paradigms = tagger.paradigmsForTags
+//                            .get(tag);
+//                    if (paradigms == null) {
+//                        Set<Set<String>> par = new HashSet<Set<String>>();
+//                        par.add(paradigm);
+//                        tagger.paradigmsForTags.put(tag, par);
+//                    } else {
+//                        paradigms.add(paradigm);
+//                    }
+//                }
+//            }
+        }
+        try {
+            // store the result on disk:
+            ObjectOutputStream out = new ObjectOutputStream(
+                    new FileOutputStream("index.bin"));
+            out.writeObject(tagger.paradigmsForTags);
+            System.out.println("WROTE INDEX TO DISK");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -72,11 +87,12 @@ public class Acquirement {
      *            The tagged texts to learn from.
      */
     public void learn(List<Text> texts) {
-        for (Text text : texts) {
-            tagger.tagsForContent.put(text.content, text.tags
-                    .toArray(new String[] {}));
-            System.out.println("Added: " + text.toString());
-        }
+        this.texts = texts;
+        // for (Text text : texts) {
+        // tagger.tagsForContent.put(text.content, text.tags
+        // .toArray(new String[] {}));
+        // System.out.println("Added: " + text.toString());
+        // }
         extractParadigms();
     }
 }

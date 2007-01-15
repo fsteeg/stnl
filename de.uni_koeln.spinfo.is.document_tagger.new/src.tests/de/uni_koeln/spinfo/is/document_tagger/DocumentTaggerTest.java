@@ -29,8 +29,21 @@ public class DocumentTaggerTest {
         List<Text> crawl = deliciousCrawler.crawl("linguistics");
         System.out.println("Crawled a corpus of "
                 + deliciousCrawler.wordCount() + " words.");
-        tagger.learn(crawl.subList(0, crawl.size() / 2));
-        tagger.tag(crawl.subList(crawl.size() / 2, crawl.size()));
+        tagger.learn(crawl.subList(0, crawl.size()/2));
+        tagger.tag(crawl.subList(crawl.size()/2, crawl.size()));
+
+    }
+    
+    @Test
+    public void testTaggerDeliciousBundle2() {
+        System.out.println("Creating tagger.");
+        DocumentTagger tagger = new DocumentTagger();
+        DeliciousCrawler deliciousCrawler = new DeliciousCrawler(10);
+        List<Text> crawl = deliciousCrawler.crawl("nlp");
+        System.out.println("Crawled a corpus of "
+                + deliciousCrawler.wordCount() + " words.");
+        tagger.learn(crawl.subList(0, crawl.size()/2));
+        tagger.tag(crawl.subList(crawl.size()/2, crawl.size()));
 
     }
 
@@ -39,20 +52,18 @@ public class DocumentTaggerTest {
         System.out.println("Creating tagger.");
         DocumentTagger tagger = new DocumentTagger();
         long start = System.currentTimeMillis();
-        DeliciousCrawler deliciousCrawler = new DeliciousCrawler(10);
+        DeliciousCrawler deliciousCrawler = new DeliciousCrawler(400);
         List<Text> crawl = deliciousCrawler.crawl(null);
         System.out.println("[PROFILING] Crawling took: "
                 + (System.currentTimeMillis() - start) / 1000 + " sec.");
         System.out.println("Crawled a corpus of "
                 + deliciousCrawler.wordCount() + " words.");
+        int i = 40;
+        List<Text> subList = crawl.subList(0, crawl.size() - i);
+        tagger.learn(subList);
         start = System.currentTimeMillis();
-        tagger.learn(crawl.subList(0, crawl.size() / 2));
-        System.out.println("[PROFILING] Learning took: "
-                + (System.currentTimeMillis() - start) / 1000 + " sec.");
-        start = System.currentTimeMillis();
-        tagger.tag(crawl.subList(crawl.size() / 2, crawl.size()));
-        System.out.println("[PROFILING] Tagging took: "
-                + (System.currentTimeMillis() - start) / 1000 + " sec.");
+        List<Text> subList2 = crawl.subList(crawl.size() - i, crawl.size());
+        tagger.tag(subList2);
 
     }
 

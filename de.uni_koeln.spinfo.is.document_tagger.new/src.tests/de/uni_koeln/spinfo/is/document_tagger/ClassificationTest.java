@@ -21,6 +21,9 @@ public class ClassificationTest {
         List<Text> tagged = c.tag(Arrays.asList(new Text(
                 "Hallo du. Hallo ihr. Alle ihr.", new HashSet<String>(Arrays
                         .asList("nonsense")), "testing-nowhere")));
+        assertTrue(tagged.size() > 0);
+        assertTrue(tagged.get(0).tags != null);
+        assertTrue(tagged.get(0).tags.size() > 0);
         assertEquals("test", tagged.get(0).tags.iterator().next());
 
     }
