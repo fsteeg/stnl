@@ -5,6 +5,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uni_koeln.spinfo.is.document_tagger.crawling.FilesystemCrawler;
+
 public class FilesystemCrawlerTest {
     FilesystemCrawler c;
 

@@ -1,4 +1,4 @@
-package de.uni_koeln.spinfo.is.document_tagger;
+package de.uni_koeln.spinfo.is.document_tagger.crawling;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Vector;
 
+import de.uni_koeln.spinfo.is.document_tagger.Text;
 import de.uni_koeln.spinfo.strings.algo.Util;
 
 /**

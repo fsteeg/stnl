@@ -1,4 +1,4 @@
-package de.uni_koeln.spinfo.is.document_tagger;
+package de.uni_koeln.spinfo.is.document_tagger.crawling;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
+import de.uni_koeln.spinfo.is.document_tagger.Preprocessor;
+import de.uni_koeln.spinfo.is.document_tagger.Text;
 import del.icio.us.Delicious;
 import del.icio.us.beans.Bundle;
 import del.icio.us.beans.Post;

@@ -8,11 +8,11 @@ import java.util.List;
 
 import org.junit.Test;
 
-import de.uni_koeln.spinfo.is.document_tagger.DeliciousCrawler;
 import de.uni_koeln.spinfo.is.document_tagger.DocumentTagger;
 import de.uni_koeln.spinfo.is.document_tagger.Evaluation;
-import de.uni_koeln.spinfo.is.document_tagger.FilesystemCrawler;
 import de.uni_koeln.spinfo.is.document_tagger.Text;
+import de.uni_koeln.spinfo.is.document_tagger.crawling.DeliciousCrawler;
+import de.uni_koeln.spinfo.is.document_tagger.crawling.FilesystemCrawler;
 
 /**
  * Tests and demos for the document tagger.

@@ -10,7 +10,7 @@ TODOs
 - Ausgabe der gelesenen Seiten: x gelesen, y ok.
 - Statusanzeige mit spinning slash oder sowas in der Art
 - [DONE] Aufraeumen, Code, Struktur
-- Binaeren Index einlesen als option
+- [DONE] Binaeren Index einlesen als option
 - Klassifikation optimieren damit man mal mit 800 laufen lassen kann
 - [DONE] Nur bestimmte tags oder besser: bundles crawlen, ein bundle eine domaene
 - [DONE] Vereinheitliche: Texte aus Dateien im Filesystem oder ueber einen Delicious-Account
@@ -19,31 +19,33 @@ TODOs
 - Stopword-Filtern performanter, nicht jedesmal neu und mit Arrays.binarySearch
 - [DONE] fuer englisch und deutsch filtern immer, weil text kann beides sein wenn delicious... so viel zu bedenken fuer freies texte crawlen... eher delicious zum zusammenstellen des korpus mit komfort...
 - [DONE] fuer dt. scheint das encoding Aerger zu machen
-- Sollte nicht, wenn er einen text aus dem Trainingskorpus taggt 100% richtig liegen mit unserem Verfahren? Tut er nicht, aber sollte er denn?
+
+
+- [PROBLEM] Sollte nicht, wenn er einen text aus dem Trainingskorpus taggt 100% richtig liegen mit unserem Verfahren? Tut er nicht, aber sollte er denn?
 
 Ideen
 
-- Stemming mit WordNet?
-- Tagging von WordNet verwenden?
-- Sem. Relationen, z.B. Synonyme
-- Bundles crawlen, sampling frame, Korpora
-- Anders parsen: nicht nur p-content
-- Zum Thema SALE, Tesla: Alles noetig fuer viele vers. Sachen, auch hier: 
-Text->Toekns->Stemming->Filtern/Wortlisten->Suffixbaum->Paradigmen->Verschlagwortung
--Paradigmen anders, von wegen dirived und solche ideen, Suffixbaum-Sachen
-- nur n bester Tags nehmen
+- --> Stemming mit WordNet?
+- --> Tagging von WordNet verwenden?
+- --> Sem. Relationen, z.B. Synonyme
+- --> Bundles crawlen, sampling frame, Korpora
+- --> Anders parsen: nicht nur p-content
+- --> Paradigmen anders, von wegen dirived und solche ideen, Suffixbaum-Sachen
+- --> nur n bester Tags nehmen
 
 Bereiche
 
-- ML-Terminologie: Lernen, Cube
-- Brueckner-Begriffe, unser System klassifizieren
-- Code, UML, auch praktische zur Impl: JUnit weil nicht immer alle crwlen etc.
-- Evaluation, Recall, Precision, F-Mass
-- Grundgedanke: Texte aehnlichen Inhalts haben aehnliche Paradigmen (Gruppen von Worten im gleichen Kontext)
-- Ermittelte Paradigemn zeigen (z.B. einfach im Debugger), einige schon interessant, da muesste man weiter Filter (Stephans MA)
+- --> ML-Terminologie: Lernen, Felix von Cube
+- --> Brueckner-Begriffe, unser System klassifizieren
+- --> Code, UML, auch praktische zur Impl: JUnit weil nicht immer alle crwlen etc.
+- --> Evaluation, Recall, Precision, F-Mass
+- --> Grundgedanke: Texte aehnlichen Inhalts haben aehnliche Paradigmen (Gruppen von Worten im gleichen Kontext)
+- --> Ermittelte Paradigemn zeigen (z.B. einfach im Debugger), einige schon interessant, da muesste man weiter Filter (Stephans MA)
+- --> Zum Thema SALE, Tesla: Alles noetig fuer viele vers. Sachen, auch hier: 
+Text->Toekns->Stemming->Filtern/Wortlisten->Suffixbaum->Paradigmen->Verschlagwortung
 
 Aufteilung HA
 
-- Verfahren: Web, Crawling, Delicious, Korpora
-- Verfahren: Tesla, Java EE, SALE
-- Verfahren: struktur. Syntaxanalyse mit Suffixbaeumen
+- --> Verfahren: Web, Crawling, Delicious, Korpora
+- --> Verfahren: Tesla, Java EE, SALE
+- --> Verfahren: struktur. Syntaxanalyse mit Suffixbaeumen

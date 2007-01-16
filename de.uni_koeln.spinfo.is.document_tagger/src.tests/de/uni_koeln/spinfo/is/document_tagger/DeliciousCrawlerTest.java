@@ -5,6 +5,8 @@ import java.io.IOException;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uni_koeln.spinfo.is.document_tagger.crawling.DeliciousCrawler;
+
 public class DeliciousCrawlerTest {
     private DeliciousCrawler c;
 
