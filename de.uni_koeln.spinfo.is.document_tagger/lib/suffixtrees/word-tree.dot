@@ -1,0 +1,30 @@
+/* this is a generated dot file: www.graphviz.org */
+digraph suffixtree {
+	rankdir=LR
+node[shape=box]			1->4
+		[label="Wasser $,\n Text: 4, Suffix: 2"];
+		1->13
+		[label="esse Brot $,\n Text: 4, Suffix: 1"];
+		1->8
+		[label="trinke,\n Text: 0, Suffix: 0"];
+			8->3
+			[label="Wasser $,\n Text: 4, Suffix: 1"];
+			8->9
+			[label="Saft $,\n Text: 4, Suffix: 2"];
+		1->10
+		[label="Saft $,\n Text: 4, Suffix: 2"];
+		1->14
+		[label="Brot $,\n Text: 4, Suffix: 2"];
+		1->5
+		[label="$,\n Text: 4, Suffix: 3"];
+		1->11
+		[label="Ich,\n Text: 0, Suffix: 0"];
+			11->12
+			[label="esse Brot $,\n Text: 4, Suffix: 1"];
+			11->6
+			[label="trinke,\n Text: 0, Suffix: 0"];
+				6->2
+				[label="Wasser $,\n Text: 4, Suffix: 0"];
+				6->7
+				[label="Saft $,\n Text: 4, Suffix: 2"];
+}

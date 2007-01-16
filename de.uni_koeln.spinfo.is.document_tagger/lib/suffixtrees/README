@@ -1,0 +1,8 @@
+Suffix Trees for Natural Language API
+
+- Requires Java 5
+- Using the API, word-based suffix trees can be constructed in linear runtime (based on the Algorithm described by Anderssen et al. and the implementation UkkonenSuffixTree.java from the BioJava API)
+- Constructed trees can be exported to the graph representation language "DOT" (used by GraphViz)
+- There are implementation of the algorithms for matching with k-mismatch and wildcards as described in Gusfield 1997:196f. and experimental implementations of constant-time LCA-retrieval (based on implementations by A.G. McDowell)
+- Besides the mentioned efficient implementation there are als naive suffix tree implementations for use with smaller data sets (used by the GUI)
+- For usage details see the javadoc documentation
