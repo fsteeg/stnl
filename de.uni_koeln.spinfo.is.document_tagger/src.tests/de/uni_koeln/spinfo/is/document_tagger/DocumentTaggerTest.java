@@ -52,13 +52,13 @@ public class DocumentTaggerTest {
         System.out.println("Creating tagger.");
         DocumentTagger tagger = new DocumentTagger(null);
         long start = System.currentTimeMillis();
-        DeliciousCrawler deliciousCrawler = new DeliciousCrawler(200);
+        DeliciousCrawler deliciousCrawler = new DeliciousCrawler(220);
         List<Text> crawl = deliciousCrawler.crawl(null);
         System.out.println("[PROFILING] Crawling took: "
                 + (System.currentTimeMillis() - start) / 1000 + " sec.");
         System.out.println("Crawled a corpus of "
                 + deliciousCrawler.wordCount() + " words.");
-        int i = 50;
+        int i = 20;
         List<Text> subList = crawl.subList(0, crawl.size() - i);
         tagger.learn(subList);
         start = System.currentTimeMillis();
