@@ -64,7 +64,7 @@ public class DeliciousCrawler {
             list = delicious.getAllPosts();
         } else {
             List<Bundle> bundles = delicious.getBundles();
-            
+
             for (Bundle b : bundles) {
                 System.out.println("Bundle: " + b);
                 if (b.getName().equalsIgnoreCase(bundle))
@@ -89,8 +89,9 @@ public class DeliciousCrawler {
         for (Post post : list) {
             if (i == limit)
                 break;
-            System.out.println("Processing post " + i + " of " + limit
-                    + " (total " + list.size() + "): " + post.getHref());
+            System.out.println("Processing post " + (i + 1) + " of "
+                    + Math.min(limit, list.size()) + " (total " + list.size()
+                    + "): " + post.getHref());
             Set<String> tags = new HashSet<String>(Arrays.asList(post
                     .getTagsAsArray(" ")));
             String clean = new Preprocessor(post.getHref()).clean();

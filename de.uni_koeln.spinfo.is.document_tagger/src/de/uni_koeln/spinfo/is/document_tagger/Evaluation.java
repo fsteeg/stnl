@@ -1,5 +1,6 @@
 package de.uni_koeln.spinfo.is.document_tagger;
 
+import java.text.NumberFormat;
 import java.util.Set;
 
 /**
@@ -49,9 +50,54 @@ public class Evaluation {
     private double hits() {
         double found = 0.0;
         for (String s : result) {
-            if (original.contains(s))
-                found++;
+            for (String o : original) {
+                if (o.contains(":")) {
+                    o = o.split(":")[1];
+                }
+                if (s.contains(":")) {
+                    s = s.split(":")[1];
+                }
+                if(s.equalsIgnoreCase(o))
+                    found++;
+            }
+            // if (original.contains(s))
+            // found++;
         }
         return found;
+    }
+    
+    /**
+     * Evaluates the classification result by cmparing the original tags with
+     * the tags retrieved by the program, using recall, precision anf f-value.
+     * 
+     * @param originalText
+     *            The original tags
+     * @param newTags
+     *            The new tags
+     */
+    static void evaluate(Text originalText, Set<String> newTags) {
+        Evaluation e = new Evaluation(newTags, originalText.tags);
+        System.out.println();
+        System.out.println("Evaluation; Recall: "
+                + NumberFormat.getNumberInstance().format(e.recall())
+                + ", Precision: "
+                + NumberFormat.getNumberInstance().format(e.precision())
+                + ", F-Value: "
+                + NumberFormat.getNumberInstance().format(e.fValue()));
+        System.out.println();
+        if (e.recall() > 0 || newTags.size() > 0) {
+            System.out
+                    .println("________________________________________________________");
+            System.out.println("New Tags for " + originalText.location);
+            for (String s : newTags) {
+                System.out.println(s);
+            }
+            System.out
+                    .println("--------------------------------------------------------");
+            System.out.println("Original Tags for " + originalText.location);
+            for (String s : originalText.tags) {
+                System.out.println(s);
+            }
+        }
     }
 }

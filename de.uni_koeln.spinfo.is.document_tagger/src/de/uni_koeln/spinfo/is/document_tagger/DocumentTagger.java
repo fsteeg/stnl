@@ -32,7 +32,7 @@ public class DocumentTagger {
 
     // index of paradigms and their tags, eg [heine,goethe,schiller] -->
     // literature
-    Map<Set<String>, String> index2 = new HashMap<Set<String>, String>();
+    // Map<Set<String>, String> index2 = new HashMap<Set<String>, String>();
 
     private List<Text> texts;
 
@@ -41,10 +41,11 @@ public class DocumentTagger {
             // load the index from disk:
             ObjectInputStream in;
             try {
+                System.out.print("Reading knowledge from disk... ");
                 in = new ObjectInputStream(new FileInputStream(indexLocation));
                 paradigmsForTags = (Map<Set<String>, Set<String>>) in
                         .readObject();
-                System.out.println("READ INDEX FROM DISK");
+                System.out.println("done.");
             } catch (FileNotFoundException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

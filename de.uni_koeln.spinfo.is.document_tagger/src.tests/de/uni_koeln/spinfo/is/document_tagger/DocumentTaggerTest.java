@@ -39,11 +39,11 @@ public class DocumentTaggerTest {
         System.out.println("Creating tagger.");
         DocumentTagger tagger = new DocumentTagger(null);
         DeliciousCrawler deliciousCrawler = new DeliciousCrawler(200);
-        List<Text> crawl = deliciousCrawler.crawl("spiegel");
-        System.out.println("Crawled a corpus of "
+        // List<Text> crawl = deliciousCrawler.crawl("spiegel-korpus");
+        tagger.learn(deliciousCrawler.crawl("spiegel-korpus"));
+        System.out.println("Crawled and learned from a corpus of "
                 + deliciousCrawler.wordCount() + " words.");
-        tagger.learn(crawl.subList(0, crawl.size() / 2));
-        tagger.tag(crawl.subList(crawl.size() / 2, crawl.size()));
+        tagger.tag(deliciousCrawler.crawl("spiegel-test"));
 
     }
 

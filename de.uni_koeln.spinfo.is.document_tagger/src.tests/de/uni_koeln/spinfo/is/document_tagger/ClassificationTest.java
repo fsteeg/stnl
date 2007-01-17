@@ -13,18 +13,19 @@ public class ClassificationTest {
     @Test
     public void testTag() {
         DocumentTagger tagger = new DocumentTagger(null);
-        tagger
-                .learn(Arrays.asList(new Text("Hallo du. Hallo ihr. Alle ihr.",
-                        new HashSet<String>(Arrays.asList("test")),
-                        "testing-nowhere")));
+        tagger.learn(Arrays.asList(new Text("Hallo du. Hallo ihr. Alle ihr.",
+                new HashSet<String>(Arrays.asList("test1", "test2", "test3")),
+                "testing-nowhere")));
         Classification c = new Classification(tagger);
         List<Text> tagged = c.tag(Arrays.asList(new Text(
-                "Hallo du. Hallo ihr. Alle ihr.", new HashSet<String>(Arrays
-                        .asList("nonsense")), "testing-nowhere")));
+                "Hallo du. Hallo ihr. Alle ihr.", new HashSet<String>(),
+                "testing-nowhere")));
         assertTrue(tagged.size() > 0);
         assertTrue(tagged.get(0).tags != null);
         assertTrue(tagged.get(0).tags.size() > 0);
-        assertEquals("test", tagged.get(0).tags.iterator().next());
+        assertTrue(tagged.get(0).tags.contains("test1"));
+        assertTrue(tagged.get(0).tags.contains("test2"));
+        assertTrue(tagged.get(0).tags.contains("test3"));
 
     }
 }

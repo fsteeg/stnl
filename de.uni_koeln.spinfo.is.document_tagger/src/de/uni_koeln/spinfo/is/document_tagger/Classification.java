@@ -33,21 +33,23 @@ public class Classification {
     public List<Text> tag(List<Text> texts) {
         System.out.print("Creating index...");
         for (Set<String> key : tagger.paradigmsForTags.keySet()) {
+            Set<String> set = tagger.paradigmsForTags.get(key);
             System.out.println("Tags for paradigm: " + key + "   ++++++++    "
-                    + tagger.paradigmsForTags.get(key));
-            for (String tag : tagger.paradigmsForTags.get(key)) {
+                    + set);
+            for (String tag : set) {
                 for (String string : key) {
                     tagger.index1.put(string, key);
                 }
-                tagger.index2.put(key, tag);
+                set.add(tag);
             }
         }
-        System.out.println("Tagging, using " + tagger.index2.keySet().size()
+        System.out.println("Tagging, using "
+                + tagger.paradigmsForTags.keySet().size()
                 + " features (paradigms)"
                 + tagger.paradigmsForTags.keySet().size());
         for (Text text : texts) {
             Set<String> newTags = tag(text);
-            evaluate(text, newTags);
+            Evaluation.evaluate(text, newTags);
             text.tags = newTags;
         }
         return texts;
@@ -72,7 +74,7 @@ public class Classification {
         Map<String, Set<String>> index1 = tagger.index1;
         // index of paradigms and their tags, eg [heine,goethe,schiller] -->
         // literature
-        Map<Set<String>, String> index2 = tagger.index2;
+        Map<Set<String>, Set<String>> index2 = tagger.paradigmsForTags;
         // result: a mapping of candidate tags and their best single paradigm
         // correpondence
         Map<String, Double> correspondence = new HashMap<String, Double>();
@@ -80,16 +82,22 @@ public class Classification {
             for (String string : para) {
                 Set<String> paradigm = index1.get(string);
                 if (paradigm != null) {
-                    String tag = index2.get(paradigm);
-                    int before = paradigm.size();
-                    paradigm.removeAll(para);
-                    double hits = Math.abs(paradigm.size() - before)
-                            / (double) before;
-                    Double double1 = correspondence.get(tag);
-                    if (double1 != null)
-                        correspondence.put(tag, Math.max(double1, hits));
-                    else
-                        correspondence.put(tag, hits);
+                    Set<String> tags = index2.get(paradigm);
+                    if (tags != null) {
+                        int before = paradigm.size();
+                        HashSet<String> pa = new HashSet<String>(paradigm);
+                        pa.removeAll(para);
+                        double hits = Math.abs(pa.size() - before)
+                                / (double) before;
+                        for (String tag : tags) {
+                            Double double1 = correspondence.get(tag);
+                            if (double1 != null)
+                                correspondence
+                                        .put(tag, Math.max(double1, hits));
+                            else
+                                correspondence.put(tag, hits);
+                        }
+                    }
                 }
 
             }
@@ -97,7 +105,7 @@ public class Classification {
         }
         for (String string : correspondence.keySet()) {
             Double d = correspondence.get(string);
-            if (d >= 0.5) {
+            if (d > 0.5) {
                 System.out.println("Adding " + string + ". correspondence is: "
                         + d);
                 newTags.add(string);
@@ -207,36 +215,5 @@ public class Classification {
     // // return hits;
     // }
 
-    /**
-     * Evaluates the classification result by cmparing the original tags with
-     * the tags retrieved by the program, using recall, precision anf f-value.
-     * 
-     * @param originalText
-     *            The original tags
-     * @param newTags
-     *            The new tags
-     */
-    private void evaluate(Text originalText, Set<String> newTags) {
-        Evaluation e = new Evaluation(newTags, originalText.tags);
-        System.out.println("Evaluation; Recall: "
-                + NumberFormat.getNumberInstance().format(e.recall())
-                + ", Precision: "
-                + NumberFormat.getNumberInstance().format(e.precision())
-                + ", F-Value: "
-                + NumberFormat.getNumberInstance().format(e.fValue()));
-        if (e.recall() > 0 || newTags.size() > 0) {
-            System.out
-                    .println("________________________________________________________");
-            System.out.println("New Tags for " + originalText.location);
-            for (String s : newTags) {
-                System.out.println(s);
-            }
-            System.out
-                    .println("--------------------------------------------------------");
-            System.out.println("Original Tags for " + originalText.location);
-            for (String s : originalText.tags) {
-                System.out.println(s);
-            }
-        }
-    }
+   
 }

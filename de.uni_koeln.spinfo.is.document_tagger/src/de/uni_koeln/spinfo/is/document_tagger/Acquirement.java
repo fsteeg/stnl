@@ -74,10 +74,11 @@ public class Acquirement {
         }
         try {
             // store the result on disk:
+            System.out.print("Writing result of aquisition... ");
             ObjectOutputStream out = new ObjectOutputStream(
                     new FileOutputStream("index.bin"));
             out.writeObject(tagger.paradigmsForTags);
-            System.out.println("WROTE INDEX TO DISK");
+            System.out.println("done.");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
