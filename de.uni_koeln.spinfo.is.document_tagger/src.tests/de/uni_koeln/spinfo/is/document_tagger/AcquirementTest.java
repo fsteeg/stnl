@@ -13,7 +13,7 @@ public class AcquirementTest {
 
     @Test
     public void testLearn() {
-        Acquirement a = new Acquirement(new DocumentTagger(null));
+        Acquisition a = new Acquisition(new DocumentTagger(null));
         a.learn(Arrays.asList(new Text("Hallo ihr. Hallo du. Alle ihr.",
                 new HashSet<String>(Arrays.asList("test")), "test")));
         Map<Set<String>, Set<String>> map = a.tagger.paradigmsForTags;

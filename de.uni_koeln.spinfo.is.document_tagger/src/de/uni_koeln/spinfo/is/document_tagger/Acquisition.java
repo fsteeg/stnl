@@ -65,7 +65,7 @@ public class Acquisition {
         this.texts = texts;
         if (this.tagger.paradigmsForTags == null) {
             this.tagger.paradigmsForTags = new HashMap<Set<String>, Set<String>>();
-            extractParadigms();
         }
+        extractParadigms();
     }
 }
