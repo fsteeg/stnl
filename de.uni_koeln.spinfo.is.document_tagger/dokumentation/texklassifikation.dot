@@ -1,0 +1,46 @@
+
+digraph G {
+	
+	rankdir=LR
+	node[shape=box style=dashed]
+	subgraph cluster_0{
+		berechnung[label="Merkmals-\nberechnung"]
+		auswahl[label="Merkmals-\nauswahl"]
+		bildung[label="Modellbildung"]
+		label="Wissenserwerb";
+		berechnung->auswahl;
+		auswahl->bildung;
+	}
+	
+	subgraph cluster_1{
+		label="Klassifikation";
+		klassifikationsverfahren[label="Klassifikations-\nverfahren"]
+	}
+	
+	bildung->klassifikationsverfahren[dir=back]
+	
+}
+/*
+digraph G {
+	subgraph cluster_0 {
+		label = "hello world";
+		a -> b;
+		a -> c;
+		color = hot_pink;
+	}
+
+	subgraph cluster_1 {
+		label = "MSDOT";
+		style= "dashed";
+		color=purple;
+		x -> y;
+		x -> z;
+		y -> z;
+		y -> q;
+	}
+
+	top -> a;
+	top -> y;
+	y -> b;
+}
+*/
