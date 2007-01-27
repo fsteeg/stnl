@@ -58,7 +58,7 @@ public class DeliciousCrawler {
     @SuppressWarnings("unchecked")
     // delicious-api
     private List<Post> getPostsFromDelicious(String bundle) {
-        Delicious delicious = new Delicious("fsteeg", ".steegfa.");
+        Delicious delicious = new Delicious("fsteeg", "steegf");
         List<Post> list = new Vector<Post>();
         if (bundle == null) {
             list = delicious.getAllPosts();
