@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.xerces.dom.TextImpl;
 import org.cyberneko.html.parsers.DOMParser;
 import org.w3c.dom.Node;
 import org.w3c.dom.html.HTMLParagraphElement;
@@ -29,7 +28,7 @@ public class Preprocessor {
      * @param url
      *            The content to be preprocessed.
      */
-    public Preprocessor(String url) {
+    public Preprocessor(final String url) {
         this.url = url;
     }
 
@@ -39,7 +38,7 @@ public class Preprocessor {
     public String clean() {
         DOMParser parser = new DOMParser();
         try {
-            parser.parse(url);
+            parser.parse(this.url);
         } catch (SAXException e) {
             System.out.println("Catching SAXException...");
             e.printStackTrace();
@@ -61,7 +60,7 @@ public class Preprocessor {
      *            The DOM node
      * @return Returns the content of the node if it is a paragraph node.
      */
-    public String content(Node node) {
+    public String content(final Node node) {
         // System.out.println("Node: " + node.getClass());
         StringBuilder builder = new StringBuilder();
         if (node instanceof HTMLParagraphElement /*
@@ -87,19 +86,21 @@ public class Preprocessor {
      *            The full location of the stopword file.
      * @return Returns the paradigms sans stopwords.
      */
-    public static Set<String> filter(Set<String> paradigm, String location) {
+    public static Set<String> filter(Set<String> paradigm, final String location) {
         String stopwords = Util.getText(new File(location), "utf-8");
         for (String stopword : stopwords.split(" ")) {
             Set<String> cleaned = new HashSet<String>();
             for (String m : paradigm) {
                 if (!m.equalsIgnoreCase(stopword) && !m.trim().equals("")
-                        && m.trim().length() != 1 && m.matches(".*[a-zA-Z].*"))
+                        && (m.trim().length() != 1) && m.matches(".*[a-zA-Z].*")) {
                     cleaned.add(m);
+                }
             }
             paradigm = cleaned;
         }
-        if (paradigm.size() <= 1)
+        if (paradigm.size() <= 1) {
             return null;
+        }
         return paradigm;
     }
 

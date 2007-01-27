@@ -5,7 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -27,7 +26,7 @@ public class Acquirement {
      * @param tagger
      *            The tagger
      */
-    public Acquirement(DocumentTagger tagger) {
+    public Acquirement(final DocumentTagger tagger) {
         this.tagger = tagger;
     }
 
@@ -36,48 +35,20 @@ public class Acquirement {
      * tags to paradigms.
      */
     private void extractParadigms() {
-        for (Text text : texts) {
+        for (Text text : this.texts) {
             Paradigms p = new Paradigms(text.content);
             Set<Set<String>> results = p.pardigmsInText;
             Set<String> tags = text.tags;
             for (Set<String> set : results) {
-                tagger.paradigmsForTags.put(set, tags);
+                this.tagger.paradigmsForTags.put(set, tags);
             }
-//            for (String tag : tags) {
-//                Set<Set<String>> paradigms = tagger.paradigmsForTags
-//                        .get(tag);
-//                if (paradigms == null) {
-//                    Set<Set<String>> par = new HashSet<Set<String>>();
-//                    par.addAll(results);
-//                    tagger.paradigmsForTags.put(tag, par);
-//                } else {
-//                    paradigms.addAll(results);
-//                }
-//            }
-            
-//            for (Set<String> paradigm : results) {
-//                paradigm = Preprocessor.filter(paradigm, "stopwords");
-//                if (paradigm == null)
-//                    continue;
-//                for (String tag : tags) {
-//                    Set<Set<String>> paradigms = tagger.paradigmsForTags
-//                            .get(tag);
-//                    if (paradigms == null) {
-//                        Set<Set<String>> par = new HashSet<Set<String>>();
-//                        par.add(paradigm);
-//                        tagger.paradigmsForTags.put(tag, par);
-//                    } else {
-//                        paradigms.add(paradigm);
-//                    }
-//                }
-//            }
         }
         try {
             // store the result on disk:
             System.out.print("Writing result of aquisition... ");
             ObjectOutputStream out = new ObjectOutputStream(
                     new FileOutputStream("index.bin"));
-            out.writeObject(tagger.paradigmsForTags);
+            out.writeObject(this.tagger.paradigmsForTags);
             System.out.println("done.");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -90,17 +61,11 @@ public class Acquirement {
      * @param texts
      *            The tagged texts to learn from.
      */
-    public void learn(List<Text> texts) {
+    public void learn(final List<Text> texts) {
         this.texts = texts;
-        if(tagger.paradigmsForTags==null){
-            tagger.paradigmsForTags = new HashMap<Set<String>, Set<String>>();
+        if (this.tagger.paradigmsForTags == null) {
+            this.tagger.paradigmsForTags = new HashMap<Set<String>, Set<String>>();
             extractParadigms();
         }
-        //else we already have an index, we don't want to learn again
-        // for (Text text : texts) {
-        // tagger.tagsForContent.put(text.content, text.tags
-        // .toArray(new String[] {}));
-        // System.out.println("Added: " + text.toString());
-        // }
     }
 }

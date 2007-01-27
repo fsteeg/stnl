@@ -21,7 +21,7 @@ public class Evaluation {
      * @param original
      *            The desired, given sample.
      */
-    public Evaluation(Set<String> result, Set<String> original) {
+    public Evaluation(final Set<String> result, final Set<String> original) {
         this.result = result;
         this.original = original;
     }
@@ -37,31 +37,30 @@ public class Evaluation {
      * @return Returns the recall of the evaluated result.
      */
     public double recall() {
-        return hits() / original.size();
+        return hits() / this.original.size();
     }
 
     /**
      * @return Returns the precision of the evaluated result.
      */
     public double precision() {
-        return hits() / result.size();
+        return hits() / this.result.size();
     }
 
     private double hits() {
         double found = 0.0;
-        for (String s : result) {
-            for (String o : original) {
+        for (String s : this.result) {
+            for (String o : this.original) {
                 if (o.contains(":")) {
                     o = o.split(":")[1];
                 }
                 if (s.contains(":")) {
                     s = s.split(":")[1];
                 }
-                if(s.equalsIgnoreCase(o))
+                if(s.equalsIgnoreCase(o)) {
                     found++;
+                }
             }
-            // if (original.contains(s))
-            // found++;
         }
         return found;
     }
@@ -75,7 +74,7 @@ public class Evaluation {
      * @param newTags
      *            The new tags
      */
-    static void evaluate(Text originalText, Set<String> newTags) {
+    static void evaluate(final Text originalText, final Set<String> newTags) {
         Evaluation e = new Evaluation(newTags, originalText.tags);
         System.out.println();
         System.out.println("Evaluation; Recall: "
@@ -85,7 +84,7 @@ public class Evaluation {
                 + ", F-Value: "
                 + NumberFormat.getNumberInstance().format(e.fValue()));
         System.out.println();
-        if (e.recall() > 0 || newTags.size() > 0) {
+        if ((e.recall() > 0) || (newTags.size() > 0)) {
             System.out
                     .println("________________________________________________________");
             System.out.println("New Tags for " + originalText.location);

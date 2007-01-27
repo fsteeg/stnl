@@ -18,42 +18,30 @@ import java.util.Set;
 public class DocumentTagger {
 
     /**
-     * A mapping of text content (keys) onto tags (values).
-     */
-    // Map<String, String[]> tagsForContent = new HashMap<String, String[]>();
-    /**
      * A mapping of tags (keys) onto paradigms (values);
      */
     Map<Set<String>, Set<String>> paradigmsForTags = null;
 
-    // index of members and their paradigms, eg heine -->
+    // map of members and their paradigms, eg heine -->
     // [heine,goethe,schiller] //TODO und mehrere paradigmen?
     Map<String, Set<String>> index1 = new HashMap<String, Set<String>>();
 
-    // index of paradigms and their tags, eg [heine,goethe,schiller] -->
-    // literature
-    // Map<Set<String>, String> index2 = new HashMap<Set<String>, String>();
-
-    private List<Text> texts;
-
-    public DocumentTagger(String indexLocation) {
+    @SuppressWarnings("unchecked")
+    public DocumentTagger(final String indexLocation) {
         if (indexLocation != null) {
             // load the index from disk:
             ObjectInputStream in;
             try {
                 System.out.print("Reading knowledge from disk... ");
                 in = new ObjectInputStream(new FileInputStream(indexLocation));
-                paradigmsForTags = (Map<Set<String>, Set<String>>) in
+                this.paradigmsForTags = (Map<Set<String>, Set<String>>) in
                         .readObject();
                 System.out.println("done.");
             } catch (FileNotFoundException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -64,19 +52,18 @@ public class DocumentTagger {
      * @param texts
      *            The texts to classify.
      */
-    public void tag(List<Text> texts) {
+    public void tag(final List<Text> texts) {
         long start = System.currentTimeMillis();
         new Classification(this).tag(texts);
         System.out.println("[PROFILING] Indexing and Tagging took: "
                 + (System.currentTimeMillis() - start) / 1000 + " sec.");
-
     }
 
     /**
      * @param texts
      *            The texts to learn from
      */
-    public void learn(List<Text> texts) {
+    public void learn(final List<Text> texts) {
         long start = System.currentTimeMillis();
         new Acquirement(this).learn(texts);
         System.out.println("[PROFILING] Learning took: "

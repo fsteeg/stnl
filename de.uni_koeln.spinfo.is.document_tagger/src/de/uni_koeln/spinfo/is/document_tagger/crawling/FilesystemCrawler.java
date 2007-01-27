@@ -11,9 +11,8 @@ import de.uni_koeln.spinfo.is.document_tagger.Text;
 import de.uni_koeln.spinfo.strings.algo.Util;
 
 /**
- * Reads texts from the filesystem from a given directory.
- * 
- * TODO: recurse into subdirectories
+ * Reads texts from the filesystem from a given directory. TODO: recurse into
+ * subdirectories
  * 
  * @author fsteeg, ssubicin
  * 

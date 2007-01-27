@@ -14,6 +14,7 @@ public class Text {
      * The tags for a text, the classification.
      */
     Set<String> tags = new HashSet<String>();
+
     /**
      * The actual content of a text.
      */
@@ -33,7 +34,7 @@ public class Text {
      *            The original location, where the text is from, a web adress,
      *            file system location or such
      */
-    public Text(String content, Set<String> tags, String location) {
+    public Text(final String content, final Set<String> tags, final String location) {
         this.content = content;
         this.tags = tags;
         this.location = location;
@@ -47,9 +48,9 @@ public class Text {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        for (String s : tags) {
+        for (String s : this.tags) {
             builder.append("," + s);
         }
-        return builder.substring(1) + "\n\n" + content + "\n\n";
+        return builder.substring(1) + "\n\n" + this.content + "\n\n";
     }
 }
