@@ -65,7 +65,7 @@ public class DocumentTagger {
      */
     public void learn(final List<Text> texts) {
         long start = System.currentTimeMillis();
-        new Acquirement(this).learn(texts);
+        new Acquisition(this).learn(texts);
         System.out.println("[PROFILING] Learning took: "
                 + (System.currentTimeMillis() - start) / 1000 + " sec.");
     }

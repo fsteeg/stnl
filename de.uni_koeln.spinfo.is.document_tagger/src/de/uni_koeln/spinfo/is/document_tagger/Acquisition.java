@@ -17,7 +17,7 @@ import de.uni_koeln.spinfo.strings.algo.Paradigms;
  * @author fsteeg, ssubicin
  * 
  */
-public class Acquirement {
+public class Acquisition {
     DocumentTagger tagger;
 
     private List<Text> texts;
@@ -26,7 +26,7 @@ public class Acquirement {
      * @param tagger
      *            The tagger
      */
-    public Acquirement(final DocumentTagger tagger) {
+    public Acquisition(final DocumentTagger tagger) {
         this.tagger = tagger;
     }
 
