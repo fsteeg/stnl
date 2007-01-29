@@ -1,0 +1,18 @@
+digraph g{
+	node[shape=box width=3 fontsize=22]
+	crawler[label="Crawler" style=filled fillcolor=gray95]
+	texte[style=dashed label="Zu klassifizierende Texte"]
+	tokenizer[label="Tokenizer" style=filled fillcolor=gray95]
+	tokeniziertes_korpus[style=dashed label="Tokenisierte Texte"]
+	suffixtrees[label="Suffixbäume" style=filled fillcolor=gray95]
+	paradigmen[style=dashed label="Paradigmen"]
+	stopwordfilter[label="Stopwortfilter" style=filled fillcolor=gray95]
+	gefilterte_paradigmen[style=dashed label="Gefilterte Paradigmen"]
+	modell[style=dashed label="Modell"]
+	klassifikation[label="Textklassifikation" style=filled fillcolor=gray95]
+	klass_texte[style=dashed label="Klassifizierte Texte"]
+	
+	
+	crawler->texte->tokenizer->tokeniziertes_korpus->suffixtrees->paradigmen->stopwordfilter->gefilterte_paradigmen->klassifikation->klass_texte
+	modell->klassifikation
+}

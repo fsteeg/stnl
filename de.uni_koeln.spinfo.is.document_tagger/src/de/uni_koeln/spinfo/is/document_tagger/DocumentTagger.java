@@ -19,6 +19,10 @@ public class DocumentTagger {
 
     /**
      * A mapping of tags (keys) onto paradigms (values);
+     * 
+     * mapping of paradigms and their tags, eg [heine,goethe,schiller] --> //
+     * [literature, peotry]
+     * 
      */
     Map<Set<String>, Set<String>> paradigmsForTags = null;
 

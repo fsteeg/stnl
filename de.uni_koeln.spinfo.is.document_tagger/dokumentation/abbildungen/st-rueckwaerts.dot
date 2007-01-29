@@ -1,0 +1,33 @@
+/* this is a generated dot file: www.graphviz.org */
+digraph suffixtree {
+	rankdir=LR
+	
+node[shape=box]			1->10
+		[label="mag,\n Text: 0, Suffix: 0"];
+			10->4
+			[label="Anna $,\n Text: 4, Suffix: 2"];
+			10->14
+			[label="Hans $,\n Text: 4, Suffix: 2"];
+			10->11
+			[label="Ich $,\n Text: 4, Suffix: 3"];
+		1->7
+		[label="gern Chips mag Ich $,\n Text: 4, Suffix: 0"];
+		1->13
+		[label="Eis mag Hans $,\n Text: 4, Suffix: 0"];
+		1->8
+		[label="Chips mag,\n Text: 0, Suffix: 0"];
+			8->3
+			[label="Anna $,\n Text: 4, Suffix: 1"];
+			8->9
+			[label="Ich $,\n Text: 4, Suffix: 3"];
+		1->5
+		[label="Anna $,\n Text: 4, Suffix: 3"];
+		1->15
+		[label="Hans $,\n Text: 4, Suffix: 2"];
+		1->12
+		[label="Ich $,\n Text: 4, Suffix: 3"];
+		1->6
+		[label="$,\n Text: 4, Suffix: 4"];
+		1->2
+		[label="nicht Chips mag Anna $,\n Text: 4, Suffix: 0"];
+}

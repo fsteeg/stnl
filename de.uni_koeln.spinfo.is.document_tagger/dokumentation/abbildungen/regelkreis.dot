@@ -1,0 +1,20 @@
+digraph regelkreis{
+	
+	node[shape=record]
+
+	lernziel[label="{Lernziel|Klassifizierte Texte}"]
+	lernplanung[label="{Lernplanung\n(Regler)|Evaluation nach F-Maß}", style=rounded]
+	lernsteuerung[label="{Lernsteuerung\n(Stellglied)|Bestimmen v. Klassen\nfür Paradigmen}", style=rounded]
+	lernender[label="{Lernender\n(Regelgröße)|Bezug von Klassen\nzu Paradigmen}"]
+	stoerungen[label="{Störungen|Irrelevante Paradigmen,\nunpassende Klassen}"]
+	lernkontrolle[label="{Lernkontrolle\n(Meßfühler)|Abrufen von Klassen\nfür Paradigmen}", style=rounded]
+	
+	lernziel->lernplanung[label="SOLL-Wert:\nvorgegebene Klassen"]
+	lernplanung->lernsteuerung[label="Regelung"]
+	lernsteuerung->lernender[label="Lernen"]
+	
+	lernplanung->lernkontrolle[dir=back, label="IST-Wert:\nermittelte Klassen"]
+	lernkontrolle->lernender[dir=back, label="Anwenden"]
+	
+	lernender->stoerungen[dir=back]
+}

@@ -1,0 +1,34 @@
+/* this is a generated dot file: www.graphviz.org */
+digraph suffixtree {
+	rankdir=LR
+node[shape=box]			1->10
+		[label="Chips,\n Text: 0, Suffix: 0"];
+			10->4
+			[label="nicht $,\n Text: 4, Suffix: 2"];
+			10->11
+			[label="gern $,\n Text: 4, Suffix: 3"];
+		1->7
+		[label="Ich mag Chips gern $,\n Text: 4, Suffix: 0"];
+		1->13
+		[label="Hans mag Eis $,\n Text: 4, Suffix: 0"];
+		1->14
+		[label="mag,\n Text: 0, Suffix: 0"];
+			14->8
+			[label="Chips,\n Text: 0, Suffix: 0"];
+				8->3
+				[label="nicht $,\n Text: 4, Suffix: 1"];
+				8->9
+				[label="gern $,\n Text: 4, Suffix: 3"];
+			14->15
+			[label="Eis $,\n Text: 4, Suffix: 2"];
+		1->5
+		[label="nicht $,\n Text: 4, Suffix: 3"];
+		1->16
+		[label="Eis $,\n Text: 4, Suffix: 2"];
+		1->12
+		[label="gern $,\n Text: 4, Suffix: 3"];
+		1->6
+		[label="$,\n Text: 4, Suffix: 4"];
+		1->2
+		[label="Anna mag Chips nicht $,\n Text: 4, Suffix: 0"];
+}

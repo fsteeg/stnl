@@ -1,0 +1,23 @@
+digraph client{
+	rankdir="TD"
+
+	node[shape=box,style=filled,fillcolor=gray95]
+	edge[fontsize=12]
+	ui[label="Tesla\nClient"]
+	xml[label="XML\nDateien", style=dashed]
+	java[label="Java\nKlassen", style=dashed]
+	ri[label="Remote\nInterface", style=dashed]
+	server[label="Tesla\nServer"]
+    
+	
+	ui->java[label="Wizards,\nEclipse JDT"]
+	java->server[label="neue\nKomponenten\n(prozedural)"]
+	ui->xml[label="Wizards, graphische\nEditoren, Formulare"]
+	xml->server[label="neue \nKomponenten,\nExperimente\n(deklarativ)"]
+	
+	ui-> ri[dir=both,style=dashed, label="Verbindung,\nAnfragen,\nAnweisungen"]
+	//ri-> server[style=dashed]
+	ri-> server[dir=both,style=dashed, label="vorhandene\nKomponenten,\nExperimente,\nKorpora"]
+	//ui-> ri [dir=back,style=dashed]
+	
+}
