@@ -32,7 +32,7 @@ public class Classification {
      * @param texts
      *            The texts to tag.
      */
-    public List<Text> tag(final List<Text> texts) {
+    public List<Text> tag(final List<Text> texts, String out) {
         System.out.print("Creating index...");
         for (Set<String> key : this.tagger.paradigmsForTags.keySet()) {
             Set<String> set = this.tagger.paradigmsForTags.get(key);
@@ -52,9 +52,9 @@ public class Classification {
         Evaluation evaluation = new Evaluation();
         FileWriter fileWriter = null;
         try {
-            String string = "evaluation-output.txt";
-            System.out.println("Writing result of Evaluation to: " + string);
-            fileWriter = new FileWriter(string);
+           
+            System.out.println("Writing result of Evaluation to: " + out);
+            fileWriter = new FileWriter(out);
             for (Text text : texts) {
                 Set<String> newTags = tag(text);
                 evaluation.evaluate(text, newTags, fileWriter);

@@ -19,6 +19,7 @@ TODOs
 - Stopword-Filtern performanter, nicht jedesmal neu und mit Arrays.binarySearch
 - [DONE] fuer englisch und deutsch filtern immer, weil text kann beides sein wenn delicious... so viel zu bedenken fuer freies texte crawlen... eher delicious zum zusammenstellen des korpus mit komfort...
 - [DONE] fuer dt. scheint das encoding Aerger zu machen
+- Nach Crawling in ein internes, plain-text format umformen, so hat man die inahlte auch gesichert
 
 
 - [PROBLEM] Sollte nicht, wenn er einen text aus dem Trainingskorpus taggt 100% richtig liegen mit unserem Verfahren? Tut er nicht, aber sollte er denn?

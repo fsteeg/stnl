@@ -23,10 +23,12 @@ public class ClassificationTest {
                 "testing-nowhere")));
         Classification c = new Classification(tagger);
         List<Text> tagged = c
-                .tag(Arrays
-                        .asList(new Text(
-                                "Ich muss heute wieder Eis kratzen. In Dresden produziert Infineon Chips.",
-                                new HashSet<String>(), "testing-nowhere")));
+                .tag(
+                        Arrays
+                                .asList(new Text(
+                                        "Ich muss heute wieder Eis kratzen. In Dresden produziert Infineon Chips.",
+                                        new HashSet<String>(),
+                                        "testing-nowhere")), "out-unit.txt");
         // Eis und Chips in anderen Kontaxten: Text bekommt keine Klassen:
         assertTrue(tagged.size() > 0);
         assertTrue(tagged.get(0).tags != null);
@@ -47,7 +49,7 @@ public class ClassificationTest {
         Classification c = new Classification(tagger);
         List<Text> tagged = c.tag(Arrays.asList(new Text(
                 "Ich esse Eis. Ich esse Chips.", new HashSet<String>(),
-                "testing-nowhere")));
+                "testing-nowhere")), "out-unit.txt");
         assertTrue(tagged.size() > 0);
         assertTrue(tagged.get(0).tags != null);
         assertTrue(tagged.get(0).tags.size() > 0);

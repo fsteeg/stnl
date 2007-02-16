@@ -20,6 +20,10 @@ import de.uni_koeln.spinfo.is.document_tagger.crawling.DeliciousCrawler;
  */
 public class DocumentTagger {
 
+    private static String IN = "delicious.html";
+
+    private static String OUT = "result.txt";
+
     /**
      * A mapping of tags (keys) onto paradigms (values);
      * 
@@ -61,7 +65,7 @@ public class DocumentTagger {
      */
     public void tag(final List<Text> texts) {
         long start = System.currentTimeMillis();
-        new Classification(this).tag(texts);
+        new Classification(this).tag(texts, OUT);
         System.out.println("[PROFILING] Indexing and Tagging took: "
                 + (System.currentTimeMillis() - start) / 1000 + " sec.");
     }
@@ -78,19 +82,23 @@ public class DocumentTagger {
     }
 
     public static void main(String[] args) {
+        if(args.length==2){
+            IN = args[0];
+            OUT = args[1];
+        }
         System.out.println("Creating tagger.");
         DocumentTagger tagger = new DocumentTagger(null);
         DeliciousCrawler deliciousCrawler = new DeliciousCrawler(200);
         List<Text> crawl = deliciousCrawler.crawl(deliciousCrawler.getProperties()
                         .getProperty(DeliciousCrawler.TRAINING_BUNDLE),
-                        "delicious.html");
+                        IN);
         System.out.println("Crawling done, learning...");
         // List<Text> crawl = deliciousCrawler.crawl("spiegel-korpus");
         tagger.learn(crawl);
         System.out.println("Crawled and learned from a corpus of "
                 + deliciousCrawler.wordCount() + " words.");
         tagger.tag(deliciousCrawler.crawl(deliciousCrawler.getProperties()
-                .getProperty(DeliciousCrawler.TEST_BUNDLE), "delicious.html"));
+                .getProperty(DeliciousCrawler.TEST_BUNDLE), IN));
     }
 
 }
