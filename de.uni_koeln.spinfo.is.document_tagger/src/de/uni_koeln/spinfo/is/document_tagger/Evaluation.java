@@ -15,15 +15,28 @@ public class Evaluation {
 
     private Set<String> result;
 
+    private double precisionSum;
+
+    private double recallSum;
+
+    private int count;
+
     /**
      * @param result
      *            The result of the classification, which is to be evaluated.
      * @param original
      *            The desired, given sample.
      */
-    public Evaluation(final Set<String> result, final Set<String> original) {
-        this.result = result;
-        this.original = original;
+    // public void Evaluation(final Set<String> result, final Set<String>
+    // original) {
+    // this.result = result;
+    // this.original = original;
+    // }
+    public Evaluation() {
+        this.count = 0;
+        this.recallSum = 0;
+        this.precisionSum = 0;
+
     }
 
     /**
@@ -57,14 +70,14 @@ public class Evaluation {
                 if (s.contains(":")) {
                     s = s.split(":")[1];
                 }
-                if(s.equalsIgnoreCase(o)) {
+                if (s.equalsIgnoreCase(o)) {
                     found++;
                 }
             }
         }
         return found;
     }
-    
+
     /**
      * Evaluates the classification result by cmparing the original tags with
      * the tags retrieved by the program, using recall, precision anf f-value.
@@ -74,17 +87,24 @@ public class Evaluation {
      * @param newTags
      *            The new tags
      */
-    static void evaluate(final Text originalText, final Set<String> newTags) {
-        Evaluation e = new Evaluation(newTags, originalText.tags);
+    void evaluate(final Text originalText, final Set<String> newTags) {
+        // evaluation(newTags, originalText.tags);
+        this.result = newTags;
+        this.original = originalText.tags;
         System.out.println();
+        count++;
+        double recall = recall();
+        recallSum += recall;
+        double precision = precision();
+        precisionSum += precision;
         System.out.println("Evaluation; Recall: "
-                + NumberFormat.getNumberInstance().format(e.recall())
-                + ", Precision: "
-                + NumberFormat.getNumberInstance().format(e.precision())
-                + ", F-Value: "
-                + NumberFormat.getNumberInstance().format(e.fValue()));
+                + NumberFormat.getNumberInstance().format(recall) + " (Mittel "
+                + recallSum / count + "), Precision: "
+                + NumberFormat.getNumberInstance().format(precision) + " (Mittel"
+                + precisionSum / count + "), F-Value: "
+                + NumberFormat.getNumberInstance().format(fValue()));
         System.out.println();
-        if ((e.recall() > 0) || (newTags.size() > 0)) {
+        if ((recall > 0) || (newTags.size() > 0)) {
             System.out
                     .println("________________________________________________________");
             System.out.println("New Tags for " + originalText.location);

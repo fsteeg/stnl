@@ -1,12 +1,15 @@
 package de.uni_koeln.spinfo.is.document_tagger.crawling;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 import java.util.Vector;
 
@@ -24,9 +27,19 @@ import del.icio.us.beans.Post;
  * 
  */
 public class DeliciousCrawler {
+    private static final String LOGIN = "login";
+
+    private static final String PASS = "pass";
+
+    public static final String TRAINING_BUNDLE = "training_bundle";
+
+    public static final String TEST_BUNDLE = "test_bundle";
+
     private int limit;
 
     private int wordCount;
+
+    Properties props;
 
     /**
      * @param i
@@ -34,6 +47,16 @@ public class DeliciousCrawler {
      */
     public DeliciousCrawler(int i) {
         limit = i;
+        props = new Properties();
+        try {
+            props.load(new FileInputStream("config/delicious.properties"));
+        } catch (FileNotFoundException e) {
+            System.err.println("Missing a \"delicious.properties\" file!");
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**
@@ -58,7 +81,10 @@ public class DeliciousCrawler {
     @SuppressWarnings("unchecked")
     // delicious-api
     private List<Post> getPostsFromDelicious(String bundle) {
-        Delicious delicious = new Delicious("fsteeg", "steegf");
+        String property = props.getProperty(LOGIN);
+        String property2 = props.getProperty(PASS);
+        System.out.println("Using account: " + property + "/" + property2);
+        Delicious delicious = new Delicious(property, property2);
         List<Post> list = new Vector<Post>();
         if (bundle == null) {
             list = delicious.getAllPosts();
@@ -127,5 +153,9 @@ public class DeliciousCrawler {
             res.append(line);
         }
         return res.toString();
+    }
+
+    public Properties getProperties() {
+        return props;
     }
 }

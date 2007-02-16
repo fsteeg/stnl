@@ -46,9 +46,10 @@ public class Classification {
                 + this.tagger.paradigmsForTags.keySet().size()
                 + " features (paradigms)"
                 + this.tagger.paradigmsForTags.keySet().size());
+        Evaluation evaluation = new Evaluation();
         for (Text text : texts) {
             Set<String> newTags = tag(text);
-            Evaluation.evaluate(text, newTags);
+            evaluation.evaluate(text, newTags);
             text.tags = newTags;
         }
         return texts;

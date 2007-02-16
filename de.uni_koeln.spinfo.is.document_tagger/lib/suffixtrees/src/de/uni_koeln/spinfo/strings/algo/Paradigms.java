@@ -66,9 +66,9 @@ public class Paradigms {
                     }
                     map.put(paradigmMember, paradigm);
                 }
-                paradigm = Preprocessor.filter(paradigm, "stopwords");
+                paradigm = Preprocessor.filter(paradigm, "config/stopwords");
                 if (paradigm != null)
-                    paradigm = Preprocessor.filter(paradigm, "stopwoerter");
+                    paradigm = Preprocessor.filter(paradigm, "config/stopwoerter");
                 if (paradigm != null && paradigm.size() > 1)
                     paradigmsInText.add(paradigm);
             }

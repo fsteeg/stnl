@@ -38,7 +38,7 @@ public class PreprocessorTest {
 
     private void filterTest(List<String> a, List<String> b) {
         Set<String> filtered0 = Preprocessor.filter(new HashSet<String>(a),
-                "stopwords");
+                "config/stopwords");
         assertEquals(new HashSet<String>(b), filtered0);
     }
 }
