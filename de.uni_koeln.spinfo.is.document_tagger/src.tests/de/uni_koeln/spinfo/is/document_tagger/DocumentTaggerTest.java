@@ -48,6 +48,20 @@ public class DocumentTaggerTest {
     }
 
     @Test
+    public void testTaggerDeliciousBundle3() {
+        System.out.println("Creating tagger.");
+        DocumentTagger tagger = new DocumentTagger(null);
+        DeliciousCrawler deliciousCrawler = new DeliciousCrawler(200);
+        // List<Text> crawl = deliciousCrawler.crawl("spiegel-korpus");
+        tagger.learn(deliciousCrawler.crawl(deliciousCrawler.getProperties()
+                .getProperty(DeliciousCrawler.TRAINING_BUNDLE)));
+        System.out.println("Crawled and learned from a corpus of "
+                + deliciousCrawler.wordCount() + " words.");
+        tagger.tag(deliciousCrawler.crawl(deliciousCrawler.getProperties()
+                .getProperty(DeliciousCrawler.TEST_BUNDLE)));
+    }
+
+    @Test
     public void testTaggerDelicious() {
         System.out.println("Creating tagger.");
         DocumentTagger tagger = new DocumentTagger(null);

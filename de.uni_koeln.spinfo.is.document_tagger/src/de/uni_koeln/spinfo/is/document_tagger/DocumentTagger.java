@@ -1,5 +1,6 @@
 package de.uni_koeln.spinfo.is.document_tagger;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -75,16 +76,21 @@ public class DocumentTagger {
         System.out.println("[PROFILING] Learning took: "
                 + (System.currentTimeMillis() - start) / 1000 + " sec.");
     }
-    
-    public static void main(String[]args){
+
+    public static void main(String[] args) {
         System.out.println("Creating tagger.");
         DocumentTagger tagger = new DocumentTagger(null);
         DeliciousCrawler deliciousCrawler = new DeliciousCrawler(200);
+        List<Text> crawl = deliciousCrawler.crawl(deliciousCrawler.getProperties()
+                        .getProperty(DeliciousCrawler.TRAINING_BUNDLE),
+                        "delicious.html");
+        System.out.println("Crawling done, learning...");
         // List<Text> crawl = deliciousCrawler.crawl("spiegel-korpus");
-        tagger.learn(deliciousCrawler.crawl(deliciousCrawler.getProperties().getProperty(DeliciousCrawler.TRAINING_BUNDLE)));
+        tagger.learn(crawl);
         System.out.println("Crawled and learned from a corpus of "
                 + deliciousCrawler.wordCount() + " words.");
-        tagger.tag(deliciousCrawler.crawl(deliciousCrawler.getProperties().getProperty(DeliciousCrawler.TEST_BUNDLE)));
+        tagger.tag(deliciousCrawler.crawl(deliciousCrawler.getProperties()
+                .getProperty(DeliciousCrawler.TEST_BUNDLE), "delicious.html"));
     }
 
 }

@@ -47,8 +47,9 @@ public class Evaluation {
     /**
      * @return Returns teh f-Value, a unifying number of precision and recall.
      */
-    public double fValue() {
-        return (2 * recall() * precision()) / (recall() + precision());
+    public double fMeasure() {
+        double d = (recall() + precision());
+        return d == 0 ? 0 : (2 * recall() * precision()) / d;
     }
 
     /**
@@ -106,6 +107,7 @@ public class Evaluation {
         recallSum += recall;
         double precision = precision();
         precisionSum += precision;
+        fSum += fMeasure();
         NumberFormat numberInstance = NumberFormat.getNumberInstance();
         writer
                 .write("________________________________________________________________________________________________________________\n");
@@ -113,7 +115,7 @@ public class Evaluation {
                 + " (Mittel " + numberInstance.format(recallSum / count)
                 + "), Precision: " + numberInstance.format(precision)
                 + " (Mittel " + numberInstance.format(precisionSum / count)
-                + "), F-Value: " + numberInstance.format(fValue())
+                + "), F-Value: " + numberInstance.format(fMeasure())
                 + " (Mittel " + numberInstance.format(fSum / count) + ")");
         // writer.write("\n");
         if ((recall > 0) || (newTags.size() > 0)) {

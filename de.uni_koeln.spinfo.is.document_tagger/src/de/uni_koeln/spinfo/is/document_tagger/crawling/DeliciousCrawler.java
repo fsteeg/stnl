@@ -3,6 +3,7 @@ package de.uni_koeln.spinfo.is.document_tagger.crawling;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -10,8 +11,11 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.Vector;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import de.uni_koeln.spinfo.is.document_tagger.Preprocessor;
 import de.uni_koeln.spinfo.is.document_tagger.Text;
@@ -67,6 +71,45 @@ public class DeliciousCrawler {
     public List<Text> crawl(String bundle) {
         List<Post> list = getPostsFromDelicious(bundle);
         List<Text> texts = readContentFromPosts(list);
+        return texts;
+    }
+
+    public List<Text> crawl(String bundle, String file) {
+        List<Text> texts = readContentFromFile(bundle, file);
+        return texts;
+    }
+
+    private List<Text> readContentFromFile(String bundle, String file) {
+        System.out.println("Using file: " + file);
+        List<Text> texts = new Vector<Text>();
+        try {
+            Scanner scanner = new Scanner(new FileReader(file));
+            int c = 0;
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                System.out.println(line);
+                Matcher m = Pattern.compile(
+                        ".*?HREF=\"(http://[^\"]+)\".*?TAGS=\"([^\"]+)\".*?")
+                        .matcher(line);
+                if (m.matches()) {
+                    String url = m.group(1);
+                    // System.out.println("URL: " + url);
+                    String allTags = m.group(2);
+                    if (!allTags.startsWith(bundle))
+                        continue;
+                    c++;
+                    // System.out.println("TAGS: " + allTags);
+                    Set<String> tags = new HashSet<String>(Arrays
+                            .asList(allTags.split(",")));
+                    String clean = new Preprocessor(url).clean();
+                    if (!clean.trim().equals(""))
+                        texts.add(new Text(clean, tags, url));
+                }
+            }
+            System.out.println("Bundle " + bundle + ": " + c);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         return texts;
     }
 

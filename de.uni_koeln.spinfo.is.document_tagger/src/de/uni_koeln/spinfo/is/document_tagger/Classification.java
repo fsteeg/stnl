@@ -52,7 +52,9 @@ public class Classification {
         Evaluation evaluation = new Evaluation();
         FileWriter fileWriter = null;
         try {
-            fileWriter = new FileWriter("evaluation-output.txt");
+            String string = "evaluation-output.txt";
+            System.out.println("Writing result of Evaluation to: " + string);
+            fileWriter = new FileWriter(string);
             for (Text text : texts) {
                 Set<String> newTags = tag(text);
                 evaluation.evaluate(text, newTags, fileWriter);
