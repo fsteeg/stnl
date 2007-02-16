@@ -1,5 +1,7 @@
 package de.uni_koeln.spinfo.is.document_tagger;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.text.NumberFormat;
 import java.util.Set;
 
@@ -19,6 +21,8 @@ public class Evaluation {
 
     private double recallSum;
 
+    private double fSum;
+
     private int count;
 
     /**
@@ -36,6 +40,7 @@ public class Evaluation {
         this.count = 0;
         this.recallSum = 0;
         this.precisionSum = 0;
+        this.fSum = 0;
 
     }
 
@@ -50,14 +55,16 @@ public class Evaluation {
      * @return Returns the recall of the evaluated result.
      */
     public double recall() {
-        return hits() / this.original.size();
+        int size = this.original.size();
+        return size == 0 ? 0 : hits() / size;
     }
 
     /**
      * @return Returns the precision of the evaluated result.
      */
     public double precision() {
-        return hits() / this.result.size();
+        int size = this.result.size();
+        return size == 0 ? 0 : hits() / size;
     }
 
     private double hits() {
@@ -86,37 +93,44 @@ public class Evaluation {
      *            The original tags
      * @param newTags
      *            The new tags
+     * @throws IOException
      */
-    void evaluate(final Text originalText, final Set<String> newTags) {
+    void evaluate(final Text originalText, final Set<String> newTags,
+            Writer writer) throws IOException {
         // evaluation(newTags, originalText.tags);
         this.result = newTags;
         this.original = originalText.tags;
-        System.out.println();
+        // writer.write("\n");
         count++;
         double recall = recall();
         recallSum += recall;
         double precision = precision();
         precisionSum += precision;
-        System.out.println("Evaluation; Recall: "
-                + NumberFormat.getNumberInstance().format(recall) + " (Mittel "
-                + recallSum / count + "), Precision: "
-                + NumberFormat.getNumberInstance().format(precision) + " (Mittel"
-                + precisionSum / count + "), F-Value: "
-                + NumberFormat.getNumberInstance().format(fValue()));
-        System.out.println();
+        NumberFormat numberInstance = NumberFormat.getNumberInstance();
+        writer
+                .write("________________________________________________________________________________________________________________\n");
+        writer.write("Evaluation; Recall: " + numberInstance.format(recall)
+                + " (Mittel " + numberInstance.format(recallSum / count)
+                + "), Precision: " + numberInstance.format(precision)
+                + " (Mittel " + numberInstance.format(precisionSum / count)
+                + "), F-Value: " + numberInstance.format(fValue())
+                + " (Mittel " + numberInstance.format(fSum / count) + ")");
+        // writer.write("\n");
         if ((recall > 0) || (newTags.size() > 0)) {
-            System.out
-                    .println("________________________________________________________");
-            System.out.println("New Tags for " + originalText.location);
+            writer
+                    .write("\n----------------------------------------------------------------------------------------------------------------\n");
+            writer.write("New Tags for " + originalText.location + ": ");
             for (String s : newTags) {
-                System.out.println(s);
+                writer.write(s + " ");
             }
-            System.out
-                    .println("--------------------------------------------------------");
-            System.out.println("Original Tags for " + originalText.location);
+            writer
+                    .write("\n----------------------------------------------------------------------------------------------------------------\n");
+            writer.write("Original Tags for " + originalText.location + ": ");
             for (String s : originalText.tags) {
-                System.out.println(s);
+                writer.write(s + " ");
             }
+            writer
+                    .write("\n________________________________________________________________________________________________________________\n");
         }
     }
 }

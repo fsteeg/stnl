@@ -1,5 +1,8 @@
 package de.uni_koeln.spinfo.is.document_tagger;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -47,10 +50,17 @@ public class Classification {
                 + " features (paradigms)"
                 + this.tagger.paradigmsForTags.keySet().size());
         Evaluation evaluation = new Evaluation();
-        for (Text text : texts) {
-            Set<String> newTags = tag(text);
-            evaluation.evaluate(text, newTags);
-            text.tags = newTags;
+        FileWriter fileWriter = null;
+        try {
+            fileWriter = new FileWriter("evaluation-output.txt");
+            for (Text text : texts) {
+                Set<String> newTags = tag(text);
+                evaluation.evaluate(text, newTags, fileWriter);
+                text.tags = newTags;
+            }
+            fileWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return texts;
 

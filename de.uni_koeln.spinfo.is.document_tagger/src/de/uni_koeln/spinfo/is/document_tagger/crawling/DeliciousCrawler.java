@@ -93,7 +93,9 @@ public class DeliciousCrawler {
 
             for (Bundle b : bundles) {
                 System.out.println("Bundle: " + b);
-                if (b.getName().equalsIgnoreCase(bundle))
+                String name = b.getName();
+                System.out.println("Comparing: " + name + " and " + bundle);
+                if (name.equalsIgnoreCase(bundle))
                     list.addAll(delicious.getPostsForTags(b.getTags()
                             .split(" ")));
             }
