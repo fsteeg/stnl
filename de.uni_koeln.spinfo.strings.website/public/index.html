@@ -11,8 +11,7 @@
 
 <hr />
 
-<div class="navigation">
-<form action="http://www.google.com/search">
+<div class="navigation"><!--<form action="http://www.google.com/search">
 <div>Search <input size="15" name="as_q" /> <input type="hidden"
 	name="hl" value="en" /> <input type="hidden" name="ie" value="UTF-8" />
 <input type="hidden" name="btnG" value="Google+Search" /> <input
@@ -20,19 +19,12 @@
 	name="as_occt" value="any" /> <input type="hidden" name="as_dt"
 	value="i" /> <input type="hidden" name="as_sitesearch"
 	value="stnl.sourceforge.net" /></div>
-</form>
-<br />
-<a href="http://sourceforge.net/projects/stnl">Sourceforge Project
-Site (download and more)</a> <br />
-<br />
-<a href="HausarbeitFabianSteeg.pdf">Coursework on suffix trees for
-appr. matching and NLP (in german)</a> <br />
-<br />
-<a href="HausarbeitEvaHasler.pdf">Coursework on suffix trees for
-morphological analysis of spanish texts (in german)</a> <br />
+</form> 
+<br /> --> <a href="http://sourceforge.net/projects/stnl">Sourceforge
+Project Site (download and more)</a> <br />
 <br />
 <a href="https://svn.sourceforge.net/svnroot/stnl/">Browse the
-Subversion repository</a> <br />
+Subversion repository (most recent versions)</a> <br />
 <br />
 <a href="http://sourceforge.net/projects/stnl"><img class="image2"
 	alt="SourceForge.net Logo"
@@ -51,7 +43,9 @@ known and used data structure, up to now mainly used for string
 processing in bioinformatics, only very sporadically for natural
 language processing. See <i>"Dan Gusfield: Algorithms on Strings,
 Trees and Sequences"</i> for a description of what can be accomplished with
-suffix trees.</p>
+suffix trees. You can also check out some of our <a
+	href="applications/index.html">experimental applications</a> of suffix
+trees in natural language processing.</p>
 <h3>API</h3>
 <p>Using the API, word-based suffix trees can be constructed in
 linear runtime (based on the algorithm described by Anderssen et al. and
@@ -59,13 +53,12 @@ the implementation UkkonenSuffixTree.java from the BioJava API). The
 tree can be build for the entire input text or as a generalized suffix
 tree for all the sentences in the input text. Constructed trees can be
 exported to the graph representation language <i>dot</i> (used by
-GraphViz). There are implementations of the algorithms for matching with
-k-mismatch and wildcards as described in Gusfield 1997:196f. and
-experimental implementations of constant-time LCA-retrieval (based on
-implementations by A.G. McDowell). Besides the efficient implementation
-there are also naive suffix tree implementations for use with smaller
-data sets (used by the GUI). For usage details see the javadoc
-documentation.</p>
+GraphViz). Besides the efficient implementation there are also naive
+suffix tree implementations for use with smaller data sets (used by the
+GUI). For usage details see the javadoc documentation. There is some <a
+	href="http://www.spinfo.uni-koeln.de/space/Forschung/Weitere/Suffixb%C3%A4ume">further
+documentation</a> available (in german), including code samples for API
+usage.</p>
 
 <h3>GUI</h3>
 <p>The GUI allows for construction and visualization of suffix trees
@@ -79,8 +72,6 @@ suffix tree either for the words or for the chars in the input and
 building a suffix tree for the reversed input text (to visualize
 paradigms at the beginning of sentences). For details, see the included
 instructions.</p>
-
-
 <hr />
 <p class="smallprint"><a href="http://jigsaw.w3.org/css-validator/">
 <img class="image2" src="http://jigsaw.w3.org/css-validator/images/vcss"
@@ -90,7 +81,7 @@ instructions.</p>
 	alt="Valid XHTML 1.1" /></a><br />
 <br />
 <i>This site was created on 2006-09-21 and las modified on
-2006-09-04 by <a href="http://www.spinfo.uni-koeln.de/~fsteeg">
+2007-02-17 by <a href="http://www.spinfo.uni-koeln.de/~fsteeg">
 Fabian Steeg </a><br />
 <a href="http://www.spinfo.uni-koeln.de/">Linguistic Information
 Processing</a> - <a href="http://www.uni-koeln.de/phil-fak/ifl/">Department
