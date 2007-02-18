@@ -51,7 +51,7 @@ public class DocumentTagger {
     // [heine,goethe,schiller] //TODO und mehrere paradigmen?
     Map<String, Set<String>> index1 = new HashMap<String, Set<String>>();
 
-    private Properties properties;
+    Properties properties;
 
     String login;
 

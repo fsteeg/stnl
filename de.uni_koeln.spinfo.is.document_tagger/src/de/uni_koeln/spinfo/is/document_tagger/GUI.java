@@ -1,6 +1,7 @@
 package de.uni_koeln.spinfo.is.document_tagger;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -8,11 +9,16 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
+import javax.swing.Box;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 
 import de.uni_koeln.spinfo.is.document_tagger.crawling.DeliciousCrawler;
 import del.icio.us.DeliciousException;
@@ -72,7 +78,7 @@ public class GUI extends JFrame {
         createTagger(args, panel);
         // create the frame:
         JFrame f = new JFrame();
-        f.setSize(500, 60);
+        f.setSize(510, 260);
         f.setLocation(new Point(20, 50));
         f.setContentPane(panel);
         JProgressBar progressBar = new JProgressBar(JProgressBar.HORIZONTAL, 0,
@@ -83,9 +89,12 @@ public class GUI extends JFrame {
                 return new Dimension(300, super.getPreferredSize().height);
             }
         };
+        progressBar.setBorder(new LineBorder(Color.GRAY));
+        panel.add(createConfigInfo(), BorderLayout.CENTER);
         progressBar.setVisible(true);
         panel.add(progressBar, BorderLayout.NORTH);
         JLabel label = new JLabel();
+        label.setBorder(new LineBorder(Color.GRAY));
         panel.add(label, BorderLayout.SOUTH);
         f.setVisible(true);
         progressBar.setValue(10);
@@ -139,6 +148,18 @@ public class GUI extends JFrame {
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         progressBar.setValue(100);
 
+    }
+
+    private Component createConfigInfo() {
+        Box box = Box.createVerticalBox();
+        for (Object key : tagger.properties.keySet()) {
+            String k = (String) key;
+            String v = tagger.properties.getProperty(k);
+            box.add(new JLabel(k + ": " + v));
+        }
+        box.setBorder(new TitledBorder("Configuration"));
+        JScrollPane scrollPane = new JScrollPane(box);
+        return scrollPane;
     }
 
     private void createTagger(String[] args, JPanel panel) {

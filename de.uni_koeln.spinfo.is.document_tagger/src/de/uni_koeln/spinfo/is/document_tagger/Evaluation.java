@@ -111,11 +111,11 @@ public class Evaluation {
         NumberFormat numberInstance = NumberFormat.getNumberInstance();
         writer.write("\n");// "________________________________________________________________________________________________________________\n");
         writer.write("Evaluation; Recall: " + numberInstance.format(recall)
-                + " (Mittel " + numberInstance.format(recallSum / count)
+                + " (average " + numberInstance.format(recallSum / count)
                 + "), Precision: " + numberInstance.format(precision)
-                + " (Mittel " + numberInstance.format(precisionSum / count)
+                + " (average " + numberInstance.format(precisionSum / count)
                 + "), F-Value: " + numberInstance.format(fMeasure())
-                + " (Mittel " + numberInstance.format(fSum / count) + ")");
+                + " (average " + numberInstance.format(fSum / count) + ")");
         // writer.write("\n");
         if ((recall > 0) || (newTags.size() > 0)) {
             writer.write("\n");// "\n----------------------------------------------------------------------------------------------------------------\n");
