@@ -58,10 +58,10 @@ public class DocumentTaggerTest {
         DeliciousCrawler deliciousCrawler = new DeliciousCrawler(200, "stnl",
                 "sp1nfo");
         // List<Text> crawl = deliciousCrawler.crawl("spiegel-korpus");
-        tagger.learn(deliciousCrawler.crawl(DocumentTagger.trainingBundle));
+        tagger.learn(deliciousCrawler.crawl(tagger.trainingBundle));
         System.out.println("Crawled and learned from a corpus of "
                 + deliciousCrawler.wordCount() + " words.");
-        tagger.tag(deliciousCrawler.crawl(DocumentTagger.testBundle));
+        tagger.tag(deliciousCrawler.crawl(tagger.testBundle));
     }
 
     @Test

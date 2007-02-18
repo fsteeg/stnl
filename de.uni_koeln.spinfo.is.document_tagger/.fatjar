@@ -1,12 +1,12 @@
 #Fat Jar Configuration File
-#Sat Feb 17 23:31:21 CET 2007
+#Sun Feb 18 22:44:02 CET 2007
 onejar.license.required=true
 manifest.classpath=
 manifest.removesigners=true
 onejar.checkbox=false
 jarname=classification.jar
 manifest.mergeall=true
-manifest.mainclass=de.uni_koeln.spinfo.is.document_tagger.DocumentTagger
+manifest.mainclass=de.uni_koeln.spinfo.is.document_tagger.GUI
 manifest.file=<createnew>
 jarname.isextern=false
 onejar.expand=

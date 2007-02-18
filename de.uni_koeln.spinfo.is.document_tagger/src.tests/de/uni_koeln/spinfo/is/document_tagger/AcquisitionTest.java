@@ -14,20 +14,10 @@ import org.junit.Test;
 public class AcquisitionTest {
 
     @Test
-    public void testLearn() {
+    public void testLearn() throws FileNotFoundException, IOException,
+            ClassNotFoundException {
         Acquisition a = null;
-        try {
-            a = new Acquisition(new DocumentTagger("config/tagger.properties"));
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        a = new Acquisition(new DocumentTagger("config/tagger.properties"));
         a.learn(Arrays.asList(new Text("Hallo ihr. Hallo du. Alle ihr.",
                 new HashSet<String>(Arrays.asList("test")), "test")));
         Map<Set<String>, Set<String>> map = a.tagger.paradigmsForTags;

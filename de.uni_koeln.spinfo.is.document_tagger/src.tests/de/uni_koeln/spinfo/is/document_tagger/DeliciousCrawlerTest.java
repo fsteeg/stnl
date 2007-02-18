@@ -12,7 +12,7 @@ public class DeliciousCrawlerTest {
 
     @Before
     public void init() {
-        c = new DeliciousCrawler(6, "stnl", "s1nfo");
+        c = new DeliciousCrawler(6, "stnl", "sp1nfo");
     }
 
     @Test
@@ -22,7 +22,7 @@ public class DeliciousCrawlerTest {
 
     @Test
     public void testCrawl1() {
-        c.crawl("linguistics");
+        c.crawl("corpus-2");
     }
 
     @Test
