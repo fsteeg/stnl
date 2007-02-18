@@ -2,6 +2,8 @@ package de.uni_koeln.spinfo.is.document_tagger;
 
 import static org.junit.Assert.*;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
@@ -13,7 +15,19 @@ public class AcquisitionTest {
 
     @Test
     public void testLearn() {
-        Acquisition a = new Acquisition(new DocumentTagger(null));
+        Acquisition a = null;
+        try {
+            a = new Acquisition(new DocumentTagger("config/tagger.properties"));
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         a.learn(Arrays.asList(new Text("Hallo ihr. Hallo du. Alle ihr.",
                 new HashSet<String>(Arrays.asList("test")), "test")));
         Map<Set<String>, Set<String>> map = a.tagger.paradigmsForTags;

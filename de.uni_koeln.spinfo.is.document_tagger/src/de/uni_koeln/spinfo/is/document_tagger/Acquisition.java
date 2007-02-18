@@ -47,7 +47,7 @@ public class Acquisition {
             // store the result on disk:
             System.out.print("Writing result of aquisition... ");
             ObjectOutputStream out = new ObjectOutputStream(
-                    new FileOutputStream("index.bin"));
+                    new FileOutputStream(tagger.binIndexLocation));
             out.writeObject(this.tagger.paradigmsForTags);
             System.out.println("done.");
         } catch (FileNotFoundException e) {

@@ -203,14 +203,14 @@ public class NumericSuffixTree<T extends Node> {
         Map map = new HashMap();
         int matchesUntil = 0;
         try {
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(
-                    "holla.txt"));
+            BufferedWriter bufferedWriter = new BufferedWriter(new PrintWriter(
+                    System.out));
             map = match(seq, accessor.getRoot(), 0, bufferedWriter, 0, false);
             matchesUntil = map.get("index") != null ? (Integer) map
                     .get("index") : 0;
 
-//            System.out.println("adding: " + seq + ", match until: "
-//                    + matchesUntil);
+            // System.out.println("adding: " + seq + ", match until: "
+            // + matchesUntil);
             bufferedWriter.close();
         } catch (IOException e1) {
             // TODO Auto-generated catch block
@@ -355,8 +355,8 @@ public class NumericSuffixTree<T extends Node> {
                             result, writer, depth, matched);
 
             }
-        } else{
-//            System.out.println("Blatt!");
+        } else {
+            // System.out.println("Blatt!");
         }
         // TODO Auto-generated method stub
         return map;

@@ -12,14 +12,14 @@ public class DeliciousCrawlerTest {
 
     @Before
     public void init() {
-        c = new DeliciousCrawler(6);
+        c = new DeliciousCrawler(6, "stnl", "s1nfo");
     }
 
     @Test
     public void testCrawl0() {
         c.crawl(null);
     }
-    
+
     @Test
     public void testCrawl1() {
         c.crawl("linguistics");

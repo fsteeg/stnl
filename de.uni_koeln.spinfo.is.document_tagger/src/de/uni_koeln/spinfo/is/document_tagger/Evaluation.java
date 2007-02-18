@@ -109,8 +109,7 @@ public class Evaluation {
         precisionSum += precision;
         fSum += fMeasure();
         NumberFormat numberInstance = NumberFormat.getNumberInstance();
-        writer
-                .write("________________________________________________________________________________________________________________\n");
+        writer.write("\n");// "________________________________________________________________________________________________________________\n");
         writer.write("Evaluation; Recall: " + numberInstance.format(recall)
                 + " (Mittel " + numberInstance.format(recallSum / count)
                 + "), Precision: " + numberInstance.format(precision)
@@ -119,20 +118,17 @@ public class Evaluation {
                 + " (Mittel " + numberInstance.format(fSum / count) + ")");
         // writer.write("\n");
         if ((recall > 0) || (newTags.size() > 0)) {
-            writer
-                    .write("\n----------------------------------------------------------------------------------------------------------------\n");
+            writer.write("\n");// "\n----------------------------------------------------------------------------------------------------------------\n");
             writer.write("New Tags for " + originalText.location + ": ");
             for (String s : newTags) {
                 writer.write(s + " ");
             }
-            writer
-                    .write("\n----------------------------------------------------------------------------------------------------------------\n");
+            writer.write("\n");// \n----------------------------------------------------------------------------------------------------------------\n");
             writer.write("Original Tags for " + originalText.location + ": ");
             for (String s : originalText.tags) {
                 writer.write(s + " ");
             }
-            writer
-                    .write("\n________________________________________________________________________________________________________________\n");
+            writer.write("\n");// "\n________________________________________________________________________________________________________________\n");
         }
     }
 }

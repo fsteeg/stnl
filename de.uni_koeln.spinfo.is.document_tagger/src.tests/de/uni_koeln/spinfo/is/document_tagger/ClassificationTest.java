@@ -2,6 +2,8 @@ package de.uni_koeln.spinfo.is.document_tagger;
 
 import static org.junit.Assert.*;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -13,10 +15,16 @@ public class ClassificationTest {
     /**
      * Test zur Verdeutlichung, dass gleiche Worte in anderen Kontexten nicht so
      * behandelt werden wie gleiche Worte in gleichen Kontexten
+     * 
+     * @throws ClassNotFoundException
+     * @throws IOException
+     * @throws FileNotFoundException
      */
     @Test
-    public void testTag2() {
-        DocumentTagger tagger = new DocumentTagger(null);
+    public void testTag2() throws FileNotFoundException, IOException,
+            ClassNotFoundException {
+        DocumentTagger tagger = null;
+        tagger = new DocumentTagger("config/tagger.properties");
         tagger.learn(Arrays.asList(new Text(
                 "Hans mag Eis. Anna mag Chips nicht. Ich mag Chips gern.",
                 new HashSet<String>(Arrays.asList("test1", "test2", "test3")),
@@ -38,10 +46,16 @@ public class ClassificationTest {
     /**
      * Wenn Woerter in gleichen Kontexten auftauchen, werden die Texte als der
      * gleichen Klasse angehoerig betrachtet
+     * 
+     * @throws ClassNotFoundException
+     * @throws IOException
+     * @throws FileNotFoundException
      */
     @Test
-    public void testTag3() {
-        DocumentTagger tagger = new DocumentTagger(null);
+    public void testTag3() throws FileNotFoundException, IOException,
+            ClassNotFoundException {
+        DocumentTagger tagger;
+        tagger = new DocumentTagger("config/tagger.properties");
         tagger.learn(Arrays.asList(new Text(
                 "Hans mag Eis. Anna mag Chips nicht. Ich mag Chips gern.",
                 new HashSet<String>(Arrays.asList("test1", "test2", "test3")),

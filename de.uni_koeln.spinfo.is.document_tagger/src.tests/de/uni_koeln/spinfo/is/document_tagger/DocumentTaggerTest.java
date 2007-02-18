@@ -1,16 +1,11 @@
 package de.uni_koeln.spinfo.is.document_tagger;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.Arrays;
-import java.util.HashSet;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 import org.junit.Test;
 
-import de.uni_koeln.spinfo.is.document_tagger.DocumentTagger;
-import de.uni_koeln.spinfo.is.document_tagger.Evaluation;
-import de.uni_koeln.spinfo.is.document_tagger.Text;
 import de.uni_koeln.spinfo.is.document_tagger.crawling.DeliciousCrawler;
 import de.uni_koeln.spinfo.is.document_tagger.crawling.FilesystemCrawler;
 
@@ -22,10 +17,14 @@ import de.uni_koeln.spinfo.is.document_tagger.crawling.FilesystemCrawler;
  */
 public class DocumentTaggerTest {
     @Test
-    public void testTaggerDeliciousBundle() {
+    public void testTaggerDeliciousBundle() throws FileNotFoundException,
+            IOException, ClassNotFoundException {
         System.out.println("Creating tagger.");
-        DocumentTagger tagger = new DocumentTagger(null);
-        DeliciousCrawler deliciousCrawler = new DeliciousCrawler(20);
+        DocumentTagger tagger = null;
+        tagger = new DocumentTagger("config/tagger.properties");
+
+        DeliciousCrawler deliciousCrawler = new DeliciousCrawler(20, "stnl",
+                "sp1nfo");
         List<Text> crawl = deliciousCrawler.crawl("linguistics");
         System.out.println("Crawled a corpus of "
                 + deliciousCrawler.wordCount() + " words.");
@@ -35,10 +34,13 @@ public class DocumentTaggerTest {
     }
 
     @Test
-    public void testTaggerDeliciousBundle2() {
+    public void testTaggerDeliciousBundle2() throws FileNotFoundException,
+            IOException, ClassNotFoundException {
         System.out.println("Creating tagger.");
-        DocumentTagger tagger = new DocumentTagger(null);
-        DeliciousCrawler deliciousCrawler = new DeliciousCrawler(200);
+        DocumentTagger tagger = null;
+        tagger = new DocumentTagger("config/tagger.properties");
+        DeliciousCrawler deliciousCrawler = new DeliciousCrawler(200, "stnl",
+                "sp1nfo");
         // List<Text> crawl = deliciousCrawler.crawl("spiegel-korpus");
         tagger.learn(deliciousCrawler.crawl("spiegel-korpus"));
         System.out.println("Crawled and learned from a corpus of "
@@ -48,25 +50,29 @@ public class DocumentTaggerTest {
     }
 
     @Test
-    public void testTaggerDeliciousBundle3() {
+    public void testTaggerDeliciousBundle3() throws FileNotFoundException,
+            IOException, ClassNotFoundException {
         System.out.println("Creating tagger.");
-        DocumentTagger tagger = new DocumentTagger(null);
-        DeliciousCrawler deliciousCrawler = new DeliciousCrawler(200);
+        DocumentTagger tagger = null;
+        tagger = new DocumentTagger("config/tagger.properties");
+        DeliciousCrawler deliciousCrawler = new DeliciousCrawler(200, "stnl",
+                "sp1nfo");
         // List<Text> crawl = deliciousCrawler.crawl("spiegel-korpus");
-        tagger.learn(deliciousCrawler.crawl(deliciousCrawler.getProperties()
-                .getProperty(DeliciousCrawler.TRAINING_BUNDLE)));
+        tagger.learn(deliciousCrawler.crawl(DocumentTagger.trainingBundle));
         System.out.println("Crawled and learned from a corpus of "
                 + deliciousCrawler.wordCount() + " words.");
-        tagger.tag(deliciousCrawler.crawl(deliciousCrawler.getProperties()
-                .getProperty(DeliciousCrawler.TEST_BUNDLE)));
+        tagger.tag(deliciousCrawler.crawl(DocumentTagger.testBundle));
     }
 
     @Test
-    public void testTaggerDelicious() {
+    public void testTaggerDelicious() throws FileNotFoundException,
+            IOException, ClassNotFoundException {
         System.out.println("Creating tagger.");
-        DocumentTagger tagger = new DocumentTagger(null);
+        DocumentTagger tagger = null;
+        tagger = new DocumentTagger("config/tagger.properties");
         long start = System.currentTimeMillis();
-        DeliciousCrawler deliciousCrawler = new DeliciousCrawler(220);
+        DeliciousCrawler deliciousCrawler = new DeliciousCrawler(220, "stnl",
+                "sp1nfo");
         List<Text> crawl = deliciousCrawler.crawl(null);
         System.out.println("[PROFILING] Crawling took: "
                 + (System.currentTimeMillis() - start) / 1000 + " sec.");
@@ -82,10 +88,14 @@ public class DocumentTaggerTest {
     }
 
     @Test
-    public void testTaggerDeliciousNoLearning() {
+    public void testTaggerDeliciousNoLearning() throws FileNotFoundException,
+            IOException, ClassNotFoundException {
         System.out.println("Creating tagger.");
-        DocumentTagger tagger = new DocumentTagger("index.bin-400-posts.bin");
-        DeliciousCrawler deliciousCrawler = new DeliciousCrawler(30);
+        // prop file anpassen
+        DocumentTagger tagger = null;
+        tagger = new DocumentTagger("config/tagger.properties");
+        DeliciousCrawler deliciousCrawler = new DeliciousCrawler(30, "stnl",
+                "sp1nfo");
         List<Text> crawl = deliciousCrawler.crawl(null);
         tagger.tag(crawl);
 
@@ -103,9 +113,10 @@ public class DocumentTaggerTest {
     }
 
     @Test
-    public void testTaggerFilesystem() {
+    public void testTaggerFilesystem() throws FileNotFoundException,
+            IOException, ClassNotFoundException {
         System.out.println("Creating tagger.");
-        DocumentTagger tagger = new DocumentTagger(null);
+        DocumentTagger tagger = new DocumentTagger("config/tagger.properties");
         FilesystemCrawler crawler = new FilesystemCrawler("ISO-8859-1");
         List<Text> crawl = crawler.crawl();
         System.out.println("Crawled a corpus of " + crawler.wordCount()
