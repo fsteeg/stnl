@@ -53,7 +53,7 @@ public class SimpleSuffixTree extends AbstractSuffixTree {
      *            If true the tree will be build reversed
      */
     public SimpleSuffixTree(File file, boolean forChars, boolean reverse) {
-        this(Util.getText(file), forChars, reverse);
+        this(Util.getText(file,"utf-8"), forChars, reverse);
     }
 
     /**

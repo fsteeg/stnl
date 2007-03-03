@@ -92,12 +92,12 @@ public class WordSuffixTree extends AlphanumericSuffixTree {
             }
         }
         /** step 2: number those types */
-        System.out.print(sentencesSet.size() + " Sentences, ");
+//        System.out.print(sentencesSet.size() + " Sentences, ");
         int sentenceCount = 1;
         List<Long> all = new ArrayList<Long>();
         for (String sentence : sentencesSet) {
             // split each sentence into words
-            String[] tokens = sentence.split("[^a-zA-Z0-9]");
+            String[] tokens = sentence.split("[^a-zA-Z0-9öäüß]");
             if (reverse) {
                 List l = Arrays.asList(tokens);
                 String[] tokRev = new String[tokens.length];
@@ -150,7 +150,8 @@ public class WordSuffixTree extends AlphanumericSuffixTree {
             sentenceCount++;
         }
         super.addSequences(all, sentenceCount, false);
-        System.out.print(counter + " Types, ");
+//        System.out.print(counter + " Types.");
+//        System.out.println();
 
         /**
          * step 5: expand the tree for words: not present, the tree takes care

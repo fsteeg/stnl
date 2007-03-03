@@ -12,9 +12,10 @@ package de.uni_koeln.spinfo.strings.algo;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 /**
  * Class for loading and saving strings to and from files.
@@ -27,18 +28,18 @@ public class Util {
      * 
      * @param file
      *            The file to read
+     * @param encoding
      * @return Returns the content of the file read, as a string
      */
-public static String getText(File file) {
+    public static String getText(File file, String encoding) {
         StringBuilder text = new StringBuilder();
         try {
-            
-            BufferedReader reader = new BufferedReader(new FileReader(file));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(
+                    new FileInputStream(file), encoding));
             String line = "";
             while ((line = reader.readLine()) != null) {
                 text.append(line).append(" ");
-                
-                
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -67,5 +68,14 @@ public static String getText(File file) {
             e.printStackTrace();
         }
 
+    }
+
+    /**
+     * @param file
+     *            The file to read from
+     * @return The content of the file, read assuming utf-8 encoding
+     */
+    public static String getText(File file) {
+        return getText(file, "utf-8");
     }
 }

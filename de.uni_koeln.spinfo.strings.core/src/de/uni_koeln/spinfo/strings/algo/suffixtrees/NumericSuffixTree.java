@@ -35,11 +35,11 @@ import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory.SuffixNode;
  * </p>
  * 
  * <pre>
- *                                          root(4)
- *                                          |
- *                                          A(2)--------G(1)-----T(1)
- *                                          |           |
- *                                          A(1)--G(1)  T(1)
+ *                                           root(4)
+ *                                           |
+ *                                           A(2)--------G(1)-----T(1)
+ *                                           |           |
+ *                                           A(1)--G(1)  T(1)
  * </pre>
  * 
  * <p>
@@ -203,13 +203,14 @@ public class NumericSuffixTree<T extends Node> {
         Map map = new HashMap();
         int matchesUntil = 0;
         try {
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(
-                    "holla.txt"));
+            BufferedWriter bufferedWriter = new BufferedWriter(new PrintWriter(
+                    System.out));
             map = match(seq, accessor.getRoot(), 0, bufferedWriter, 0, false);
             matchesUntil = map.get("index") != null ? (Integer) map
                     .get("index") : 0;
-                    
-            System.out.println("adding: "+seq+", match until: " + matchesUntil);
+
+            // System.out.println("adding: " + seq + ", match until: "
+            // + matchesUntil);
             bufferedWriter.close();
         } catch (IOException e1) {
             // TODO Auto-generated catch block
@@ -219,7 +220,7 @@ public class NumericSuffixTree<T extends Node> {
         // Puts i at the end of the previous sequences
         i = sequences.size();
 
-//        i = i + matchesUntil;
+        // i = i + matchesUntil;
 
         int k = i;
         j = i;
@@ -331,7 +332,7 @@ public class NumericSuffixTree<T extends Node> {
             // System.out.println("kinder");
 
             for (T child : children.values()) {
-//                boolean matched = false;
+                // boolean matched = false;
                 label = getEdgeLabel(child);
                 for (int i = 0; i < seq.size() && i < label.size(); i++) {
 
@@ -342,20 +343,21 @@ public class NumericSuffixTree<T extends Node> {
                         map.put("index", result);
                         // map.put("node", child);
                         return map;
-                    } else{
-                        matched=false;
+                    } else {
+                        matched = false;
                         break;
-                        
+
                     }
 
                 }
-                if (matched)
-                    return match(seq.subList(result, seq.size()), (T) child, result,
-                            writer, depth, matched);
+                if (matched && result <= seq.size())
+                    return match(seq.subList(result, seq.size()), (T) child,
+                            result, writer, depth, matched);
 
             }
-        } else
-            System.out.println("Blatt!");
+        } else {
+            // System.out.println("Blatt!");
+        }
         // TODO Auto-generated method stub
         return map;
     }

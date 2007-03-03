@@ -28,6 +28,7 @@ public class TestABL extends TestCase {
      */
     public void testCombo() {
         Set<String> constituentsCombo = abl.getConstituentsCombo();
+        fail("Not yet implemented!");
         assertTrue(constituentsCombo.contains("esse"));
         assertTrue(constituentsCombo.contains("trinke"));
     }
