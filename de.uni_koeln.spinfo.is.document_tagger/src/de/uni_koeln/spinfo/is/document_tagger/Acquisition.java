@@ -8,8 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-import de.uni_koeln.spinfo.strings.algo.Paradigms;
-
 /**
  * Knowledge Acquisition: Learns from tagged texts by creating paradigms and
  * storing a mapping of paradigms and tags.

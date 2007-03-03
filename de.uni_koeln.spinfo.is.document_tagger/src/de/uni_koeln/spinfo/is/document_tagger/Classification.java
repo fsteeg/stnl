@@ -2,14 +2,11 @@ package de.uni_koeln.spinfo.is.document_tagger;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import de.uni_koeln.spinfo.strings.algo.Paradigms;
 
 /**
  * Classification of given texts: Tags text based on their paradigms.

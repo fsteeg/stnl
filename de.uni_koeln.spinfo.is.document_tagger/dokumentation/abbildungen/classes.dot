@@ -1,19 +1,19 @@
 digraph filter {
   /*size="5,5"*/
-  node[shape=record,style=filled,fillcolor=gray95 width=2]
+  node[shape=record,style=filled,fillcolor=gray95 width=2.7 height=1.5]
   edge[dir=back, arrowtail=empty]
   
-  acquisition[label = "{Acquisition||}"]
-  classification[label = "{Classification||}"]
-  document_tagger[label = "{DocumentTagger||}"]
-  evaluation[label = "{Evaluation||}"]
-  preprocessor[label = "{Preprocessor||}"]
-  text[label = "{Text||}"]
-  delicious_crawler[label = "{DeliciousCrawler||}"]
+  acquisition[label = "{Acquisition|tagger\n...|learn(texts:List\<Text\>):void\n...}"]
+  classification[label = "{Classification|tagger\n...|tag(texts:List\<Text\>):List\<Text\>\n...}"]
+  document_tagger[label = "{DocumentTagger|knowledge:Map\<paradigm:\nSet\<String\>,tags:Set\<String\>\>\n...|...}"]
+  evaluation[label = "{Evaluation|...|precision():double\nrecall():double\n...}"]
+  preprocessor[label = "{Preprocessor|...|filter(Set\<String\>):Set<String>\ncontent(root:Node):String\n...}"]
+  text[label = "{Text|content : String\ntags : Set\<String\>\n...|...}"]
+  delicious_crawler[label = "{DeliciousCrawler|...|crawl(bundle:String):List\<Text\>\n...}"]
  
   
-  document_tagger->acquisition[arrowtail=ediamond]
-  document_tagger->classification[arrowtail=ediamond]
+  document_tagger->acquisition[arrowhead=ediamond arrowtail=none]
+  document_tagger->classification[arrowhead=ediamond arrowtail=none]
   document_tagger->text[arrowtail=ediamond]
   
   delicious_crawler -> text[arrowtail=ediamond]
