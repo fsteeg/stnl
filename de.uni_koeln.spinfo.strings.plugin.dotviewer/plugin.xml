@@ -9,7 +9,7 @@
             id="de.uni_koeln.spinfo.strings.dotviewer">
       </category>
       <view
-            name="GraphViz and Image Preview"
+            name="GraphViz"
             icon="icons/graphviz.png"
             category="de.uni_koeln.spinfo.strings.dotviewer"
             class="de.uni_koeln.spinfo.strings.plugin.dotviewer.ImageView"

@@ -10,6 +10,10 @@
  *******************************************************************************/
 package de.uni_koeln.spinfo.strings.plugin.dotviewer;
 
+import java.lang.reflect.InvocationTargetException;
+
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -21,9 +25,11 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 
 public class ImageViewer extends Canvas {
 
@@ -138,7 +144,24 @@ public class ImageViewer extends Canvas {
 	 */
 	public void setImage(Image image) {
 		this.image = image;
-		redraw();
+		
+		new Thread(new Runnable() {
+	  	      public void run() {
+//	  	         while (true) {
+	  	            try { Thread.sleep(1000); } catch (Exception e) { }
+	  	            Display.getDefault().asyncExec(new Runnable() {
+	  	               public void run() {
+	  	            	 redraw();
+	  	               }
+	  	            });
+	  	         }
+//	  	      }
+	  	   }).start();
+	    	
+	    	
+	    	
+		
+		
 	}
 
 }

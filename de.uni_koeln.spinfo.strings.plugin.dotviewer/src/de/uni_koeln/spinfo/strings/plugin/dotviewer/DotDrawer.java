@@ -9,6 +9,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 
 /**
@@ -152,28 +153,54 @@ public class DotDrawer {
     public void renderImage() throws InvocationTargetException,
             InterruptedException {
 
-        PlatformUI.getWorkbench().getProgressService().busyCursorWhile(
-                new IRunnableWithProgress() {
+    	
+    	
+//    	new Thread(new Runnable() {
+//  	      public void run() {
+////  	         while (true) {
+////  	            try { Thread.sleep(1000); } catch (Exception e) { }
+//  	            Display.getDefault().asyncExec(new Runnable() {
+//  	               public void run() {
+//  	            	 try {
+//						PlatformUI.getWorkbench().getProgressService().busyCursorWhile(
+//						       new IRunnableWithProgress() {
+//
+//						           public void run(IProgressMonitor monitor)
+//						                   throws InvocationTargetException,
+//						                   InterruptedException {
+//						               monitor.setTaskName(Messages
+//						                       .getString("View.CAPTION_RENDERING")); //$NON-NLS-1$
+						               Runtime runtime = Runtime.getRuntime();
+						               Process p = null;
+						               try {
+						                   p = runtime.exec(COMMANDS);
+						                   p.waitFor();
 
-                    public void run(IProgressMonitor monitor)
-                            throws InvocationTargetException,
-                            InterruptedException {
-                        monitor.setTaskName(Messages
-                                .getString("View.CAPTION_RENDERING")); //$NON-NLS-1$
-                        Runtime runtime = Runtime.getRuntime();
-                        Process p = null;
-                        try {
-                            p = runtime.exec(COMMANDS);
-                            p.waitFor();
-
-                        } catch (Exception x) {
-                            x.printStackTrace();
-                        }
-                        System.out.println("Exit status: " + p.exitValue()); //$NON-NLS-1$
-                    }
-
-                });
-
+						               } catch (Exception x) {
+						                   x.printStackTrace();
+						               }
+						               System.out.println("Exit status: " + p.exitValue()); //$NON-NLS-1$
+//						           }
+//
+//						       });
+//					} catch (InvocationTargetException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					} catch (InterruptedException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//  	               }
+//  	            });
+//  	         }
+////  	      }
+//  	   }).start();
+    	
+    	
+    	
+    	
+        
+//
     }
 
 }
