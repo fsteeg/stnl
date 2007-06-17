@@ -165,16 +165,12 @@ public abstract class AlphanumericSuffixTree extends NumericSuffixTree {
     }
 
     private void addAllLabels(Node node, Set<String> result, String builder) {
-    	boolean internal = false;
-    	internal = ! accessor.getChildren(node).isEmpty();
-        if (internal)
+        if (!node.isInternal())
             return;
-          Collection<Node> children = accessor.getChildren(node).values();
-   //     List<Node> children = node.getChildren();
+        List<Node> children = node.getChildren();
         for (Node child : children) {
             String concat = builder + getIncomingEdgeLabel(child) + " ";
-            internal = ! accessor.getChildren(child).isEmpty();
-            if (!internal) {
+            if (!child.isInternal()) {
                 result.add(concat.trim());
             } else {
                 addAllLabels(child, result, concat);

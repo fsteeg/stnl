@@ -36,7 +36,7 @@ public interface NodeAccessor<T extends Node> {
 	 */
 	public void addChild(T parent, Long ref, T child);
 
-	public T createLeafNode(List<T> parent, int suffixStart, long number,
+	public T createLeafNode(List<T> parent, int suffixStart, int number,
 			int suffixIndex);
 
 	/**

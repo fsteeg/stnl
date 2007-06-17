@@ -40,7 +40,6 @@ public class ABL {
     private Set<String> bootstrapConstituents(AlphanumericSuffixTree forwardTree) {
         Set<String> cf = new HashSet<String>();
         for (Node node : forwardTree.getAllNodes()) {
-        	
             if (node.isInternal()) {
                 cf.addAll(forwardTree.getLabelsUntilLeaf(node));
             }

@@ -202,7 +202,7 @@ public class NumericSuffixTree<T extends Node> {
         boolean canLinkJump = false;
         Map map = new HashMap();
         int matchesUntil = 0;
-        try {
+//        try {
             BufferedWriter bufferedWriter = new BufferedWriter(new PrintWriter(
                     System.out));
             map = match(seq, accessor.getRoot(), 0, bufferedWriter, 0, false);
@@ -211,11 +211,12 @@ public class NumericSuffixTree<T extends Node> {
 
             // System.out.println("adding: " + seq + ", match until: "
             // + matchesUntil);
-            bufferedWriter.close();
-        } catch (IOException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
+//            bufferedWriter.close();
+//        } 
+//        catch (IOException e1) {
+//            // TODO Auto-generated catch block
+//            e1.printStackTrace();
+//        }
 
         // Puts i at the end of the previous sequences
         i = sequences.size();
