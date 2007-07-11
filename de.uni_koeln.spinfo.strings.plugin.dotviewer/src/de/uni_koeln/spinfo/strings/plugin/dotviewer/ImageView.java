@@ -30,6 +30,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -38,6 +39,8 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISelectionService;
 import org.eclipse.ui.IWorkbenchPart;
@@ -45,6 +48,10 @@ import org.eclipse.ui.dialogs.ResourceListSelectionDialog;
 import org.eclipse.ui.part.ViewPart;
 
 public class ImageView extends ViewPart {
+	protected static final String FORMAT_PNG = "png";
+
+	protected static final String FORMAT_PDF = "pdf";
+
 	ImageViewer viewer;
 
 	Image image;
@@ -68,12 +75,13 @@ public class ImageView extends ViewPart {
 				return;
 			Object first = selection.getFirstElement();
 			if (first instanceof IFile) {
-				selectionChanged((IFile) first);
+				file = (IFile) first;
+				selectionChanged(file);
 			}
 		}
 
 		private void selectionChanged(IFile file) {
-			setImage(file, true);
+			setImage(file, true, FORMAT_PNG, false);
 		}
 
 	};
@@ -86,11 +94,33 @@ public class ImageView extends ViewPart {
 		// getSelectionService().addSelectionListener(selectionListener);
 
 		addLoadButton();
+		addExportButton();
 		addResetButton();
 
 		// IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		// DotFileListener listener = new DotFileListener(this);
 		// workspace.addResourceChangeListener(listener);
+	}
+
+	private void addExportButton() {
+		Action addItemAction = new Action("Export") {
+			public void run() {
+
+				setImage(file, true, FORMAT_PDF, true);
+
+			}
+		};
+		// TODO somethigns wrong here...
+		ImageDescriptor desc = ImageViewerPlugin
+				.getImageDescriptor("icons/pdf.gif");
+		// Bundle bundle = Platform.getBundle(ImageViewerPlugin.ID);
+		// IPath path = new Path("icons/update.gif");
+		// URL url = FileLocator.find(bundle, path, new HashMap());
+		// ImageDescriptor desc = ImageDescriptor.createFromURL(url);
+		addItemAction.setImageDescriptor(desc);
+		IToolBarManager mgr = getViewSite().getActionBars().getToolBarManager();
+		mgr.add(addItemAction);
+		mgr.add(new Separator());
 	}
 
 	private void addResetButton() {
@@ -104,7 +134,7 @@ public class ImageView extends ViewPart {
 		};
 		// TODO somethigns wrong here...
 		ImageDescriptor desc = ImageViewerPlugin
-				.getImageDescriptor("icons/update.gif");
+				.getImageDescriptor("icons/graphviz.gif");
 		// Bundle bundle = Platform.getBundle(ImageViewerPlugin.ID);
 		// IPath path = new Path("icons/update.gif");
 		// URL url = FileLocator.find(bundle, path, new HashMap());
@@ -126,7 +156,7 @@ public class ImageView extends ViewPart {
 					if (result2 != null) {
 						file = (IFile) result2[0];
 
-						setImage(file, true);
+						setImage(file, true, FORMAT_PNG, false);
 
 					}
 					for (Object object : result2) {
@@ -144,7 +174,6 @@ public class ImageView extends ViewPart {
 								return;
 							IResourceDelta rootDelta = event.getDelta();
 							// ausgegeben...
-							System.out.println("updpdpdpdpdpdslposkpodksopk");
 							IResourceDeltaVisitor visitor = new IResourceDeltaVisitor() {
 
 								public boolean visit(IResourceDelta delta) {
@@ -188,7 +217,9 @@ public class ImageView extends ViewPart {
 														IProgressMonitor monitor)
 														throws CoreException {
 													if (l.endsWith("." + "dot")) {
-														setImage(f, true);
+														setImage(f, true,
+																FORMAT_PNG,
+																false);
 													}
 												}
 											};
@@ -221,7 +252,7 @@ public class ImageView extends ViewPart {
 		};
 		// TODO somethigns wrong here...
 		ImageDescriptor desc = ImageViewerPlugin
-				.getImageDescriptor("icons/update.gif");
+				.getImageDescriptor("icons/open.gif");
 		// Bundle bundle = Platform.getBundle(ImageViewerPlugin.ID);
 		// IPath path = new Path("icons/update.gif");
 		// URL url = FileLocator.find(bundle, path, new HashMap());
@@ -229,21 +260,23 @@ public class ImageView extends ViewPart {
 		addItemAction.setImageDescriptor(desc);
 		IToolBarManager mgr = getViewSite().getActionBars().getToolBarManager();
 		mgr.add(addItemAction);
-		mgr.add(new Separator());
 	}
 
-	protected void setImage(IFile file, boolean refresh) {
+	protected void setImage(IFile file, boolean refresh, String format,
+			boolean generateOnly) {
+		this.file = file;
 		InputStream in = null;
 		try {
 			if (file.getFileExtension().equals("dot")) {
-				file = generateImageFromDot(file, refresh);
-				System.out.println("huhu");
+				file = generateImageFromDot(file, refresh, format);
 			}
-			in = file.getContents();
-			Image newImage = new Image(Display.getDefault(), in);
-			viewer.setImage(newImage);
-			disposeImage();
-			image = newImage;
+			if (!generateOnly) {
+				in = file.getContents();
+				Image newImage = new Image(Display.getDefault(), in);
+				viewer.setImage(newImage);
+				disposeImage();
+				image = newImage;
+			}
 		} catch (Exception e) {
 			// If there's an exception, do nothing. Life goes on...
 			e.printStackTrace();
@@ -257,20 +290,33 @@ public class ImageView extends ViewPart {
 		}
 	}
 
-	private IFile generateImageFromDot(IFile file, boolean refresh) {
+	private IFile generateImageFromDot(IFile file, boolean refresh,
+			String format) {
 		// String inFolder = Platform.getInstanceLocation().getURL().getPath()
 		// + file.getParent().getFullPath().toString().substring(1) + "/";
 		String folder = Platform.getInstanceLocation().getURL().getPath()
 				+ file.getParent().getFullPath().toString().substring(1) + "/";
 		System.out.println("in: " + folder);
 		System.out.println("out: " + folder);
-		String name = file.getName().split("\\.")[0] + ".png";
+		String name = file.getName().split("\\.")[0] + "." + format;
 
 		drawer = new DotDrawer(folder, folder, file.getName(), name);
 		drawer.initPaths(this.getViewSite().getShell());
 		try {
 
-			drawer.renderImage();
+			int i = drawer.renderImage(format);
+			if (i != 0) {
+				// MessageDialog dia = new MessageDialog(this.getViewSite()
+				// .getShell(), null, null, "Error while Rendering",
+				// MessageDialog.ERROR, new String[] { "OK" }, 0);
+				// dia.open();
+				final Shell parent = this.getViewSite().getShell();
+				Display.getDefault().asyncExec(new Runnable() {
+	               public void run() {
+				MessageDialog.openError(parent, null,
+						"Error while Rendering");
+				}});
+			}
 		} catch (InvocationTargetException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {

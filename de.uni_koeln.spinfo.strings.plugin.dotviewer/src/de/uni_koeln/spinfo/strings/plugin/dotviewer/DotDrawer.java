@@ -22,21 +22,21 @@ public class DotDrawer {
 
     // some config values
 
-    public static String DOT_CALL = "dot"; //$NON-NLS-1$
+    public  String DOT_CALL = "dot"; //$NON-NLS-1$
 
-    public static final String OUTPUT_FORMAT = "-Tpng";
+    private String OUTPUT_FORMAT = "-T";
 
-    public static final String VAR = "-o";
+    public  final String VAR = "-o";
 
-    public static String RESULT_PNG; //$NON-NLS-1$
+    public  String RESULT_PNG; //$NON-NLS-1$
 
-    public static String DOT_FILE; //$NON-NLS-1$
+    public  String DOT_FILE; //$NON-NLS-1$
 
-    public static String DOT_APP_PATH;
+    public  String DOT_APP_PATH;
 
-    public static String OUTPUT_FOLDER;
+    public  String OUTPUT_FOLDER;
 
-    static String[] COMMANDS;
+    String[] COMMANDS;
 
     private static final String CAPTION_DOT_SELECT_SHORT = Messages
             .getString("View.CAPTION_DOT_SELECT_SHORT"); //$NON-NLS-1$
@@ -44,7 +44,9 @@ public class DotDrawer {
     private static final String CAPTION_DOT_SELECT_LONG = Messages
             .getString("View.CAPTION_DOT_SELECT_LONG"); //$NON-NLS-1$
 
-    private static String INPUT_FOLDER = null;
+    private String INPUT_FOLDER = null;
+
+	protected boolean DONE;
 
     /**
      * @param outputFolder
@@ -99,10 +101,7 @@ public class DotDrawer {
         // COMMAND = DOT_APP_PATH + DOT_CALL + " " + TMP_DIR + RESULT_PNG + "\""
         // + " " //$NON-NLS-1$ //$NON-NLS-2$
         // + TMP_DIR + OUTPUT_DOT + "\"";
-        System.out.println("Will use command:");
-        for (String command : COMMANDS) {
-            System.out.println("command: " + command);
-        }
+        
     }
 
     /**
@@ -146,19 +145,25 @@ public class DotDrawer {
 
     /**
      * Calls dot to render the image from the generated dot-file
+     * @return 
      * 
      * @throws InterruptedException
      * @throws InvocationTargetException
      */
-    public void renderImage() throws InvocationTargetException,
+    public int renderImage(String format) throws InvocationTargetException,
             InterruptedException {
-
+this.OUTPUT_FORMAT = this.OUTPUT_FORMAT + format;
+    	COMMANDS[1] = OUTPUT_FORMAT;
     	
+    	System.out.println("Will use command:");
+        for (String command : COMMANDS) {
+            System.out.println("command: " + command);
+        }
     	
 //    	new Thread(new Runnable() {
 //  	      public void run() {
 ////  	         while (true) {
-////  	            try { Thread.sleep(1000); } catch (Exception e) { }
+//  	            try { Thread.sleep(1000); } catch (Exception e) { }
 //  	            Display.getDefault().asyncExec(new Runnable() {
 //  	               public void run() {
 //  	            	 try {
@@ -175,14 +180,17 @@ public class DotDrawer {
 						               try {
 						                   p = runtime.exec(COMMANDS);
 						                   p.waitFor();
+						                   DONE=true;
+						                   System.out.println("DONE");
 
 						               } catch (Exception x) {
 						                   x.printStackTrace();
 						               }
 						               System.out.println("Exit status: " + p.exitValue()); //$NON-NLS-1$
-//						           }
-//
-//						       });
+						               return p.exitValue();
+////						           }
+////
+//						       }});
 //					} catch (InvocationTargetException e) {
 //						// TODO Auto-generated catch block
 //						e.printStackTrace();
