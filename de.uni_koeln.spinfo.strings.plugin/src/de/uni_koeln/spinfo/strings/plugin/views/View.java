@@ -164,11 +164,11 @@ public class View extends ViewPart {
             i++;
         }
         builder.append("}"); //$NON-NLS-1$
-        Util.saveString(DotDrawer.OUTPUT_FOLDER + DotDrawer.DOT_FILE, builder
+        Util.saveString(drawer.OUTPUT_FOLDER + drawer.DOT_FILE, builder
                 .toString()); //$NON-NLS-1$
         try {
-            if (DotDrawer.DOT_APP_PATH.equals("")) { //$NON-NLS-1$
-                String replaceAll = (DotDrawer.OUTPUT_FOLDER + DotDrawer.DOT_FILE)
+            if (drawer.DOT_APP_PATH.equals("")) { //$NON-NLS-1$
+                String replaceAll = (drawer.OUTPUT_FOLDER + drawer.DOT_FILE)
                         .replaceAll("\\.dot", "\\.txt");
                 Util.saveString(replaceAll, builder.toString()); //$NON-NLS-1$
                 System.out.println("Setting browser to: " + replaceAll);
@@ -178,7 +178,7 @@ public class View extends ViewPart {
                         Messages.getString("View.CAPTION_NO_DOT_PATH_SET")); //$NON-NLS-1$
 
             } else {
-                drawer.renderImage();
+                drawer.renderImage("png");
                 update();
             }
         } catch (InvocationTargetException e) {
@@ -195,7 +195,7 @@ public class View extends ViewPart {
      * Updates the browser-widget
      */
     public static void update() {
-        String string = DotDrawer.OUTPUT_FOLDER + DotDrawer.RESULT_PNG;
+        String string = drawer.OUTPUT_FOLDER + drawer.RESULT_PNG;
         System.out.println("Setting Browser to: " + string);
         browser.setUrl(string);
     }
@@ -241,15 +241,15 @@ public class View extends ViewPart {
         System.out.println("Construction of Tree took: " + (end - start)); //$NON-NLS-1$
 
         start = System.currentTimeMillis();
-        String string = DotDrawer.DOT_FILE;
-        String string2 = (DotDrawer.OUTPUT_FOLDER + DotDrawer.DOT_FILE
+        String string = drawer.DOT_FILE;
+        String string2 = (drawer.OUTPUT_FOLDER + drawer.DOT_FILE
                 .replaceAll("\\.dot", "\\.txt")); //$NON-NLS-1$
-        tree.exportDot(DotDrawer.OUTPUT_FOLDER + string);
+        tree.exportDot(drawer.OUTPUT_FOLDER + string);
         end = System.currentTimeMillis();
         System.out.println("Export of Tree took: " + (end - start)); //$NON-NLS-1$
 
         start = System.currentTimeMillis();
-        if (DotDrawer.DOT_APP_PATH.equals("")) { //$NON-NLS-1$
+        if (drawer.DOT_APP_PATH.equals("")) { //$NON-NLS-1$
             Util.saveString(string2, tree.toString());
             System.out.println("Setting browser to: " + string2);
             browser.setUrl(string2);
@@ -258,7 +258,7 @@ public class View extends ViewPart {
                     Messages.getString("View.CAPTION_NO_DOT_PATH_SET")); //$NON-NLS-1$
 
         } else {
-            drawer.renderImage();
+            drawer.renderImage("png");
             View.update();
         }
         end = System.currentTimeMillis();
@@ -302,16 +302,16 @@ public class View extends ViewPart {
         System.out.println("Construction of Tree took: " + (end - start)); //$NON-NLS-1$
 
         start = System.currentTimeMillis();
-        String string = DotDrawer.DOT_FILE;
-        String string2 = (DotDrawer.OUTPUT_FOLDER + DotDrawer.DOT_FILE
+        String string = drawer.DOT_FILE;
+        String string2 = (drawer.OUTPUT_FOLDER + drawer.DOT_FILE
                 .replaceAll("\\.dot", "\\.txt")); //$NON-NLS-1$
-        ((AlphanumericSuffixTree) dag.graph).exportDot(DotDrawer.OUTPUT_FOLDER
+        ((AlphanumericSuffixTree) dag.graph).exportDot(drawer.OUTPUT_FOLDER
                 + string);
         end = System.currentTimeMillis();
         System.out.println("Export of Tree took: " + (end - start)); //$NON-NLS-1$
 
         start = System.currentTimeMillis();
-        if (DotDrawer.DOT_APP_PATH.equals("")) { //$NON-NLS-1$
+        if (drawer.DOT_APP_PATH.equals("")) { //$NON-NLS-1$
             Util.saveString(string2, ((AlphanumericSuffixTree) dag.graph)
                     .toString());
             System.out.println("Setting browser to: " + string2);
@@ -321,7 +321,7 @@ public class View extends ViewPart {
                     Messages.getString("View.CAPTION_NO_DOT_PATH_SET")); //$NON-NLS-1$
 
         } else {
-            drawer.renderImage();
+            drawer.renderImage("png");
             View.update();
         }
         end = System.currentTimeMillis();
@@ -440,8 +440,8 @@ public class View extends ViewPart {
                     }
 
                     public void widgetSelected(SelectionEvent e) {
-                        browser.setUrl(DotDrawer.OUTPUT_FOLDER
-                                + DotDrawer.DOT_FILE);
+                        browser.setUrl(drawer.OUTPUT_FOLDER
+                                + drawer.DOT_FILE);
                     }
                 });
 
