@@ -10,7 +10,7 @@
       </category>
       <view
             name="Suffix Tree Visualization"
-            icon="icons/sample.gif"
+            icon="icons/tree.gif"
             category="de.uni_koeln.spinfo.strings.plugin"
             class="de.uni_koeln.spinfo.strings.plugin.views.View"
             id="de.uni_koeln.spinfo.strings.plugin.views.View">

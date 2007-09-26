@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: STNL GUI Plug-in
 Bundle-SymbolicName: de.uni_koeln.spinfo.strings.plugin; singleton:=true
-Bundle-Version: 0.5.0
+Bundle-Version: 0.5.1
 Bundle-Activator: de.uni_koeln.spinfo.strings.plugin.StringsPlugin
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
@@ -15,3 +15,4 @@ Eclipse-AutoStart: true
 Export-Package: de.uni_koeln.spinfo.strings.plugin,
  de.uni_koeln.spinfo.strings.plugin.views
 Bundle-ClassPath: .
+Bundle-Vendor: http://stnl.sourceforge.net
