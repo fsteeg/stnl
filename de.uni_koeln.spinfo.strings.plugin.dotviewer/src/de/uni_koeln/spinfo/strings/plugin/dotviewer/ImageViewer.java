@@ -50,7 +50,7 @@ public class ImageViewer extends Canvas {
 		});
 		addListener(SWT.MouseMove, new Listener() {
 			public void handleEvent(Event event) {
-				if (getDrawingBounds().contains(event.x, event.y))
+				if (image!=null&&getDrawingBounds().contains(event.x, event.y))
 					showEnlargedImage();
 			}
 		});
@@ -62,11 +62,15 @@ public class ImageViewer extends Canvas {
 	}
 		
 	private void drawImage(GC gc) {
-		if (image == null) return;
-		Rectangle imageBounds = image.getBounds();
-		Rectangle drawingBounds = getDrawingBounds();
-		
-		gc.drawImage(image, 0, 0, imageBounds.width, imageBounds.height, drawingBounds.x, drawingBounds.y, drawingBounds.width, drawingBounds.height);
+		try {
+			if (image == null) return;
+			Rectangle imageBounds = image.getBounds();
+			Rectangle drawingBounds = getDrawingBounds();
+			gc.drawImage(image, 0, 0, imageBounds.width, imageBounds.height, drawingBounds.x, drawingBounds.y, drawingBounds.width, drawingBounds.height);
+		} catch (RuntimeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	private Rectangle getDrawingBounds() {
