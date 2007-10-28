@@ -1,0 +1,46 @@
+/* this is a generated dot file: www.graphviz.org */
+digraph suffixtree {
+	rankdir=LR
+node[shape=box]			1->21
+		[label="[2],\n Text: 0, Suffix: 0"];
+			21->22
+			[label="[6, -1],\n Text: 5, Suffix: 3"];
+			21->4
+			[label="[3, -1],\n Text: 5, Suffix: 2"];
+		1->7
+		[label="[4, 1, 5, 6, -1],\n Text: 5, Suffix: 0"];
+		1->11
+		[label="[6, -1],\n Text: 5, Suffix: 3"];
+		1->8
+		[label="[1],\n Text: 0, Suffix: 0"];
+			8->19
+			[label="[2],\n Text: 0, Suffix: 0"];
+				19->20
+				[label="[6, -1],\n Text: 5, Suffix: 3"];
+				19->3
+				[label="[3, -1],\n Text: 5, Suffix: 1"];
+			8->14
+			[label="[5],\n Text: 0, Suffix: 0"];
+				14->9
+				[label="[6, -1],\n Text: 5, Suffix: 2"];
+				14->15
+				[label="[3, -1],\n Text: 5, Suffix: 3"];
+		1->5
+		[label="[3, -1],\n Text: 5, Suffix: 3"];
+		1->18
+		[label="[7, 1, 2, 6, -1],\n Text: 5, Suffix: 0"];
+		1->16
+		[label="[5],\n Text: 0, Suffix: 0"];
+			16->10
+			[label="[6, -1],\n Text: 5, Suffix: 2"];
+			16->17
+			[label="[3, -1],\n Text: 5, Suffix: 3"];
+		1->6
+		[label="[-1],\n Text: 5, Suffix: 4"];
+		1->12
+		[label="[0, 1],\n Text: 0, Suffix: 0"];
+			12->2
+			[label="[2, 3, -1],\n Text: 5, Suffix: 0"];
+			12->13
+			[label="[5, 3, -1],\n Text: 5, Suffix: 2"];
+}

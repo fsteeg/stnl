@@ -33,6 +33,9 @@ public class TestWordSuffixTreeComplexity extends TestCase {
     public void testSmall(){
         constructTree("Ich esse Fisch. Ich esse Fleisch. Ich esse Muesli. Ich trinke. Ich trinke.", false, true);
     }
+    public void testSmall2(){
+        constructTree("Anna mag Chips nicht. Ich mag Chips gern. Hans mag Eis nicht. Ich mag Eis gern.", false, true);
+    }
     
     
 //    public void testWinnetou1() {
