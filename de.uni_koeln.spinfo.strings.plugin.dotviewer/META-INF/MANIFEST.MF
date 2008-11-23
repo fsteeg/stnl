@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Dot Viewer Plug-in
 Bundle-SymbolicName: de.uni_koeln.spinfo.strings.plugin.dotviewer;singleton:=true
-Bundle-Version: 1.1.6
+Bundle-Version: 1.1.7
 Bundle-Activator: de.uni_koeln.spinfo.strings.plugin.dotviewer.ImageViewerPlugin
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
@@ -12,3 +12,4 @@ Require-Bundle: org.eclipse.ui,
 Eclipse-LazyStart: true
 Bundle-Vendor: http://www.spinfo.uni-koeln.de
 Export-Package: de.uni_koeln.spinfo.strings.plugin.dotviewer
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
