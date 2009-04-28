@@ -1,0 +1,9 @@
+- Pepin unschoen, schoen machen, wie vorher Baum mit longs.
+- Satzindex (auch longs) fuer Teilbaume, ev mehrere, dann unterschiedliche Gewichtung, Guete.
+- Jeder Knoten eine (global) eindeutige id (long), sollte IDOwner implementieren. damit und mit Satz-ID die Wahrscheinlichhkeit nachsehen.
+- DAGs unterstützen: mehrere parents.
+- Speichern einer Bewertung der Guete von neu eingefuegten Suffixen, d.h. Teilbaeumen
+- Datenbank beruecksichtigen: Keine rekursive Datenstruktur
+- Was ist eigentlich mit Suffix Arrays?
+- Thema: Graphen in SQL.. Erstmal ohne und sehen was wie oft aufgerufen wird, das dann optimieren.
+- Tesla Komponente bauen, wo verisonieren, wie praktisch?
