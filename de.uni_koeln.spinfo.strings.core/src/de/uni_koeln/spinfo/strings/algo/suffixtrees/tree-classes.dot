@@ -1,0 +1,12 @@
+digraph tree{
+	node[shape=record]
+	numeric[label="{NumericSuffixTree|...|exportDot(location:String):void\n...}"]
+	alpha[label="{AlphanumericSuffixTree|...|...}"]
+	word[label="{WordSuffixTree|...|...}"]
+	char[label="{CharSuffixTree|...|...}"]
+	dag[label="{DAG|...|DAG(tree:NumericSuffixTree):DAG\n...}"]
+	numeric->alpha[dir=back]
+	alpha->word[dir=back]
+	alpha->char[dir=back]
+	numeric->dag[constraint=false arrowhead=diamond]
+}

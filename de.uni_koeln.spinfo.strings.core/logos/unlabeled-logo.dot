@@ -1,0 +1,15 @@
+/* this is a generated dot file: www.graphviz.org */
+digraph suffixtree {
+	rankdir=LR
+	//label="STNL"
+	//fontname="Helvetica"
+node[shape=point label=""]// width=0.1 height=0.1 style=filled]
+edge[arrowhead=empty]
+
+		1->2
+		1->3
+		1->5
+		5->4
+		5->6
+		1->7	
+}

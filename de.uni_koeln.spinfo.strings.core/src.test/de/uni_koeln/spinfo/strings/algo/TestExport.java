@@ -19,11 +19,11 @@ public class TestExport extends TestCase {
         tree = new WordSuffixTree(
                 "Ich esse Fisch. Ich esse Fleisch. Ich esse. Ich trinke.");
         tree.exportDot("word-tree.dot");
-        /* Or a char-based suffix tree: */
-        tree = new CharSuffixTree("aufgegangen abgegangen aufgehangen");
-        tree.exportDot("char-tree.dot");
         /* Any suffix tree can be converted to a DAG: */
         DAG wordDag = new DAG(tree);
         wordDag.exportDot("word-dag.dot");
+        /* Or a char-based suffix tree: */
+        tree = new CharSuffixTree("aufgegangen abgegangen aufgehangen");
+        tree.exportDot("char-tree.dot");
     }
 }

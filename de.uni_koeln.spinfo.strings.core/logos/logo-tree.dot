@@ -1,0 +1,9 @@
+/* this is a generated dot file: www.graphviz.org */
+digraph suffixtree {
+	rankdir=LR
+node[shape=box label="" width=0.5 height=0.5]			
+		1->2 [label="tree"];
+		1->3 [label="ree"];
+		1->4 [label="e"];
+		4->5 [label="e"];
+}
