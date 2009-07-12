@@ -79,23 +79,25 @@ public class WordSuffixTree extends AlphanumericSuffixTree {
         Map<String, Long> map = new HashMap<String, Long>();
         mapper = new Mapper(this, accessor);
         String[] sentences = text.split("[\\.!?;:]");
-        Set<String> sentencesSet = new HashSet<String>();
+        List<String> sequences = new ArrayList<String>();
         // if not generalized, we add the text as one
         if (!generalized)
-            sentencesSet.add(text);
+            sequences.add(text);
         // else we'll split it into sentences and later add these separately
         // (FIXME this currently give runtime problems, turn quadratic)
         else {
             for (String s : sentences) {
-                if (!s.equals(" "))
-                    sentencesSet.add(s.trim());
+                String trimmed = s.trim();
+                if (!trimmed.equals("") && !sequences.contains(trimmed)) {
+                    sequences.add(trimmed);
+                }
             }
         }
         /** step 2: number those types */
 //        System.out.print(sentencesSet.size() + " Sentences, ");
         int sentenceCount = 1;
         List<Long> all = new ArrayList<Long>();
-        for (String sentence : sentencesSet) {
+        for (String sentence : sequences) {
             // split each sentence into words
             String[] tokens = sentence.split("[^a-zA-Z0-9öäüß]");
             if (reverse) {

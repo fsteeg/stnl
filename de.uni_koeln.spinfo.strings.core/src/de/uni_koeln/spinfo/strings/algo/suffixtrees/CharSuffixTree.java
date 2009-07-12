@@ -1,11 +1,15 @@
-/** 
- Project Suffix Trees for Natural Language (STNL) (C) 2006 Fabian Steeg
-
- This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
-
- This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
-
- You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+/**
+ * Project Suffix Trees for Natural Language (STNL) (C) 2006 Fabian Steeg This
+ * library is free software; you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version. This library is distributed in the hope that it will be
+ * useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser
+ * General Public License for more details. You should have received a copy of
+ * the GNU Lesser General Public License along with this library; if not, write
+ * to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ * 02111-1307 USA
  */
 package de.uni_koeln.spinfo.strings.algo.suffixtrees;
 
@@ -22,20 +26,15 @@ import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory.SimpleNodeAccess
 
 /**
  * TODO implement adding of texts atfer instantiation for more flexibility
- * 
  * @author Fabian Steeg (fsteeg)
  */
 public class CharSuffixTree extends AlphanumericSuffixTree {
 
     /**
-     * @param text
-     *            The input text
-     * @param reverse
-     *            If true the tree is built for the reversed text
-     * @param generalized
-     *            If true the tree is generalized
-     * @param accessor
-     *            The accessor to use (memory vs DB)
+     * @param text The input text
+     * @param reverse If true the tree is built for the reversed text
+     * @param generalized If true the tree is generalized
+     * @param accessor The accessor to use (memory vs DB)
      */
     public CharSuffixTree(String text, boolean reverse, boolean generalized,
             NodeAccessor accessor) {
@@ -43,12 +42,9 @@ public class CharSuffixTree extends AlphanumericSuffixTree {
     }
 
     /**
-     * @param text
-     *            The input text
-     * @param reverse
-     *            If true the tree is built for the reversed text
-     * @param generalized
-     *            If true the tree is generalized
+     * @param text The input text
+     * @param reverse If true the tree is built for the reversed text
+     * @param generalized If true the tree is generalized
      */
     public CharSuffixTree(String text, boolean reverse, boolean generalized) {
         this(text, reverse, generalized, new SimpleNodeAccessor());
@@ -56,9 +52,7 @@ public class CharSuffixTree extends AlphanumericSuffixTree {
 
     /**
      * Builds a forward, generalized tree for text
-     * 
-     * @param text
-     *            The input text
+     * @param text The input text
      */
     public CharSuffixTree(String text) {
         this(text, false, true);
@@ -77,22 +71,24 @@ public class CharSuffixTree extends AlphanumericSuffixTree {
         Map<Character, Long> trie = new HashMap<Character, Long>();
         mapper = new Mapper(this, accessor);
         String[] sentences = text.split("[\\.!?;:\\s]");
-        Set<String> wordsSet = new HashSet<String>();
+        List<String> words = new ArrayList<String>();
         // if not generalized, we add the text as one
         if (!generalized)
-            wordsSet.add(text);
+            words.add(text);
         // else we'll split it into sentences and later add these separately
         // (FIXME this currently give runtime problems, turn quadratic)
         else {
             for (String s : sentences) {
-                if (!s.equals(" "))
-                    wordsSet.add(s.trim());
+                String trimmed = s.trim();
+                if (!trimmed.equals("") && !words.contains(trimmed)) {
+                    words.add(trimmed);
+                }
             }
         }
         /** step 2: number those types */
-        System.out.print(wordsSet.size() + " Words, ");
+        System.out.print(words.size() + " Words, ");
         int sentenceCount = 1;
-        for (String word : wordsSet) {
+        for (String word : words) {
             // split each sentence into words
             char[] tokens = word.toCharArray();
             if (reverse) {
@@ -159,9 +155,7 @@ public class CharSuffixTree extends AlphanumericSuffixTree {
     /**
      * Minimal run of CharSuffixTree. For further tests see
      * {@link TestCharSuffixTree}.
-     * 
-     * @param args
-     *            Not used
+     * @param args Not used
      */
     public static void main(String[] args) {
         String text = "gehen geht geher";
