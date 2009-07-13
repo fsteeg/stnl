@@ -6,7 +6,8 @@ import de.uni_koeln.spinfo.strings.algo.suffixtrees.DAG;
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory.SimpleNodeAccessor;
 
 public class TestCharSuffixTree extends TestCase {
-    public void testCharTree() {
+    
+    public void testCharTree1() {
         CharSuffixTree tree = new CharSuffixTree("gehen gehe geht", false,
                 true, new SimpleNodeAccessor());
         tree.exportDot("tree.dot");
@@ -20,5 +21,11 @@ public class TestCharSuffixTree extends TestCase {
         tree.exportDot("tree.dot");
         DAG dag = new DAG(tree);
         ((CharSuffixTree) dag.graph).exportDot("dag.dot");
+    }
+    
+    public void testCharTree2() {
+        CharSuffixTree tree = new CharSuffixTree("AAB.ABC.BC", false,
+                true, new SimpleNodeAccessor());
+        tree.exportDot("tree.dot");
     }
 }

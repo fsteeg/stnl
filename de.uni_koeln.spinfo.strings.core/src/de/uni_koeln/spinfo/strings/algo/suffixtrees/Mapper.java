@@ -64,7 +64,7 @@ public class Mapper {
                 }
                 builder.append(string + " ");
             }
-            res = builder.toString().trim();
+            res = builder.toString().trim().replaceAll("[0-9] \\$", "\\$");
         } else {
             res = "root";
         }

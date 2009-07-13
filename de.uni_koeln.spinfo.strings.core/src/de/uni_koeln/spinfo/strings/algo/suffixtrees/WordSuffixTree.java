@@ -1,24 +1,27 @@
-/** 
- Project Suffix Trees for Natural Language (STNL) (C) 2006 Fabian Steeg
-
- This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
-
- This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
-
- You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+/**
+ * Project Suffix Trees for Natural Language (STNL) (C) 2006 Fabian Steeg This
+ * library is free software; you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version. This library is distributed in the hope that it will be
+ * useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser
+ * General Public License for more details. You should have received a copy of
+ * the GNU Lesser General Public License along with this library; if not, write
+ * to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ * 02111-1307 USA
  */
 package de.uni_koeln.spinfo.strings.algo.suffixtrees;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import de.uni_koeln.spinfo.strings.algo.LCE;
-import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.Node;
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor;
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory.SimpleNodeAccessor;
 
@@ -26,22 +29,15 @@ import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory.SimpleNodeAccess
  * Implementation based on the linear-time algorithm for constructing word-based
  * suffix trees as described by Andersson, Larsson & Swansson in Algorithmica
  * 23, 1999
- * 
  * <p/>
- * 
  * Subclasses a modified {@link NumericSuffixTree} class from BioJava API,
  * builds a word based tree with symbols representing the words which are stored
  * separately in a map
- * 
  * <p/>
- * 
  * TODO implement LCE over LCA (then kmismatch an wildcards are running in
  * linear time), see {@link LCE}
- * 
  * <p/>
- * 
  * TODO implement adding of texts atfer instantiation for more flexibility
- * 
  * @author Fabian Steeg (fsteeg)
  */
 public class WordSuffixTree extends AlphanumericSuffixTree {
@@ -59,7 +55,7 @@ public class WordSuffixTree extends AlphanumericSuffixTree {
      * @param generalized
      */
     public WordSuffixTree(String text, boolean reverse, boolean generalized) {
-        this(text,reverse,generalized,new SimpleNodeAccessor());
+        this(text, reverse, generalized, new SimpleNodeAccessor());
     }
 
     public WordSuffixTree(String text) {
@@ -79,25 +75,27 @@ public class WordSuffixTree extends AlphanumericSuffixTree {
         Map<String, Long> map = new HashMap<String, Long>();
         mapper = new Mapper(this, accessor);
         String[] sentences = text.split("[\\.!?;:]");
-        List<String> sequences = new ArrayList<String>();
+        Set<String> sequencesSet = new LinkedHashSet<String>();
         // if not generalized, we add the text as one
         if (!generalized)
-            sequences.add(text);
+            sequencesSet.add(text);
         // else we'll split it into sentences and later add these separately
         // (FIXME this currently give runtime problems, turn quadratic)
         else {
+            int i = 0;
             for (String s : sentences) {
                 String trimmed = s.trim();
-                if (!trimmed.equals("") && !sequences.contains(trimmed)) {
-                    sequences.add(trimmed);
+                if (!trimmed.equals("")) {
+                    sequencesSet.add(trimmed + i);
+                    i++;
                 }
             }
         }
         /** step 2: number those types */
-//        System.out.print(sentencesSet.size() + " Sentences, ");
+        // System.out.print(sentencesSet.size() + " Sentences, ");
         int sentenceCount = 1;
         List<Long> all = new ArrayList<Long>();
-        for (String sentence : sequences) {
+        for (String sentence : sequencesSet) {
             // split each sentence into words
             String[] tokens = sentence.split("[^a-zA-Z0-9öäüß]");
             if (reverse) {
@@ -143,17 +141,16 @@ public class WordSuffixTree extends AlphanumericSuffixTree {
              * step 4: build a traditional suffix tree for the string of
              * numbers:
              */
-//            super.addSequences(builder, sentenceCount, false);
-            
+            // super.addSequences(builder, sentenceCount, false);
+
             all.addAll(seq);
             all.add(NumericSuffixTree.TERMINATION_SYMBOL);
-            
-            
+
             sentenceCount++;
         }
         super.addSequences(all, sentenceCount, false);
-//        System.out.print(counter + " Types.");
-//        System.out.println();
+        // System.out.print(counter + " Types.");
+        // System.out.println();
 
         /**
          * step 5: expand the tree for words: not present, the tree takes care
@@ -167,9 +164,7 @@ public class WordSuffixTree extends AlphanumericSuffixTree {
     /**
      * Minimal run of WordSuffixTree. For further tests see
      * {@link TestWordSuffixTree}.
-     * 
-     * @param args
-     *            Not used
+     * @param args Not used
      */
     public static void main(String[] args) {
         String text = "Hallo Welt Hallo Rest";

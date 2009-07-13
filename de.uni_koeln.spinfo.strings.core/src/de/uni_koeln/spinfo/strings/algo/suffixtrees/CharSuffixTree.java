@@ -16,11 +16,12 @@ package de.uni_koeln.spinfo.strings.algo.suffixtrees;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import de.uni_koeln.spinfo.strings.algo.TestCharSuffixTree;
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.NodeAccessor;
 import de.uni_koeln.spinfo.strings.algo.suffixtrees.node.memory.SimpleNodeAccessor;
 
@@ -71,24 +72,26 @@ public class CharSuffixTree extends AlphanumericSuffixTree {
         Map<Character, Long> trie = new HashMap<Character, Long>();
         mapper = new Mapper(this, accessor);
         String[] sentences = text.split("[\\.!?;:\\s]");
-        List<String> words = new ArrayList<String>();
+        Set<String> wordsSet = new LinkedHashSet<String>();
         // if not generalized, we add the text as one
         if (!generalized)
-            words.add(text);
+            wordsSet.add(text);
         // else we'll split it into sentences and later add these separately
         // (FIXME this currently give runtime problems, turn quadratic)
         else {
+            int i = 0;
             for (String s : sentences) {
                 String trimmed = s.trim();
-                if (!trimmed.equals("") && !words.contains(trimmed)) {
-                    words.add(trimmed);
+                if (!trimmed.equals("")) {
+                    wordsSet.add(trimmed + i);
+                    i++;
                 }
             }
         }
         /** step 2: number those types */
-        System.out.print(words.size() + " Words, ");
+        System.out.print(wordsSet.size() + " Words, ");
         int sentenceCount = 1;
-        for (String word : words) {
+        for (String word : wordsSet) {
             // split each sentence into words
             char[] tokens = word.toCharArray();
             if (reverse) {
